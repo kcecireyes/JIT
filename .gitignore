@@ -35,3 +35,7 @@ nosetests.xml
 .project
 .pydevproject
 .DS_Store
+
+# PLY generated files
+parser.out
+parsetab.py

@@ -1,9 +1,3 @@
-# Author: Prashant Jayannavar (pj2271)
-# Homework 1: Question 4
-#--------------------------------------------------------------------------------------------------------#
-#--------------------------------------------------------------------------------------------------------#
-# MAIN PROGRAM
-
 tokens = (
     'PRINT',
     'STRING',
@@ -17,6 +11,7 @@ def t_STRING(t):
     #    t.value = 1
     #else:
     #    t.value = 0
+    t.value = t.value[1:-1]
     return t
 
 # Ignored characters
@@ -36,7 +31,7 @@ lex.lex()
 
 def p_statement_expr(p):
     'statement : expression'
-    print(p[1])
+    # print(p[1])
 
 def p_expression_print(p):
     'expression : PRINT STRING'
