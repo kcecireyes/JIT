@@ -1,12 +1,13 @@
+#!/usr/bin/python
 tokens = (
-    'PRINT',
+    'SAY',
     'STRING',
     )
 
-t_PRINT   = r'print'
+t_SAY   = r'say'
 
 def t_STRING(t):
-    r'\"[a-z]*\"'
+    r'[\"\']{1}[a-zA-Z]*[\"\']{1}'
     #if t.value == "true":
     #    t.value = 1
     #else:
@@ -33,8 +34,8 @@ def p_statement_expr(p):
     'statement : expression'
     # print(p[1])
 
-def p_expression_print(p):
-    'expression : PRINT STRING'
+def p_expression_say(p):
+    'expression : SAY STRING'
     print(p[2])
 
 def p_error(p):
