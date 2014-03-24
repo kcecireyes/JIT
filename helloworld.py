@@ -4,7 +4,7 @@ tokens = (
     'STRING',
     )
 
-t_SAY   = r'say'
+t_SAY = r'say'
 
 def t_STRING(t):
     r'[\"\']{1}[a-zA-Z]*[\"\']{1}'

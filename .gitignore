@@ -39,3 +39,5 @@ nosetests.xml
 # PLY generated files
 parser.out
 parsetab.py
+
+ply/
