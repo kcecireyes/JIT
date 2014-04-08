@@ -45,36 +45,32 @@ from ply import *
 #import lex
 import decimal
 
-
-class Lexer():
-	tokens = (
-	    'DEF',
-	    'IF',
-	    'NAME',
-	    'NUMBER',  # Python decimals
-	    'STRING',  # single quoted strings only; syntax of raw strings
-	    'LPAR',
-	    'RPAR',
-	    'COLON',
-	    'EQ',
-	    'ASSIGN',
-	    'LT',
-	    'GT',
-	    'PLUS',
-	    'MINUS',
-	    'MULT',
-	    'DIV',
-	    'RETURN',
-	    'WS',
-	    'NEWLINE',
-	    'COMMA',
-	    'SEMICOLON',
-	    'INDENT',
-	    'DEDENT',
-	    'ENDMARKER',
-	    )
-
-tokens = Lexer().tokens
+tokens = (
+    'DEF',
+    'IF',
+    'NAME',
+    'NUMBER',  # Python decimals
+    'STRING',  # single quoted strings only; syntax of raw strings
+    'LPAR',
+    'RPAR',
+    'COLON',
+    'EQ',
+    'ASSIGN',
+    'LT',
+    'GT',
+    'PLUS',
+    'MINUS',
+    'MULT',
+    'DIV',
+    'RETURN',
+    'WS',
+    'NEWLINE',
+    'COMMA',
+    'SEMICOLON',
+    'INDENT',
+    'DEDENT',
+    'ENDMARKER',
+    )
 
 #t_NUMBER = r'\d+'
 # taken from decmial.py but without the leading sign
@@ -318,7 +314,7 @@ def filter(lexer, add_endmarker = True):
 
 # Combine Ply and my filters into a new lexer
 
-class IndentLexer(object):
+class Lexer(object):
     def __init__(self, debug=0, optimize=0, lextab='lextab', reflags=0):
         self.lexer = lex.lex(debug=debug, optimize=optimize, lextab=lextab, reflags=reflags)
         self.token_stream = None
@@ -636,7 +632,7 @@ def p_error(p):
 class Parser(object):
     def __init__(self, lexer = None):
         if lexer is None:
-            lexer = IndentLexer()
+            lexer = Lexer()
         self.lexer = lexer
         self.parser = yacc.yacc(start="file_input_end")
 
@@ -652,7 +648,7 @@ from compiler import misc, syntax, pycodegen
 class Compiler(object):
     def __init__(self):
         self.parser = Parser()
-        self.lexer = Lexer()
+        # self.lexer = Lexer()
 		
     def compile(self, code, filename="<string>"):
         tree = self.parser.parse(code)
@@ -663,7 +659,7 @@ class Compiler(object):
         code = gen.getCode()
         return code
 
-    
+
 def main():
 	'''Test code'''
 	compile = Compiler().compile
