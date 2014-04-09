@@ -37,7 +37,7 @@ t_COMMA  = r','
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 
-t_ignore  = '( \t)+'
+# t_ignore  = '\s'
 t_ignore_COMMENT = r'//.*'
 
 # Regular expression rules with action codes
@@ -70,6 +70,10 @@ def t_BOOLEAN_s(t):
 def t_newline(t):
 	r'\n+'
 	t.lexer.lineno += len(t.value)
+
+def t_WHITESPACE(t):
+	r'\s'
+	pass
 
 # Error handling rule
 def t_error(t):
