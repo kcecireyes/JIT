@@ -80,12 +80,52 @@ def t_error(t):
 	print "Illegal character '%s'" % t.value[0]
 	t.lexer.skip(1)
 
-lexer = lex.lex()
-file1 = open("program2.txt", "r")
-data = file1.read()
-file1.close()
+lex.lex()
 
-lexer.input(data)
+########## Grammar needed for prog1 and prog2 ##########
+ 
+statement : function_call
+			variable_declaration
+			for_loop
 
-for tok in lexer:
-	print tok
+function_call : fun (parameters)
+
+fun : SAY
+	LISTEN
+	IMPORT
+	SAVE
+	GET
+	PUSH
+	PULL
+	SEARCH
+
+parameters : epsilon
+			parameter, parameters
+			parameter
+
+parameter : IDENTIFIER 
+			string_statement
+			IDENTIFIER = Expression
+
+variable_declaration : type IDENTIFIER = Expression 
+					IDENTIFIER = Expression
+					type IDENTIFIER
+
+type : STRING
+	  BOOLEAN
+	  INT
+	  NODE
+	  LIST
+	  GRAPH
+
+# file1 = open("program2.txt", "r")
+# data = file1.read()
+# file1.close()
+
+# lexer.input(data)
+
+# for tok in lexer:
+# 	print tok
+
+import ply.yacc as yacc
+yacc.yacc()
