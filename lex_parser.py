@@ -37,7 +37,7 @@ t_COMMA  = r','
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 
-t_ignore  = '[ \t]+'
+t_ignore  = '( \t)+'
 t_ignore_COMMENT = r'//.*'
 
 # Regular expression rules with action codes
