@@ -31,6 +31,9 @@ tokens = [
 	'COMMA'
 	] + list(reserved.values())
 
+# Literals
+literals = ['+','-','*','/']
+
 # Regular expression rules for simple tokens
 t_EQUALS   = r'='
 t_COMMA  = r','
@@ -81,7 +84,7 @@ def t_error(t):
 	print "Illegal character '%s'" % t.value[0]
 	t.lexer.skip(1)
 
-lexer = lex.lex()
+lex.lex()
 
 ########## Grammar needed for prog1 and prog2 ##########
 ''' 
@@ -119,16 +122,64 @@ type : STRING
 	  LIST
 	  GRAPH
 '''
-file1 = open("program2.txt", "r")
+
+# Parser for parsing variable declarations and initializations only
+
+def p_statement(p):
+	'statement : variable_decl'
+	
+def p_variable_decl(p):
+	'''variable_decl : type ID EQUALS expression
+					 | ID EQUALS expression
+					 | type ID'''
+	
+def p_type(p):
+	'''type : STRING
+			| BOOLEAN
+			| INT
+			| NODE
+			| LIST
+			| GRAPH'''
+
+def p_expression(p):
+	'expression : arithmetic_expr'
+
+def p_arithmetic_expr(p):
+	'''arithmetic_expr : arithmetic_expr '+' term
+					   | arithmetic_expr '-' term
+					   | term'''
+
+def p_term(p):
+	'''term : term '*' factor
+			| term '/' factor
+			| factor'''
+
+def p_factor(p):
+	'''factor : LPAREN arithmetic_expr RPAREN
+			  | ID
+			  | NUM'''
+
+def p_error(p):
+	print("Syntax error at '%s'" % p.value)
+
+
+import ply.yacc as yacc
+yacc.yacc()
+
+file1 = open("program3.txt", "r") #Note: Input file must end with a new line character
 data = file1.read()
 file1.close()
 
-lexer.input(data)
+# Lex and parse data from input file line by line
+i = 0
+while 1:
+	j = i
+	while (data[i]!='\n'):
+		i = i+1
+	s = data[j:i]
+	i = i+1
+	if i == len(data):
+		break
+	yacc.parse(s)
 
-for tok in lexer:
-	print tok
-	
-print lexer.lineno
-
-#import ply.yacc as yacc
-#yacc.yacc()
+print 'End of lexing and parsing: If no errors were displayed give Prashant (and not Cecilia) a chocolate!\n...\n...\n...\nOh ya and it also means your source program is correct.'
