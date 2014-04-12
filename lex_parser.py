@@ -32,18 +32,23 @@ tokens = [
 	] + list(reserved.values())
 
 # Regular expression rules for simple tokens
-t_EQUALS   = r'\='
+t_EQUALS   = r'='
 t_COMMA  = r','
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 
 # t_ignore  = '\s'
 t_ignore_COMMENT = r'//.*'
+t_ignore_WHITESPACE = r'\s'
 
 # Regular expression rules with action codes
 # use shorthand for ELEMENTS which matches: ID | STRING_s | BOOLEAN_s to specify a LIST_s matching
+def t_BOOLEAN_s(t):
+	r'true|false'
+	return t
+
 def t_ID(t):
-	r'[a-zA-Z_][a-zA-Z_0-9]*\.[a-z]*|[a-zA-Z_][a-zA-Z_0-9]*' # matches trailing '.'
+	r'[a-zA-Z_][a-zA-Z_0-9]*\.[a-z]+|[a-zA-Z_][a-zA-Z_0-9]*' # doesn't match trailing '.'
 	t.type = reserved.get(t.value,'ID') # Check for reserved words
 	return t
 
@@ -63,27 +68,23 @@ def t_NUM(t):
 	t.value = int(t.value)
 	return t
 
-def t_BOOLEAN_s(t):
-	r'true|false'
-	return t
-
 def t_newline(t):
 	r'\n+'
 	t.lexer.lineno += len(t.value)
 
-def t_WHITESPACE(t):
-	r'\s'
-	pass
+#def t_WHITESPACE(t):
+#	r'\s'
+#	pass
 
 # Error handling rule
 def t_error(t):
 	print "Illegal character '%s'" % t.value[0]
 	t.lexer.skip(1)
 
-lex.lex()
+lexer = lex.lex()
 
 ########## Grammar needed for prog1 and prog2 ##########
- 
+''' 
 statement : function_call
 			variable_declaration
 			for_loop
@@ -117,15 +118,17 @@ type : STRING
 	  NODE
 	  LIST
 	  GRAPH
+'''
+file1 = open("program2.txt", "r")
+data = file1.read()
+file1.close()
 
-# file1 = open("program2.txt", "r")
-# data = file1.read()
-# file1.close()
+lexer.input(data)
 
-# lexer.input(data)
+for tok in lexer:
+	print tok
+	
+print lexer.lineno
 
-# for tok in lexer:
-# 	print tok
-
-import ply.yacc as yacc
-yacc.yacc()
+#import ply.yacc as yacc
+#yacc.yacc()
