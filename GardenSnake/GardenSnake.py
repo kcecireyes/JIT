@@ -7,7 +7,7 @@ from compiler import misc, syntax, pycodegen
 class Compiler(object):
     def __init__(self):
         self.parser = Parser()
-		
+        
     def compile(self, code, filename="<string>"):
         tree = self.parser.parse(code)
         # print tree
@@ -18,22 +18,28 @@ class Compiler(object):
         return code
 
 def main():
-	'''Test code'''
-	compile = Compiler().compile
+    '''Test code'''
+    compile = Compiler().compile
 
-	with open("test.snake") as file:
-	    code = file.read()
+    with open("test.snake") as file:
+        code = file.read()
 
-	# Set up the GardenSnake run-time environment
-	def print_(*args):
-	    print "-->", " ".join(map(str,args))
+    # Set up the GardenSnake run-time environment
+    def print_(*args):
+        print "-->", " ".join(map(str,args))
 
-	globals()["print"] = print_
+    globals()["print"] = print_
 
-	compiled_code = compile(code)
+    compiled_code = compile(code)
 
-	exec compiled_code in globals()
-	print "Done"
-	
+    exec compiled_code in globals()
+    print "Done"
+    
+    while True:
+        code2 = raw_input(">")
+        # print code
+        compiled_code = compile("\n\n"+code2+"\n\n")
+        exec compiled_code in globals()
+
 if __name__ == '__main__':
     main()
