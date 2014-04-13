@@ -14,6 +14,7 @@ class Lexer():
         'search': 'SEARCH',
         'save': 'SAVE',
         'push': 'PUSH',
+        'get' : 'GET',
         'pull': 'PULL',
         'createNode': 'CREATENODE'
     }
@@ -34,6 +35,7 @@ class Lexer():
     literals = ['+','-','*','/']
 
     # Regular expression rules for simple tokens
+    # == 
     t_EQUALS   = r'='
     t_COMMA  = r','
     t_LPAREN  = r'\('
@@ -54,9 +56,6 @@ class Lexer():
         t.type = self.reserved.get(t.value,'ID') # Check for reserved words
         return t
 
-    # ((true|false|'.*'|[a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z]),)
-    # DAMN THIS
-    # \[( ( (true|false)* | ('.*')* | ([a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z])*)* ,)*\]
     def t_LIST_s(self, t):
         r"\[(((true|false)* |('.*')*|([a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z])*)*,)*\]"
         return t
@@ -74,10 +73,6 @@ class Lexer():
         r'\n+'
         t.lexer.lineno += len(t.value)
 
-    #def t_WHITESPACE(t):
-    #    r'\s'
-    #    pass
-
     # Error handling rule
     def t_error(self, t):
         print "Illegal character '%s'" % t.value[0]
@@ -85,3 +80,86 @@ class Lexer():
     
     def __init__(self):
         lex.lex(module=self)
+
+
+
+########## Grammar needed for prog1 and prog2 ##########
+''' 
+statement : function_call
+			variable_declaration
+			for_loop
+
+function_call : fun (parameters)
+
+fun : SAY
+	LISTEN
+	IMPORT
+	SAVE
+	GET
+	PUSH
+	PULL
+	SEARCH
+
+parameters : epsilon
+			parameter, parameters
+			parameter
+
+parameter : IDENTIFIER 
+			string_statement
+			IDENTIFIER = Expression
+
+variable_declaration : type IDENTIFIER = Expression 
+					IDENTIFIER = Expression
+					type IDENTIFIER
+
+type : STRING
+	  BOOLEAN
+	  INT
+	  NODE
+	  LIST
+	  GRAPH
+
+S' -> statement
+statement -> variable_decl | function_call
+variable_decl -> type ID EQUALS expression
+				| ID EQUALS expression
+				| type ID
+function_call -> fun LPAREN parameters RPAREN
+fun -> SAY
+	| LISTEN
+	| IMPORT
+	| SAVE
+	| GET
+	| PUSH
+	| PULL
+	| SEARCH
+parameters -> empty
+			| parameter COMMA parameters
+			| parameter
+parameter -> ID
+			| STRING_s
+			| ID EQUALS expression
+type -> STRING
+		| BOOLEAN
+		| INT
+		| NODE
+		| LIST
+		| GRAPH
+expression -> arithmetic_expr
+			| function_call
+			| STRING_s
+			| BOOLEAN_s
+arithmetic_expr -> arithmetic_expr + term
+				 | arithmetic_expr - term
+				 | term
+term -> term * factor
+		| term / factor
+		| factor
+factor -> LPAREN arithmetic_expr RPAREN
+		| ID
+		| NUM
+empty -> <empty>
+
+
+
+'''
