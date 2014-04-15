@@ -1,23 +1,33 @@
 #!/usr/bin/python
-from jit_parser import *
+from optparse import OptionParser
+from jit_interpreter import *
 
-#Note: Input file must end with a new line character
-with open("programs/program3.txt", "r") as file:
-    data = file.readlines()
 
-parser = Parser()
+def main():
+    interpreter = Interpreter()
 
-for line in data:
-    parser.parser.parse(line.strip())
+    # This code allows us to run any program file using the CLI.
+    option_parser = OptionParser()
+    option_parser.add_option("-f", "--file", dest="filename", help="JIT program filename", type="string")
+    (options, args) = option_parser.parse_args() 
 
-print '''
-       ____  __  __  _____  ____  ____  ____   __
-      / __/ / / / / / ___/ / __/ / __/ / __/  / /
-     _\ \  / /_/ / / /__  / _/  _\ \  _\ \   /_/ 
-    /___/  \____/  \___/ /___/ /___/ /___/  (_)  
-                                             
+    if (options.filename):
+        # Note: Input file must end with a new line character
+        with open(options.filename, "r") as file:
+            data = file.readlines()
 
-End of lexing and parsing: If no errors were displayed give Prashant (and not Cecilia) a chocolate!
+        for line in data:
+            interpreter.execute_txt( line.strip() )
+    else:
+        while True:
+            interpreter.execute_txt( raw_input("JIT> ") )
 
-Oh ya and it also means your source program is correct.
-'''
+    print '''
+           ____  __  __  _____  ____  ____  ____   __
+          / __/ / / / / / ___/ / __/ / __/ / __/  / /
+         _\ \  / /_/ / / /__  / _/  _\ \  _\ \   /_/ 
+        /___/  \____/  \___/ /___/ /___/ /___/  (_)  
+    '''
+
+if __name__ == "__main__":
+    main()
