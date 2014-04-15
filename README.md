@@ -27,4 +27,4 @@ Architecture Overview
 
     * **interpreter** calls the **interpreter** on the sub-nodes, and executes current **ast** node
 
-* **cli** prints sucess, or test checks output
+* **cli** prints sucess, or **test** checks output
