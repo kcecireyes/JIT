@@ -1,11 +1,15 @@
 import ply.yacc as yacc
 from jit_lexer import *
+from jit_ast import *
 
 class Parser():
 
     def p_statement(self, p):
         '''statement : variable_decl
                       | function_call'''
+
+        # p[0] = AstFun( AstSay(), AstString("Testing") )
+        p[0] = p[1]
 
     def p_variable_decl(self, p):
         '''variable_decl : type ID EQUALS expression
@@ -14,6 +18,8 @@ class Parser():
                          
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
+        p[1].child = p[3]
+        p[0] = p[1]
 
     def p_fun(self, p):
         '''fun : SAY
@@ -25,15 +31,19 @@ class Parser():
                 | PULL
                 | SEARCH'''
 
+        p[0] = AstFun(p[1])
+
     def p_parameters(self, p):
         '''parameters : empty
                      | parameter COMMA parameters
                      | parameter'''
+        p[0] = p[1]
 
     def p_parameter(self, p):
         '''parameter : ID
                     | STRING_s
                     | ID EQUALS expression'''
+        p[0] = AstString(p[1])
     
     
     def p_type(self, p):

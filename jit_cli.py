@@ -15,7 +15,7 @@ def main():
         # Note: Input file must end with a new line character
         with open(options.filename, "r") as file:
             data = file.readlines()
-
+        
         for line in data:
             interpreter.execute_txt( line.strip() )
     else:
