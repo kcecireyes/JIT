@@ -63,7 +63,6 @@ class Parser():
 
     def p_expression(self, p):
         '''expression : arithmetic_expr
-                      | function_call
                       | STRING_s
                       | BOOLEAN_s'''
 
