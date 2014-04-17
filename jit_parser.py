@@ -18,7 +18,7 @@ class Parser():
                          
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
-        p[1].child = p[3]
+        p[1].params = p[3]
         p[0] = p[1]
 
     def p_fun(self, p):
@@ -33,18 +33,25 @@ class Parser():
 
         p[0] = AstFun(p[1])
 
+
     def p_parameters(self, p):
         '''parameters : empty
                      | parameter COMMA parameters
                      | parameter'''
-        p[0] = p[1]
+        if not p[1]:
+            p[0] = []
+        elif len(p) == 2:
+            p[0] = p[1]
+        elif len(p) == 4:
+            p[0] = p[1] + p[3]
+
 
     def p_parameter(self, p):
         '''parameter : ID
                     | STRING_s
                     | ID EQUALS expression'''
-        p[0] = AstString(p[1])
-    
+        p[0] = [AstString(p[1])]
+
     
     def p_type(self, p):
         '''type : STRING
@@ -67,7 +74,7 @@ class Parser():
 
     def p_empty(self, p):
         'empty :'
-        pass
+        p[0] = []
 
     def p_term(self, p):
         '''term : term '*' factor
