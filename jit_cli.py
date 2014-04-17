@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from optparse import OptionParser
 from jit_interpreter import *
-
+import readline
 
 def main():
     interpreter = Interpreter()
