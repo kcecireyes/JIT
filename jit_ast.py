@@ -10,6 +10,9 @@ class AstBinOp(AstNode):
     def __str__(self):
         return str(self.left) + str(self.op) + str(self.right)
 
+    def accept(self, visitor):
+        return visitor.visit_binop(self)
+
 class AstFun(AstNode):
     def __init__(self,subtype):
         self.type = "function"
@@ -32,13 +35,14 @@ class AstString(AstNode):
         return self.value
 
     def accept(self, visitor):
-        pass
+        return visitor.visit_str(self)
 
+"""        
 class AstSay(AstNode):
     def __init__(self):
         self.type = "say"
 
     def __str__(self):
         return self.type
-
+"""
  
