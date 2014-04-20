@@ -1,10 +1,13 @@
 class Graf():
     def __init__(self, json=None):
-        pass
+    		self.node_list = []
+    		self.number_of_vert = 0
     
-    def push(self,node_list):
-        self.node_list.append(node_list)
+    def push(self, node_list):
+    		self.number_of_vert += node_list.length
+    		self.node_list.extend(node_list)
     
     def push_node(self,node):
         # We might not need this
-        self.push([node])
+        self.number_of_vert += 1
+        self.append(node)
