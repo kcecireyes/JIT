@@ -2,7 +2,7 @@
 from optparse import OptionParser
 from jit_interpreter import *
 import re
-
+import readline
 
 def main():
 
