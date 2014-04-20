@@ -13,7 +13,7 @@ def main():
 
     if (options.filename):
         # Note: Input file must end with a new line character
-        interpreter = Interpreter(re.sub('.txt', '.py', options.filename))
+        interpreter = Interpreter(re.sub('.txt', '.gen.py', options.filename))
 
         with open(options.filename, "r") as file:
             data = file.readlines()
