@@ -24,7 +24,7 @@ class AstFun(AstNode):
         return visitor.visit_fun(self)
 
     def __str__(self):
-        return str(self.subtype) + "\n" + str(self.params)
+        return str(self.subtype) + "\n" + "\n".join(str(p) for p in self.params)
 
 class AstString(AstNode):
     def __init__(self,value):
