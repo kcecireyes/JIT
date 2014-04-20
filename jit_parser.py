@@ -7,7 +7,6 @@ class Parser():
     def p_statement(self, p):
         '''statement : variable_decl
                       | function_call'''
-
         # p[0] = AstFun( AstSay(), AstString("Testing") )
         p[0] = p[1]
 
@@ -29,10 +28,10 @@ class Parser():
                 | GET
                 | PUSH
                 | PULL
+                | CREATENODE
                 | SEARCH'''
 
         p[0] = AstFun(p[1])
-
 
     def p_parameters(self, p):
         '''parameters : empty
@@ -45,14 +44,12 @@ class Parser():
         elif len(p) == 4:
             p[0] = p[1] + p[3]
 
-
     def p_parameter(self, p):
         '''parameter : ID
                     | STRING_s
                     | ID EQUALS expression'''
         p[0] = [AstString(p[1])]
 
-    
     def p_type(self, p):
         '''type : STRING
                 | BOOLEAN
@@ -63,6 +60,7 @@ class Parser():
 
     def p_expression(self, p):
         '''expression : arithmetic_expr
+                      | function_call
                       | STRING_s
                       | BOOLEAN_s'''
 
