@@ -1,0 +1,5 @@
+say("Beginning simple node program.")
+node myNode = createNode()
+myNode.title = 'The Never-Ending Controversy Over All-Girls Education'
+myNode.author = 'CHRISTINE GROSS-LOH'
+say(myNode.author)
