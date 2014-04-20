@@ -61,7 +61,7 @@ class Lexer():
         return t
 
     def t_STRING_s(self, t):
-        r"'.*'"
+        r'"([^"]|(\\"))*"'
         return t
 
     def t_NUM(self, t):

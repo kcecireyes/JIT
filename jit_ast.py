@@ -7,30 +7,42 @@ class AstBinOp(AstNode):
         self.right = right
         self.op = op
         
-    def to_string(self):
-        return self.left.to_string + self.op.to_string + self.right.to_string
+    def __str__(self):
+        return str(self.left) + str(self.op) + str(self.right)
+
+    def accept(self, visitor):
+        return visitor.visit_binop(self)
 
 class AstFun(AstNode):
     def __init__(self,subtype):
         self.type = "function"
         self.subtype = subtype
+        self.params = []
         # self.child
 
-    def to_string(self):
-        return self.subtype + "\n" + self.child.to_string()
+    def accept(self, visitor):
+        return visitor.visit_fun(self)
+
+    def __str__(self):
+        return str(self.subtype) + "\n" + str(self.params)
 
 class AstString(AstNode):
     def __init__(self,value):
         self.type = "string"
         self.value = value
 
-    def to_string(self):
+    def __str__(self):
         return self.value
 
+    def accept(self, visitor):
+        return visitor.visit_str(self)
+
+"""        
 class AstSay(AstNode):
     def __init__(self):
         self.type = "say"
 
-    def to_string(self):
+    def __str__(self):
         return self.type
-
+"""
+ 
