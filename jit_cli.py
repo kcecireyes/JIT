@@ -1,10 +1,10 @@
 #!/usr/bin/python
 from optparse import OptionParser
 from jit_interpreter import *
+import re
 import readline
 
 def main():
-    interpreter = Interpreter()
 
     # This code allows us to run any program file using the CLI.
     option_parser = OptionParser()
@@ -13,12 +13,15 @@ def main():
 
     if (options.filename):
         # Note: Input file must end with a new line character
+        interpreter = Interpreter(re.sub('.txt', '.py', options.filename))
+
         with open(options.filename, "r") as file:
             data = file.readlines()
-        
+
         for line in data:
             interpreter.execute_txt( line.strip() )
     else:
+        interpreter = Interpreter()
         while True:
             interpreter.execute_txt( raw_input("JIT> ") )
 
