@@ -37,6 +37,16 @@ class AstString(AstNode):
     def accept(self, visitor):
         return visitor.visit_str(self)
 
+
+class AstID(AstNode):
+    def __init__(self, identifier, env):
+        self.identifier = identifier
+        self.env = env
+
+    def accept(self, visitor):
+        return vistor.visit_id(self)
+    
+
 """        
 class AstSay(AstNode):
     def __init__(self):

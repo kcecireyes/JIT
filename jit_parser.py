@@ -50,7 +50,13 @@ class Parser():
         '''parameter : ID
                     | STRING_s
                     | ID EQUALS expression'''
-        p[0] = [AstString(p[1])]
+        if p[0].startsWith('"'):
+            p[0] = [AstString(p[1])]
+        elif len(p) == 4:
+            p[0] = [AstBinOp(AstID(p[1]), p[2], p[3])]
+        else:
+            p[0] = [AstID(p[1])]
+            
 
     
     def p_type(self, p):
