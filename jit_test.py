@@ -16,11 +16,11 @@ class TextJIT(unittest.TestCase):
     def test_listen_should_generate_python(self):
         pass
 
-    def create_node_should_generate_pyton(self):
-        # prog = "./jit_cli.py -f programs/program2-nodes.txt"
-        # ref = "programs/program2-nodes.py"
-        # out = "programs/program2-nodes.gen.py"
-        # self.assertTrue(self.compare(out, ref, prog))
+    def create_node_should_generate_python(self):
+        prog = "./jit_cli.py -f programs/program4-simple_node.txt"
+        ref = "programs/program4-simple_node.py"
+        out = "programs/program4-simple_node.gen.py"
+        self.assertTrue(self.compare(out, ref, prog))
         pass
 
     def test_binop_should_generate_python(self):
