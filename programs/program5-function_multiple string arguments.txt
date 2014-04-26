@@ -1,0 +1,3 @@
+//this is not a correct call to the import function
+//only meant to test the lexer and parser
+hello = import("param1", "param2", abcdd, 2)
