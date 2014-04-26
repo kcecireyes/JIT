@@ -6,7 +6,9 @@ class Parser():
 
     def p_statement(self, p):
         '''statement : variable_decl
-                      | function_call'''
+                      | function_call
+                      | empty
+                      '''
         # p[0] = AstFun( AstSay(), AstString("Testing") )
         p[0] = p[1]
 
@@ -47,6 +49,9 @@ class Parser():
     def p_parameter(self, p):
         '''parameter : ID
                     | STRING_s
+                    | LIST_s
+                    | BOOLEAN_s
+                    | NUM
                     | ID EQUALS expression'''
         p[0] = [AstString(p[1])]
 
@@ -62,7 +67,9 @@ class Parser():
         '''expression : arithmetic_expr
                       | function_call
                       | STRING_s
-                      | BOOLEAN_s'''
+                      | BOOLEAN_s
+                      | LIST_s
+                      '''
 
     def p_arithmetic_expr(self, p):
         '''arithmetic_expr : arithmetic_expr '+' term
