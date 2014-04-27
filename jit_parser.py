@@ -70,15 +70,19 @@ class Parser():
                 | NODE
                 | LIST
                 | GRAPH'''
+        p[0] = AstEmpty()
 
     def p_expression(self, p):
         '''expression : arithmetic_expr
-                      | function_call
                       | STRING_s
                       | BOOLEAN_s
                       | LIST_s
                       '''
         p[0] = AstString(p[1])
+
+    def p_expression_call(self, p):
+        '''expression : function_call'''
+        p[0] = AstFun(p[1])
 
     def p_arithmetic_expr(self, p):
         '''arithmetic_expr : arithmetic_expr '+' term
@@ -93,11 +97,13 @@ class Parser():
         '''term : term '*' factor
                 | term '/' factor
                 | factor'''
+        p[0] = AstEmpty()
 
     def p_factor(self, p):
         '''factor : LPAREN arithmetic_expr RPAREN
                   | ID
                   | NUM'''
+        p[0] = AstEmpty()
 
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
