@@ -4,7 +4,15 @@ class AstVisitor:
     def __init__(self, filename):
         self.output = open(filename, 'w')
         self.code_generator = CodeGenerator()
-        self.env = {}
+        #list of dicts
+        self.env = []
+
+    def enter_scope(self, env):
+        self.env.append(env)
+
+    def exit_scope(self):
+        self.env.pop()
+        
         
         
     def visit_fun(self, fun_node):
@@ -21,6 +29,11 @@ class AstVisitor:
     def visit_binop(self, binop_node):
         prtstr = str(binop_node.left) + " " + str(binop_node.op) + " " + str(binop_node.right) + "\n"
         self.output.write(prtstr)
+        if binop_node.op == "EQUALS":
+            lhs = binop_node.left.accept(self)
+            rhs = binop_node.right.accept(self)
+            self.env[-1][lhs] = rhs
+        
 
     def visit_str(self, str_node):
         pass

@@ -9,4 +9,7 @@ class CodeGenerator:
         return '%s = %s' % (lfh, rhs)
 
     def generate_print(self, string):
-        return 'print %s' % string
+        return 'print %s\n' % string
+
+    def generate_assignment(self, lhs, rhs):
+        return '%s = %s\n' %(lhs, rhs)
