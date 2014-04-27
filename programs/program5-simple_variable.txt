@@ -1,0 +1,3 @@
+say("Beginning simple node program.")
+a = "This is a string"
+say(a)

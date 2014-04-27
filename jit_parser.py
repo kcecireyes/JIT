@@ -17,6 +17,15 @@ class Parser():
                          | ID EQUALS expression
                          | type ID'''
                          
+        # Not perfect, but a start.
+        # TODO: Finish this
+        if len(p) == 5:
+            p[0] = AstBinOp(p[2],p[3],p[4])
+        elif len(p) == 4:
+            p[0] = AstBinOp(p[1],p[2],p[3])
+        elif len(p) == 3:
+            p[0] = AstBinOp(p[2],'EQUALS',None)
+
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
         p[1].params = p[3]

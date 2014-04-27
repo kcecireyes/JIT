@@ -12,9 +12,12 @@ class AstVisitor:
             prtstr = "'\\n'.join(%s)" % lst
             code = self.code_generator.generate_print(prtstr)
             self.output.write(code + '\n')
+        if fun_node.subtype == "createnode":
+            self.output.write("Node()")
 
     def visit_binop(self, binop_node):
-        pass
+        prtstr = str(binop_node.left) + " " + str(binop_node.op) + " " + str(binop_node.right) + "\n"
+        self.output.write(prtstr)
 
     def visit_str(self, str_node):
         pass
