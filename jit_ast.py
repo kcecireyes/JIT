@@ -27,11 +27,11 @@ class AstFun(AstNode):
         self.params = []
         # self.child
 
-    def accept(self, visitor):
-        return visitor.visit_fun(self)
-
     def __str__(self):
         return str(self.subtype) + "\n" + "\n".join(str(p) for p in self.params)
+
+    def accept(self, visitor):
+        return visitor.visit_fun(self)
 
 class AstString(AstNode):
     def __init__(self,value):
@@ -43,6 +43,17 @@ class AstString(AstNode):
 
     def accept(self, visitor):
         return visitor.visit_str(self)
+
+class AstNum(AstNode):
+    def __init__(self,value):
+        self.type = "number"
+        self.value = value
+
+    def __str__(self):
+        return str(self.value)
+
+    def accept(self, visitor):
+        return visitor.visit_num(self)
         
 
 

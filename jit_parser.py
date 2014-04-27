@@ -56,12 +56,18 @@ class Parser():
 
     def p_parameter(self, p):
         '''parameter : ID
-                    | STRING_s
                     | LIST_s
                     | BOOLEAN_s
-                    | NUM
                     | ID EQUALS expression'''
+        p[0] = AstEmpty()
+
+    def p_parameter_string(self, p):
+        '''parameter : STRING_s'''
         p[0] = [AstString(p[1])]
+
+    def p_parameter_num(self, p):
+        '''parameter : NUM'''
+        p[0] = AstNum(p[1])
 
     def p_type(self, p):
         '''type : STRING
@@ -88,6 +94,7 @@ class Parser():
         '''arithmetic_expr : arithmetic_expr '+' term
                            | arithmetic_expr '-' term
                            | term'''
+        p[0] = p[1]
 
     def p_empty(self, p):
         'empty :'
@@ -97,13 +104,13 @@ class Parser():
         '''term : term '*' factor
                 | term '/' factor
                 | factor'''
-        p[0] = AstEmpty()
+        p[0] = p[1]
 
     def p_factor(self, p):
         '''factor : LPAREN arithmetic_expr RPAREN
                   | ID
                   | NUM'''
-        p[0] = AstEmpty()
+        p[0] = AstNum(p[1])
 
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
