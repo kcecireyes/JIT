@@ -4,6 +4,7 @@ class AstVisitor:
     def __init__(self, filename):
         self.output = open(filename, 'w')
         self.code_generator = CodeGenerator()
+        self.env = {}
         
         
     def visit_fun(self, fun_node):
