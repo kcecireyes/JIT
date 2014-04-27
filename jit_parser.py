@@ -87,7 +87,7 @@ class Parser():
 
     def p_empty(self, p):
         'empty :'
-        p[0] = []
+        p[0] = AstEmpty()
 
     def p_term(self, p):
         '''term : term '*' factor

@@ -1,5 +1,12 @@
 class AstNode: pass
 
+class AstEmpty(AstNode):
+    def __str__(self):
+        return "Empty"
+
+    def accept(self, visitor):
+        return ""
+
 class AstBinOp(AstNode):
     def __init__(self,left,op,right):
         self.type = "binop"
