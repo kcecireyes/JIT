@@ -1,2 +1,1 @@
-print '\n'.join(["Beginning simple node program."])
-print '\n'.join(["CHRISTINE GROSS-LOH"])
+Copy correct generated python here.

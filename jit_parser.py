@@ -6,7 +6,9 @@ class Parser():
 
     def p_statement(self, p):
         '''statement : variable_decl
-                      | function_call'''
+                      | function_call
+                      | empty
+                      '''
         # p[0] = AstFun( AstSay(), AstString("Testing") )
         p[0] = p[1]
 
@@ -15,6 +17,15 @@ class Parser():
                          | ID EQUALS expression
                          | type ID'''
                          
+        # Not perfect, but a start.
+        # TODO: Finish this
+        if len(p) == 5:
+            p[0] = AstBinOp(p[2],p[3],p[4])
+        elif len(p) == 4:
+            p[0] = AstBinOp(p[1],p[2],p[3])
+        elif len(p) == 3:
+            p[0] = AstBinOp(p[2],'EQUALS',None)
+
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
         p[1].params = p[3]
@@ -47,6 +58,9 @@ class Parser():
     def p_parameter(self, p):
         '''parameter : ID
                     | STRING_s
+                    | LIST_s
+                    | BOOLEAN_s
+                    | NUM
                     | ID EQUALS expression'''
         if p[0].startsWith('"'):
             p[0] = [AstString(p[1])]
@@ -68,7 +82,9 @@ class Parser():
         '''expression : arithmetic_expr
                       | function_call
                       | STRING_s
-                      | BOOLEAN_s'''
+                      | BOOLEAN_s
+                      | LIST_s
+                      '''
 
     def p_arithmetic_expr(self, p):
         '''arithmetic_expr : arithmetic_expr '+' term

@@ -56,20 +56,14 @@ class Lexer():
         t.type = self.reserved.get(t.value,'ID') # Check for reserved words
         return t
 
-    # def t_LIST_s(self, t):
-    #     r"\[(((true|false)* |('.*')*|([a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z])*)*,)*\]"
-    #     return t
-
-    # def t_STRING_s(self, t):
-    #     r'"([^"]|(\\"))*"'
-    #     return t
-
     def t_LIST_s(self, t):
-        r"\[(((true|false)* |('.*')*|([a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z])*)*,)*\]"
+        #r"\[(((true|false)* |('.*')*|([a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z])*)*,)*\]"
+        r'\[(([ \t]*)(true|false|"[^"]*"|[a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z]+)([ \t]*),([ \t]*))*\]'
         return t
 
     def t_STRING_s(self, t):
-        r"'.*'"
+        #r"'.*'"
+        r'"[^"]*"'
         return t
 
     def t_NUM(self, t):
