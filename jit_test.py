@@ -9,6 +9,7 @@ class TextJIT(unittest.TestCase):
         self.prog_ext = ".txt"
         self.ref_ext = ".py"
         self.out_ext = ".gen.py"
+        # Add programs here
         self.program1 = "programs/program1-five_says"
         self.program2 = ""
         self.program3 = "programs/program3-assignments_and_math"
@@ -24,8 +25,8 @@ class TextJIT(unittest.TestCase):
     def test_listen_should_generate_python(self):
         pass
 
-    def create_node_should_generate_python(self):
-        prog = self.jit + " " + self.flag + " " + self.program2 + self.prog_ext
+    def test_simple_node_should_generate_python(self):
+        prog = self.jit + " " + self.flag + " " + self.program4 + self.prog_ext
         ref = self.program4 + self.ref_ext
         out = self.program4 + self.out_ext
         self.assertTrue(self.compare(out, ref, prog))
