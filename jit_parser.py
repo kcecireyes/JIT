@@ -41,7 +41,6 @@ class Parser():
                 | PULL
                 | CREATENODE
                 | SEARCH'''
-
         p[0] = AstFun(p[1])
 
     def p_parameters(self, p):
@@ -79,6 +78,7 @@ class Parser():
                       | BOOLEAN_s
                       | LIST_s
                       '''
+        p[0] = AstString(p[1])
 
     def p_arithmetic_expr(self, p):
         '''arithmetic_expr : arithmetic_expr '+' term
