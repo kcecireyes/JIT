@@ -24,6 +24,7 @@ def main():
             data = file.readlines()
 
         for line in data:
+            print "=======%s" %line
             interpreter.execute_txt(line.strip(), options.debug)
 
     else:

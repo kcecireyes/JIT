@@ -45,13 +45,15 @@ class AstString(AstNode):
         return visitor.visit_str(self)
 
 class AstID(AstNode):
-    def __init__(self, name, env, type):
+    def __init__(self, name,type = 'auto'):
         self.name = name
-        self.env = env
         self.type = type
 
     def accept(self, visitor):
-        return vistor.visit_id(self)
+        return visitor.visit_id(self)
+
+    def __str__(self):
+        return self.name
     
 class AstNum(AstNode):
     def __init__(self,value):
@@ -68,8 +70,18 @@ class AstNum(AstNode):
 class AstExpr(AstNode):
     def __init__(self, value):
         self.value = value
-        
 
+    def accept(self, visitor):
+        pass
+
+        
+class AstVarDecl(AstNode):
+    def __init__(self, name, t):
+        self.name = name
+        self.type = t
+
+    def accept(self, visitor):
+        visitor.visit_vardecl(self)
 """        
 class AstSay(AstNode):
     def __init__(self):

@@ -20,11 +20,12 @@ class Parser():
         # Not perfect, but a start.
         # TODO: Finish this
         if len(p) == 5:
-            p[0] = AstBinOp(p[2],p[3],p[4])
+            p[0] = AstBinOp(AstID(p[2], p[1]),p[3],p[4])
+            print p[2]
         elif len(p) == 4:
-            p[0] = AstBinOp(p[1],p[2],p[3])
+            p[0] = AstBinOp(AstID(p[1]),p[2],p[3])
         elif len(p) == 3:
-            p[0] = AstBinOp(p[2],'EQUALS',None)
+            p[0] = AstVarDecl(p[2], p[1])
 
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
@@ -85,12 +86,16 @@ class Parser():
                       | STRING_s
                       | BOOLEAN_s
                       | LIST_s
+                      | function_call
                       '''
-        p[0] = AstString(p[1])
+        if (type(p[1]) is str) and (p[1].startswith('"')):
+            p[0] = AstString(p[1])
+        else:
+            p[0] = p[1]
 
-    def p_expression_call(self, p):
-        '''expression : function_call'''
-        p[0] = AstFun(p[1])
+    #def p_expression_call(self, p):
+    #   '''expression : function_call'''
+    #  p[0] = AstFun(p[1])
 
     def p_arithmetic_expr(self, p):
         '''arithmetic_expr : arithmetic_expr '+' term

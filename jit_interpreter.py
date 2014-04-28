@@ -4,10 +4,12 @@ from jit_ast_visitor import *
 
 class Interpreter:
     def __init__(self, output_filename="temp.py"):
-        self.visitor = AstVisitor(output_filename)
-
+        self.visitor = AstVisitor()
+        self.output = open(output_filename, 'w')
+        
     def execute_ast(self, ast_node):
-        ast_node.accept(self.visitor)
+        code = ast_node.accept(self.visitor)
+        self.output.write(code)
         
         # if hasattr(ast_node, 'right'):
         #     ast_node.right = self.execute_ast(ast_node.right)
@@ -24,7 +26,6 @@ class Interpreter:
     def execute_txt(self, code, debug=True):
         parser = Parser()
         ast = parser.parser.parse(code)
-        
         if debug:
             print "AST:"
             for line in str(ast).split('\n'):
