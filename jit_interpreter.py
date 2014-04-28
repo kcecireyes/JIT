@@ -21,11 +21,16 @@ class Interpreter:
         #     elif ast_node.subtype == "listen":
         #         raw_input("User input: ")
             
-    def execute_txt(self, code):
+    def execute_txt(self, code, debug=True):
         parser = Parser()
         ast = parser.parser.parse(code)
-        print "AST:"
-        for line in str(ast).split('\n'):
-            print "\t"+line
+        
+        if debug:
+            print "AST:"
+            for line in str(ast).split('\n'):
+                print "\t"+line
+
         self.execute_ast(ast)
-        print "\n"
+
+        if debug:
+            print "\n"
