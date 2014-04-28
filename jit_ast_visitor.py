@@ -24,10 +24,20 @@ class AstVisitor:
             self.output.write(code + '\n')
 
         if fun_node.subtype == "createnode":
+            print "Node()"
             self.output.write("Node()")
+        else:
+            self.output.write("ERROR visit_fun\n")
 
     def visit_binop(self, binop_node):
-        prtstr = str(binop_node.left) + " " + str(binop_node.op) + " " + str(binop_node.right) + "\n"
+        if(binop_node.right.type == "string"):
+            prtstr = str(binop_node.left) + " " + str(binop_node.op) + " " + str(binop_node.right) + "\n"
+        elif(binop_node.right.type == "function"):
+            prtstr = str(binop_node.left) + " " + str(binop_node.op) + " " + "\n"
+            self.visit_fun(binop_node.right)
+        else:
+            prtstr = "ERROR visit_binop\n"
+
         self.output.write(prtstr)
         if binop_node.op == "EQUALS":
             lhs = binop_node.left.accept(self)
@@ -38,4 +48,7 @@ class AstVisitor:
     def visit_str(self, str_node):
         pass
 
-        
+
+    def visit_num(self, str_node):
+        pass
+
