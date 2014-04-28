@@ -23,7 +23,7 @@ class AstVisitor:
             code = self.code_generator.generate_print(prtstr)
             self.output.write(code + '\n')
 
-        if fun_node.subtype == "createnode":
+        elif fun_node.subtype == "createnode":
             print "Node()"
             self.output.write("Node()")
         else:
