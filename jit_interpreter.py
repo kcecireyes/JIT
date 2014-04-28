@@ -9,6 +9,7 @@ class Interpreter:
         
     def execute_ast(self, ast_node):
         code = ast_node.accept(self.visitor)
+        print "code = " + code
         self.output.write(code)
         
         # if hasattr(ast_node, 'right'):

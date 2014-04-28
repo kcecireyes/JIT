@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 from jit_lexer import *
 from jit_ast import *
+import re
 
 class Parser():
 
@@ -79,7 +80,7 @@ class Parser():
                 | NODE
                 | LIST
                 | GRAPH'''
-        p[0] = AstEmpty()
+        p[0] = p[1]
 
     def p_expression(self, p):
         '''expression : arithmetic_expr
@@ -101,7 +102,10 @@ class Parser():
         '''arithmetic_expr : arithmetic_expr '+' term
                            | arithmetic_expr '-' term
                            | term'''
-        p[0] = p[1]
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
 
     def p_empty(self, p):
         'empty :'
@@ -111,13 +115,21 @@ class Parser():
         '''term : term '*' factor
                 | term '/' factor
                 | factor'''
-        p[0] = p[1]
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
 
     def p_factor(self, p):
         '''factor : LPAREN arithmetic_expr RPAREN
                   | ID
                   | NUM'''
-        p[0] = AstNum(p[1])
+        if len(p) == 4:
+            p[0] = p[2]
+        elif type(p[1]) is str:
+            p[0] = AstID(p[1])
+        else:
+            p[0] = AstNum(p[1])
 
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)

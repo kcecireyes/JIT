@@ -81,7 +81,7 @@ class AstVarDecl(AstNode):
         self.type = t
 
     def accept(self, visitor):
-        visitor.visit_vardecl(self)
+        return visitor.visit_vardecl(self)
 """        
 class AstSay(AstNode):
     def __init__(self):

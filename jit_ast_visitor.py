@@ -45,12 +45,13 @@ class AstVisitor:
 
         self.output.write(prtstr)
         """
+        
+        lhs = binop_node.left.accept(self).strip()
+        rhs = binop_node.right.accept(self).strip()
         if binop_node.op == "=":
-            lhs = binop_node.left.accept(self)
-            rhs = binop_node.right.accept(self)
             self.env[-1][lhs] = rhs
-            code = self.code_generator.generate_assignment(lhs, rhs)
-            return code
+        code = self.code_generator.generate_binaryOp(lhs, binop_node.op, rhs)
+        return code
         
 
     def visit_str(self, str_node):
@@ -58,15 +59,19 @@ class AstVisitor:
 
 
     def visit_num(self, str_node):
-        pass
+        return str(str_node)
 
 
     def visit_id(self, id_node):
         name = id_node.name
         current_env = self.env[-1]
         val = current_env[name]
-        return val if val else name
+        return name
 
     def visit_vardecl(self, decl_node):
+        init_vals = defaultdict(lambda:None)
+        init_vals['string'] =  ''
+        init_vals['int'] = 0
         self.env[-1][decl_node.name] = None
-        return "%s = ''" % decl_node.name
+        code = "%s = %s\n" % (decl_node.name, str(init_vals[decl_node.type]))
+        return code
