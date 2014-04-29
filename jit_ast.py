@@ -28,7 +28,10 @@ class AstFun(AstNode):
         # self.child
 
     def __str__(self):
-        return str(self.subtype) + "\n" + "\n".join(str(p) for p in self.params)
+        if isinstance (self.params, AstEmpty): 
+            return str(self.subtype) + "\n" + "\n"
+        else:
+            return str(self.subtype) + "\n" + "\n".join(str(p) for p in self.params)
 
     def accept(self, visitor):
         return visitor.visit_fun(self)

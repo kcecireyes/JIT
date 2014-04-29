@@ -1,8 +1,9 @@
-﻿node myNode = createNode("hello")
+﻿say("Beginning node program.")
+node myNode = createNode()
 myNode.title = "The Never-Ending Controversy Over All-Girls Education"
 myNode.author = "CHRISTINE GROSS-LOH"
 say(myNode.author)
-myNode.author = listen("hello")
+myNode.author = listen()
 myNode.date = "March 21 2014"
 myNode.publisher = "The Atlantic"
 //keywordsisofdata‐type'list'
