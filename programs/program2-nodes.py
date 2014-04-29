@@ -1,3 +1,4 @@
+print '\n'.join(["Beginning node program."])
 myNode = Node()
 myNode.title = "The Never-Ending Controversy Over All-Girls Education"
 myNode.author = "CHRISTINE GROSS-LOH"

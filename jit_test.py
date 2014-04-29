@@ -25,14 +25,13 @@ class TextJIT(unittest.TestCase):
         self.assertTrue(self.compare(self.program1))
 
     def test_listen_should_generate_python(self):
-        pass
+        self.assertTrue(self.compare(self.program2))
 
     def test_simple_node_should_generate_python(self):
         self.assertTrue(self.compare(self.program4))
 
     def test_binop_should_generate_python(self):
-        # self.assertTrue(self.compare(program3))
-        pass
+        self.assertTrue(self.compare(self.program3))
 
     def test_comments_should_be_parsed_out(self):
         self.assertTrue(self.compare(self.program0))
