@@ -22,8 +22,9 @@ class Parser():
         # TODO: Finish this
         if len(p) == 5:
             p[0] = AstBinOp(AstID(p[2], p[1]),p[3],p[4])
-            print p[2]
         elif len(p) == 4:
+            if isinstance(p[3], str):
+                p[3] = AstString(p[3])
             p[0] = AstBinOp(AstID(p[1]),p[2],p[3])
         elif len(p) == 3:
             p[0] = AstVarDecl(p[2], p[1])

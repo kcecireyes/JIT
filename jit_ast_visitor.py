@@ -27,6 +27,8 @@ class AstVisitor:
         elif fun_node.subtype == "createNode":
             #self.output.write("Node()")
             code = "Node()"
+        elif fun_node.subtype == "listen":
+            code = "Listen()"
         else:
             code = "ERROR visit_fun\n"
 
