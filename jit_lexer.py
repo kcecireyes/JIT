@@ -57,12 +57,10 @@ class Lexer():
         return t
 
     def t_LIST_s(self, t):
-        #r"\[(((true|false)* |('.*')*|([a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z])*)*,)*\]"
         r'\[(([ \t]*)(true|false|"[^"]*"|[a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z]+)([ \t]*),([ \t]*))*\]'
         return t
 
     def t_STRING_s(self, t):
-        #r"'.*'"
         r'"[^"]*"'
         return t
 
@@ -82,8 +80,6 @@ class Lexer():
     
     def __init__(self):
         lex.lex(module=self)
-
-
 
 ########## Grammar needed for prog1 and prog2 ##########
 ''' 

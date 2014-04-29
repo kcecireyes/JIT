@@ -14,8 +14,7 @@ class AstVisitor:
     def exit_scope(self):
         self.env.pop()
         
-        
-        
+
     def visit_fun(self, fun_node):
         if fun_node.subtype == "say":
             sentences = (param.accept(self) for param in fun_node.params)
