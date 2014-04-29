@@ -8,7 +8,7 @@ Compiler Usage
 **./jit_cli.py**  
 Open the JIT interpreter.
 
-**./jit_cli.py -f programs/program3.txt**  
+**./jit_cli.py -f programs/program3-assignments_and_math.txt**  
 Run the program in the file provided.
 
 
