@@ -28,6 +28,8 @@ class AstVisitor:
             code = "Node()"
         elif fun_node.subtype == "listen":
             code = "Listen()"
+        elif fun_node.subtype == "push":
+            code = "Push()"
         else:
             code = "ERROR visit_fun\n"
 

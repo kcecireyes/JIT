@@ -38,9 +38,14 @@ class Node():
 		else:
 			self.body = value
 
-    def add_adjacent(self, value):
-		value.adjacencies.append(self)
-		self.adjacencies.append(value)
+    def add_adjacent(self, node):
+        if node not in self.adjacencies:
+            self.adjacencies.append(node)
+        else:
+            return False
+
+    def get_adjacencies(self):
+        return self.adjacencies
 
 
     keywords = property(set_keywords)
