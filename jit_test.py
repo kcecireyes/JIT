@@ -17,6 +17,7 @@ class TextJIT(unittest.TestCase):
         self.program3 = "programs/program3-assignments_and_math"
         self.program4 = "programs/program4-simple_node"
         self.program5 = "programs/program5-simple_variable"
+        self.program7 = "program7-pushing_and_pulling.txt"
 
     def test_should_assign_variables(self):
         self.assertTrue(self.compare(self.program5))        
@@ -35,6 +36,9 @@ class TextJIT(unittest.TestCase):
 
     def test_comments_should_be_parsed_out(self):
         self.assertTrue(self.compare(self.program0))
+
+    def test_comments_should_be_parsed_out(self):
+        self.assertTrue(self.compare(self.program7))
 
     def compare(self, program):
         prog = self.jit + " " + self.flag + " " + program + self.prog_ext
