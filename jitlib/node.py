@@ -1,4 +1,19 @@
-class Node():
+from database import Base
+
+class Node(Base):
+    __tablename__ = 'nodes'
+
+    title = Column(String)
+    author = Column(String)
+    publisher = Column(String)
+    body = Column(String)
+    # keywords
+    # adjacencies
+
+    places = Column(TextPickleType(pickler=json))
+    sentiment = Column(Integer)
+    last_referenced = Column(DateTime, default=datetime.datetime.now)
+
     # title, author, date, publisher, body, publisher, keywords
 
     def __init__(self, title=None, author=None, publisher=None, body=None):
@@ -27,7 +42,7 @@ class Node():
 		if type(value) is list:
 			self.keywords.extend(value)
 		else:
-			self.keywords.append(value) 
+			self.keywords.append(value)
 
     def add_body(self, value, flag=None):
 		self.body = ""
@@ -50,4 +65,3 @@ class Node():
 
     keywords = property(set_keywords)
     body = property(set_body)
-
