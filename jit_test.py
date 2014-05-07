@@ -17,7 +17,7 @@ class TextJIT(unittest.TestCase):
         self.program3 = "programs/program3-assignments_and_math"
         self.program4 = "programs/program4-simple_node"
         self.program5 = "programs/program5-simple_variable"
-        self.program7 = "program7-pushing_and_pulling.txt"
+        self.program7 = "programs/program7-pushing_and_pulling"
 
     def test_should_assign_variables(self):
         self.assertTrue(self.compare(self.program5))        
