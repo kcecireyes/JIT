@@ -45,6 +45,9 @@ class Parser():
             #var_record = {'name': var_name, 'type': var_type, 'value': var_value}
             # check for overriding 
             j = Parser.ST.searchRecord(var_name)
+            # print "testing new ST creation"
+            # new_ST = SymbolTable()
+            # Parser.ST.copyRecords(new_ST)
             if j == -1: # record not found
                 #self.ST.addRecord(var_record)
                 print "Semantic error: Initialization without declaration"

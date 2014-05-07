@@ -6,6 +6,7 @@ say(a)
 	int x = 2
 	say("x is")
 	say(x)
-	say(a)
 }
-say(x) 
+say(x) // error
+say("this is in a")
+say(a)
