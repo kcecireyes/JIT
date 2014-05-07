@@ -10,23 +10,29 @@ class Parser():
                       | function_call
                       | empty
                       '''
-        # p[0] = AstFun( AstSay(), AstString("Testing") )
         p[0] = p[1]
 
     def p_variable_decl(self, p):
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
-                         
+
         # Not perfect, but a start.
         # TODO: Finish this
+
+        # What does "finish this" mean?
+        # Can you add specific TODOs to the incomplete parts?
+
         if len(p) == 5:
-            p[0] = AstBinOp(AstID(p[2], p[1]),p[3],p[4])
+            # type ID EQUALS expression
+            p[0] = AstBinOp(AstID(p[2], p[1]), p[3], p[4])
         elif len(p) == 4:
+            # ID EQUALS expression
             if isinstance(p[3], str):
                 p[3] = AstString(p[3])
-            p[0] = AstBinOp(AstID(p[1]),p[2],p[3])
+            p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
         elif len(p) == 3:
+            # type ID
             p[0] = AstVarDecl(p[2], p[1])
 
     def p_function_call(self, p):
@@ -50,14 +56,18 @@ class Parser():
         '''parameters : empty
                      | parameter COMMA parameters
                      | parameter'''
+
         if not p[1]:
+            # No params
             p[0] = []
         elif len(p) == 2:
+            # parameter
             p[0] = p[1]
         elif len(p) == 4:
+            # parameter COMMA parameters
             p[0] = p[1] + p[3]
 
-            
+
     def p_parameter(self, p):
         '''parameter : ID
                     | STRING_s
@@ -66,13 +76,15 @@ class Parser():
                     | ID EQUALS expression'''
 
         if p[1].startswith('"'):
+            # STRING_s
             p[0] = [AstString(p[1])]
         elif len(p) == 4:
+            # ID EQUALS expression
             p[0] = [AstBinOp(AstID(p[1]), p[2], p[3])]
         else:
+            # Boolean, list and ID?
+            # TODO: Do we need more here?
             p[0] = [AstID(p[1])]
-            
-
 
     def p_type(self, p):
         '''type : STRING
@@ -90,22 +102,25 @@ class Parser():
                       | LIST_s
                       | function_call
                       '''
+
+        # STRING_s
         if (type(p[1]) is str) and (p[1].startswith('"')):
             p[0] = AstString(p[1])
+
+        # TODO: Do we need more here?
         else:
             p[0] = p[1]
-
-    #def p_expression_call(self, p):
-    #   '''expression : function_call'''
-    #  p[0] = AstFun(p[1])
 
     def p_arithmetic_expr(self, p):
         '''arithmetic_expr : arithmetic_expr '+' term
                            | arithmetic_expr '-' term
                            | term'''
+
         if len(p) == 4:
+            # term operation term
             p[0] = AstBinOp(p[1], p[2], p[3])
         else:
+            # term
             p[0] = p[1]
 
     def p_empty(self, p):
@@ -138,5 +153,5 @@ class Parser():
     def __init__(self):
         lexer = Lexer()
         self.tokens = tokens = lexer.tokens
-        
+
         self.parser = yacc.yacc(module=self)
