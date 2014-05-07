@@ -7,9 +7,10 @@ class Interpreter:
         self.visitor = AstVisitor()
         self.output = open(output_filename, 'w')
         
-    def execute_ast(self, ast_node):
+    def execute_ast(self, ast_node, debug=True):
         code = ast_node.accept(self.visitor)
-        print "code = " + code
+        if debug:
+            print "code = " + code
         self.output.write(code)
         
         # if hasattr(ast_node, 'right'):
@@ -32,7 +33,7 @@ class Interpreter:
             for line in str(ast).split('\n'):
                 print "\t"+line
 
-        self.execute_ast(ast)
+        self.execute_ast(ast, debug)
 
         if debug:
             print "\n"

@@ -5,5 +5,8 @@ node myNode3 = createNode()
 node myNode4 = createNode()
 say(myNode.author)
 push(myNode)
-List myCollection = [myNode2, myNode3, myNode4]
+myCollection = [myNode2, myNode3, myNode4,]
 push(myCollection)
+
+// might not make sense, just to test if multilple parameters works
+push(myNode, myCollection)
