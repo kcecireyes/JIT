@@ -1,0 +1,11 @@
+say("simple program to test blocks")
+int a = 5
+say(a)
+{
+	a++
+	int x = 2
+	say("x is")
+	say(x)
+	say(a)
+}
+say(x) 

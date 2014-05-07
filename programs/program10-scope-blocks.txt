@@ -1,0 +1,16 @@
+// this is a program to test scoping
+// Scoping should check: init w/o declaration, type check of operands, allow overwriting if same var declared
+
+int a = 3
+say("this is a")
+say(a)
+int b = 1
+{
+	int a = 4 // should overwrite a
+	say("this is a")
+	say(a)
+	b = c + 1 // should throw an error, c is not declared
+	x = 3
+}
+say(x) // should throw an error bc no x in scope
+

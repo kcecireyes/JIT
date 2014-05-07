@@ -26,7 +26,7 @@ class Lexer():
         'BOOLEAN_s',
         'LIST_s',
         'LPAREN',
-        'RPAREN', 
+        'RPAREN',
         'EQUALS',
         'COMMA'
         ] + list(reserved.values())
