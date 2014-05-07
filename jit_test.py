@@ -37,7 +37,7 @@ class TextJIT(unittest.TestCase):
     def test_comments_should_be_parsed_out(self):
         self.assertTrue(self.compare(self.program0))
 
-    def test_comments_should_be_parsed_out(self):
+    def test_pushing_and_pulling(self):
         self.assertTrue(self.compare(self.program7))
 
     def compare(self, program):
