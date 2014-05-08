@@ -40,9 +40,22 @@ class Parser():
         '''function_call : fun LPAREN parameters RPAREN'''
         p[1].params = p[3]
         p[0] = p[1]
+        print "++++++++++++++++++  p[0] and p[1].params   ++++++++++++++++++"
+        print p[0]
+        print p[1].params
+
+        # SAY = string or int
+        # LISTEN = no parameters
+        # IMPORT = file path
+        # SAVE = Node and Graph serialized to json
+        # GET = json or file path
+        # PUSH = node, collection (graph)
+        # PULL = query that returns a node
+        # CREATENODE = no params
+        # SEARCH = query that returns a path
 
     def p_fun(self, p):
-        '''fun : SAY
+        '''fun : SAY 
                 | LISTEN
                 | IMPORT
                 | SAVE
