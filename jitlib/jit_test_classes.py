@@ -38,11 +38,11 @@ class TextJIT(unittest.TestCase):
         node = Node()
         # can add lists
         node.add_keywords(["awesome", "cool", "hip", "great"])
-        self.assertEqual(node.keywords[2], "hip")
-        self.assertEqual(node.keywords[0], "awesome")
+        self.assertEqual(node.keywords[2], Keyword("hip"))
+        self.assertEqual(node.keywords[0], Keyword("awesome"))
         # can add single strings
         node.add_keywords("the best")
-        self.assertEqual(node.keywords[4], "the best")
+        self.assertEqual(node.keywords[4], Keyword("the best"))
 
     def test_nodes_should_add_body(self):
         node = Node()

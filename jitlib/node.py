@@ -1,7 +1,12 @@
 from sqlalchemy import MetaData, Table, Column, Integer, ForeignKey, DateTime, String
 from sqlalchemy.orm import mapper, relationship
-from database import Base
+from database import Base, session
 import datetime
+
+node_keywords_table = Table('node_keywords', Base.metadata,
+    Column('node_id', Integer, ForeignKey('node.id')),
+    Column('keyword_id', Integer, ForeignKey('keyword.id'))
+)
 
 class Node(Base):
     __tablename__ = 'node'
@@ -11,11 +16,12 @@ class Node(Base):
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
     title = Column(String)
     author = Column(String)
+    date = Column(DateTime)
     publisher = Column(String)
     body = Column(String)
-    # adjacencies = relationship(Adjacency, backref="next_lines", primaryjoin=id==Association.prev_id)
-    # keywords
-    # adjacencies
+    keywords = relationship("Keyword",
+                            secondary=node_keywords_table,
+                            backref="nodes")
 
     def __init__(self, title=None, author=None, publisher=None, body=None):
         # title, author, date, publisher, body, publisher, keywords
@@ -23,14 +29,13 @@ class Node(Base):
         self.author = author
         self.publisher = publisher
         self.body = body
-        self.keywords = []
-        # self.adjacencies = []
 
     def set_keywords(self, value):
-    	if type(value) is list:
-    		keywords.extend(value)
-    	else:
-    		keywords.append(value)
+        if type(value) is list:
+            for v in value:
+                self.keywords.append(Keyword(v))
+        else:
+            self.keywords.append(Keyword(value))
 
     def set_body(self, value, flag=None):
     	if flag == "f":
@@ -41,10 +46,11 @@ class Node(Base):
     		body = value
 
     def add_keywords(self, value):
-		if type(value) is list:
-			self.keywords.extend(value)
-		else:
-			self.keywords.append(value)
+        if type(value) is list:
+            for v in value:
+                self.keywords.append(Keyword(v))
+        else:
+            self.keywords.append(Keyword(value))
 
     def add_body(self, value, flag=None):
 		self.body = ""
@@ -57,12 +63,13 @@ class Node(Base):
 
     def add_adjacencies(self, *nodes):
         for node in nodes:
-            Edge(self, node)
+            if node not in self.adjacencies():
+                Edge(self, node)
         return self
 
     def add_adjacent(self, node):
-        if node not in self.adjacencies():
-            self.add_adjacencies(node)
+        '''Do not use this method. Use add_adjacencies instead.'''
+        self.add_adjacencies(node)
 
     def adjacencies(self):
         all_nodes = [x.lower_node for x in self.higher_edges]
@@ -71,6 +78,20 @@ class Node(Base):
 
     # keywords = property(set_keywords)
     # body = property(set_body)
+
+class Keyword(Base):
+    __tablename__ = 'keyword'
+
+    id = Column(Integer, primary_key=True)
+    value = Column(String)
+
+    def __new__(self, val):
+        query = session.query(Keyword).filter_by(value = val)
+        if query != None:
+            self = query
+
+    def __init__(self, val):
+        self.value = val
 
 class Edge(Base):
     __tablename__ = 'edge'
