@@ -1,9 +1,12 @@
 import ply.yacc as yacc
 from jit_lexer import *
 from jit_ast import *
+from jit_symboltable import * #PJ
 import re
 
 class Parser():
+
+    ST = SymbolTable() #PJ
 
     def p_statement(self, p):
         '''statement : variable_decl
@@ -26,20 +29,58 @@ class Parser():
 
         if len(p) == 5:
             # type ID EQUALS expression
-            p[0] = AstBinOp(AstID(p[2], p[1]), p[3], p[4])
+            p[0] = AstBinOp(AstID(p[2], p[1]), p[3], p[4])            
+            var_name = p[2]
+            var_type = p[1]
+            var_value = p[4].value
+            var_record = {'name': var_name, 'type': var_type, 'value': var_value}
+            j = Parser.ST.searchRecord(var_name)
+            if j == -1:
+                Parser.ST.addRecord(var_record)
+            else:
+                Parser.ST.updateRecord(j,var_record)
+            #print p[2]
+            #print var_record
+            #print self.ST
         elif len(p) == 4:
             # ID EQUALS expression
             if isinstance(p[3], str):
                 p[3] = AstString(p[3])
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
+            var_name = p[1]
+            #var_type = p[1]
+            var_value = p[3].value
+            #var_record = {'name': var_name, 'type': var_type, 'value': var_value}
+            j = Parser.ST.searchRecord(var_name)
+            if j == -1:
+                #self.ST.addRecord(var_record)
+                print "Semantic error: Initialization without declaration"
+            else:
+                #self.ST.updateRecord(j,var_record)
+                #print var_value
+                Parser.ST.table[j]['value'] = var_value
+            #print self.ST
         elif len(p) == 3:
             # type ID
             p[0] = AstVarDecl(p[2], p[1])
+            var_name = p[2]
+            var_type = p[1]
+            var_value = 0 #default value
+            var_record = {'name': var_name, 'type': var_type, 'value': var_value}
+            j = Parser.ST.searchRecord(var_name)
+            if j == -1:
+                Parser.ST.addRecord(var_record)
+            else:
+                Parser.ST.updateRecord(j,var_record)
+            #print var_record
+            #print self.ST
 
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
         p[1].params = p[3]
         p[0] = p[1]
+        
+        # To look up the right parameters given to these functions, 
         print "++++++++++++++++++  p[0] and p[1].params   ++++++++++++++++++"
         print p[0]
         print p[1].params
@@ -107,7 +148,7 @@ class Parser():
                 | NODE
                 | LIST
                 | GRAPH'''
-        p[0] = p[1]
+        p[0] = p[1] #Needed for ST!! #PJ
 
     def p_expression(self, p):
         '''expression : arithmetic_expr
