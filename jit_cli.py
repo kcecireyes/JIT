@@ -23,10 +23,18 @@ def main():
         with open(options.filename, "r") as file:
             data = file.readlines()
 
+        overflow = ""
         for line in data:
-            if options.debug:
-                print "=======%s" %line
-            interpreter.execute_txt(line.strip(), options.debug)
+            line = overflow + line
+
+            if line.count('{') == line.count('}'):
+                if options.debug:
+                    print "=======%s" %line
+
+                interpreter.execute_txt(line.strip(), options.debug)
+                overflow = ""
+            else:
+                overflow = line
 
     else:
         interpreter = Interpreter()
