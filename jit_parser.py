@@ -7,11 +7,10 @@ class Parser():
 
     def p_statement(self, p):
         '''statement : variable_decl
-                      | function_call
-                      | for_loop
-                      | block_braces
-                      | empty
-                      '''
+                     | function_call
+                     | for_loop
+                     | empty
+                     '''
         p[0] = p[1]
 
     def p_variable_decl(self, p):
@@ -148,7 +147,7 @@ class Parser():
             p[0] = AstID(p[1])
         else:
             p[0] = AstNum(p[1])
-            
+    
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
         p[0] = AstForLoop(AstID(p[2]), AstID(p[4]), p[6])
@@ -157,18 +156,13 @@ class Parser():
         '''statement_list : statement
                           | statement_list statement
                           '''
-        #'statement_list : empty'
+        #'statement_list : statement'
         if not p[1]:
             p[0] = []
         elif len(p) == 2:
             p[0] = [p[1]]
         else:
             p[0] = p[1] + [p[2]]
-
-    def p_block_braces(self, p):
-        '''block_braces : LBRACE
-                        | RBRACE'''
-        p[0] = AstEmpty()
         
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
