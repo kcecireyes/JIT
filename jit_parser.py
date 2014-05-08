@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import ply.yacc as yacc
 from jit_lexer import *
 from jit_ast import *
@@ -152,7 +151,7 @@ class Parser():
             
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
-        p[0] = AstEmpty()
+        p[0] = AstForLoop(p[2]
         
     def p_statement_list(self, p):
         #'''statement_list : statement
