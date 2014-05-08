@@ -20,7 +20,9 @@ class TextJIT(unittest.TestCase):
         self.program6 = "programs/program6-blocks"
         self.program7 = "programs/program7-pushing_and_pulling"
         self.program9 = "programs/program9-saving_and_stuff"
+        self.program10 = "programs/program10-scope_blocks"
         self.program11 = "programs/program11-forloops_and_blocks"
+        self.program12 = "programs/program12-search"
 
     def test_comments_should_be_parsed_out(self):
         self.assertTrue(self.compare(self.program0))
@@ -50,7 +52,13 @@ class TextJIT(unittest.TestCase):
         self.assertTrue(self.compare(self.program9))  
 
     def test_should_forloops_and_blocks(self):
-        self.assertTrue(self.compare(self.program11))  
+        self.assertTrue(self.compare(self.program10)) 
+
+    def test_should_forloops_and_blocks(self):
+        self.assertTrue(self.compare(self.program11))
+
+    def test_should_forloops_and_blocks(self):
+        self.assertTrue(self.compare(self.program12))   
 
     def compare(self, program):
         prog = self.jit + " " + self.flag + " " + program + self.prog_ext
