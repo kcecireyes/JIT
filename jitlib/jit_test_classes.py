@@ -3,11 +3,11 @@ from node import *
 from graf import *
 from collection import *
 
- 
+
 class TextJIT(unittest.TestCase):
     def setUp(self):
     	pass
-    
+
     def test_for_the_sake_of_testing(self):
         s = "blah"
     	self.assertEqual(s, "blah")
@@ -52,12 +52,12 @@ class TextJIT(unittest.TestCase):
         # can add text file
         node.add_body("test_body.txt", "f")
         self.assertEqual(node.body, "I am a large body." )
-    
+
     def test_nodes_should_add_adjacent(self):
         node1 = Node()
         node2 = Node()
         node1.add_adjacent(node2)
-        self.assertIs(node1.adjacencies[0], node2)
+        self.assertIs(node1.adjacencies()[0], node2)
 
     def test_should_create_empty_collection(self):
         collection = Collection()
@@ -77,7 +77,7 @@ class TextJIT(unittest.TestCase):
 
     def test_should_create_empty_graf(self):
         graf = Graf()
-        self.assertIsInstance(graf, Graf) 
+        self.assertIsInstance(graf, Graf)
 
     def test_graf_should_add_nodes(self):
         graf = Graf()
@@ -117,7 +117,7 @@ class TextJIT(unittest.TestCase):
         graf.push_node(node)
         graf.push_node(node2)
         graf.add_edge(node, node2)
-        self.assertEqual(graf.get_node(node).get_adjacencies()[0], node2)
+        self.assertEqual(graf.get_node(node).adjacencies()[0], node2)
 
 if __name__ == '__main__':
     unittest.main()
