@@ -151,14 +151,19 @@ class Parser():
             
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
-        p[0] = AstForLoop(p[2]
+        p[0] = AstForLoop(AstID(p[2]), AstID(p[4]), p[6])
         
     def p_statement_list(self, p):
-        #'''statement_list : statement
-        #                  | statement_list statement
-        #                  | empty'''
-        'statement_list : empty'
-        p[0] = AstEmpty()
+        '''statement_list : statement
+                          | statement_list statement
+                          '''
+        #'statement_list : empty'
+        if not p[1]:
+            p[0] = []
+        elif len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1] + [p[2]]
 
     def p_block_braces(self, p):
         '''block_braces : LBRACE

@@ -85,6 +85,17 @@ class AstVarDecl(AstNode):
 
     def accept(self, visitor):
         return visitor.visit_vardecl(self)
+
+
+class AstForLoop(AstNode):
+    def __init__(self, itr, span, body):
+        self.itr = itr
+        self.span = span
+        self.body = body
+
+    def accept(self, visitor):
+        return visitor.visit_forloop(self)
+
 """        
 class AstSay(AstNode):
     def __init__(self):

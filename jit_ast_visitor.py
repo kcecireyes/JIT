@@ -81,3 +81,10 @@ class AstVisitor:
         self.env[-1][decl_node.name] = None
         code = "%s = %s\n" % (decl_node.name, str(init_vals[decl_node.type]))
         return code
+
+    def visit_forloop(self, for_node):
+        itr = for_node.itr.accept(self)
+        span = for_node.span.accept(self)
+        body = map(lambda n : n.accept(self), for_node.body)
+        code = self.code_generator.generate_forloop(itr, span, body)
+        return code

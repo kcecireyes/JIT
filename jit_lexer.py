@@ -63,7 +63,7 @@ class Lexer():
         return t
 
     def t_LIST_s(self, t):
-        r'\[(([ \t]*)(true|false|"[^"]*"|[a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z]+)([ \t]*),([ \t]*))*\]'
+        r'\[(([ \t]*)([0-9]|true|false|"[^"]*"|[a-zA-Z_][a-zA-Z_0-9\_]*|[a-zA-Z_][a-zA-Z_0-9\_]*.[a-z]+)([ \t]*),([ \t]*))*\]'
         return t
 
     def t_STRING_s(self, t):

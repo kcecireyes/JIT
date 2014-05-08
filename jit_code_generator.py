@@ -13,3 +13,6 @@ class CodeGenerator:
 
     def generate_binaryOp(self, lhs, op, rhs):
         return '%s %s %s\n' %(lhs, op, rhs)
+
+    def generate_forloop(self, itr, span, body):
+        return 'for %s in %s:\n\t%s' % (itr, span, '\t'.join(body))
