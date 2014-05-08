@@ -30,9 +30,20 @@ class AstVisitor:
             code = "Listen()"
         elif fun_node.subtype == "push":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
-            
             params_str = ', '.join(visited_params)
             code = "push(%s)\n" % params_str
+        elif fun_node.subtype == "save":
+            visited_params = map(lambda node : node.accept(self), fun_node.params)
+            params_str = ', '.join(visited_params)
+            code = "save(%s)\n" % params_str
+        elif fun_node.subtype == "get":
+            visited_params = map(lambda node : node.accept(self), fun_node.params)
+            params_str = ', '.join(visited_params)
+            code = "get(%s)\n" % params_str
+        elif fun_node.subtype == "import":
+            visited_params = map(lambda node : node.accept(self), fun_node.params)
+            params_str = ', '.join(visited_params)
+            code = "import(%s)\n" % params_str
         else:
             code = "ERROR visit_fun\n"
 

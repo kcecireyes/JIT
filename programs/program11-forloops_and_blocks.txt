@@ -1,0 +1,11 @@
+a = [1, 2, 3,]
+for b in a {
+    c = b + 1
+    say(b)
+    say(c) }
+
+words = ["Shut", "the", "f**k", "up", "!",]
+
+for word in words {
+    say(word)
+}
