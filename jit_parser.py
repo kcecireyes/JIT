@@ -8,6 +8,8 @@ class Parser():
     def p_statement(self, p):
         '''statement : variable_decl
                       | function_call
+                      | for_loop
+                      | block_braces
                       | empty
                       '''
         p[0] = p[1]
@@ -146,7 +148,23 @@ class Parser():
             p[0] = AstID(p[1])
         else:
             p[0] = AstNum(p[1])
+            
+    def p_for_loop(self, p):
+        'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
+        p[0] = AstEmpty()
+        
+    def p_statement_list(self, p):
+        #'''statement_list : statement
+        #                  | statement_list statement
+        #                  | empty'''
+        'statement_list : empty'
+        p[0] = AstEmpty()
 
+    def p_block_braces(self, p):
+        '''block_braces : LBRACE
+                        | RBRACE'''
+        p[0] = AstEmpty()
+        
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
 

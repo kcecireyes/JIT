@@ -16,7 +16,9 @@ class Lexer():
         'push': 'PUSH',
         'get' : 'GET',
         'pull': 'PULL',
-        'createNode': 'CREATENODE'
+        'createNode': 'CREATENODE',
+        'for': 'FOR',
+        'in': 'IN'
     }
 
     tokens = [
@@ -26,7 +28,9 @@ class Lexer():
         'BOOLEAN_s',
         'LIST_s',
         'LPAREN',
-        'RPAREN', 
+        'RPAREN',
+        'LBRACE',
+        'RBRACE', 
         'EQUALS',
         'COMMA'
         ] + list(reserved.values())
@@ -40,6 +44,8 @@ class Lexer():
     t_COMMA  = r','
     t_LPAREN  = r'\('
     t_RPAREN  = r'\)'
+    t_LBRACE = r'\{'
+    t_RBRACE = r'\}'
 
     # t_ignore  = '\s'
     t_ignore_COMMENT = r'//.*'
