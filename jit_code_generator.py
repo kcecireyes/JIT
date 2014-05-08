@@ -15,4 +15,8 @@ class CodeGenerator:
         return '%s %s %s\n' %(lhs, op, rhs)
 
     def generate_forloop(self, itr, span, body):
-        return 'for %s in %s:\n\t%s' % (itr, span, '\t'.join(body))
+        if body[0] :
+            return 'for %s in %s:\n\t%s' % (itr, span, '\t'.join(body))
+        else:
+            return 'for %s in %s:\n%s' % (itr, span, '\t'.join(body))
+

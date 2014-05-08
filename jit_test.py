@@ -51,23 +51,28 @@ class TextJIT(unittest.TestCase):
     def test_should_save_and_import(self):
         self.assertTrue(self.compare(self.program9))  
 
-    def test_should_forloops_and_blocks(self):
+    def test_should_scope_and_block(self):
         self.assertTrue(self.compare(self.program10)) 
 
     def test_should_forloops_and_blocks(self):
         self.assertTrue(self.compare(self.program11))
 
-    def test_should_forloops_and_blocks(self):
+    def test_should_test_search_func(self):
         self.assertTrue(self.compare(self.program12))   
 
     def compare(self, program):
+        match = True
+        name = program
         prog = self.jit + " " + self.flag + " " + program + self.prog_ext
         ref = program + self.ref_ext
         out = program + self.out_ext
 
-        print "beginning test: " + prog
+        print "\n>> beginning test: " + name
         os.system(prog)
-        match = True
+        if not open(ref).read():
+            print "***************no gen file************************"
+            match = False
+            return match
         with open(ref) as ref, open(out) as output:
             for line1, line2 in zip(ref, output):
                 if line1 != line2:
@@ -75,7 +80,7 @@ class TextJIT(unittest.TestCase):
                     print "does not match"
                     print line2
                     match = False
-        print "Finished test: " + prog
+        print "\n>> Finished test: " + name
         return match
 
 if __name__ == '__main__':

@@ -44,6 +44,10 @@ class AstVisitor:
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
             code = "import(%s)\n" % params_str
+        elif fun_node.subtype == "search":
+            visited_params = map(lambda node : node.accept(self), fun_node.params)
+            params_str = ', '.join(visited_params)
+            code = "search(%s)\n" % params_str
         else:
             code = "ERROR visit_fun\n"
 

@@ -1,11 +1,8 @@
 say("simple program to test blocks")
 int a = 5
 say(a)
-{
-	a++
-	int x = 2
-	say("x is")
-	say(x)
+for a in b {
+
 }
 say(x) // error
 say("this is in a")
