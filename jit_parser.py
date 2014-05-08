@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import ply.yacc as yacc
 from jit_lexer import *
 from jit_ast import *
