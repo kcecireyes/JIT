@@ -1,11 +1,21 @@
-a = [1, 2, 3,]
-for b in a {
-    c = b + 1
-    say(b)
-    say(c) }
+a = [1, 2, 3,] //comment
 
-words = ["Shut", "the", "f**k", "up", "!",]
+//empty for
+for x in y{
+}
 
+//multi-statement for
+for b in a { //comment
+    c = b + 1 //comment
+    //comment
+    say("hello")
+
+    int d //comment
+} //comment
+
+words = ["Shut", "the", "f**k", "up", "!",] //comment
+
+//single-statement for
 for word in words {
     say(word)
 }
