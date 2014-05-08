@@ -1,5 +1,12 @@
 from database import Base
 
+class Keyword(Base):
+    __tablename__ = 'keywords'
+    value = Column(String)
+
+    __init_(self, value):
+        self.value = value
+
 class Node(Base):
     __tablename__ = 'nodes'
 
@@ -10,9 +17,9 @@ class Node(Base):
     # keywords
     # adjacencies
 
-    places = Column(TextPickleType(pickler=json))
-    sentiment = Column(Integer)
-    last_referenced = Column(DateTime, default=datetime.datetime.now)
+    # places = Column(TextPickleType(pickler=json))
+    # sentiment = Column(Integer)
+    # last_referenced = Column(DateTime, default=datetime.datetime.now)
 
     # title, author, date, publisher, body, publisher, keywords
 
