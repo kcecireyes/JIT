@@ -1,0 +1,9 @@
+myNode = Node()
+myNode2 = Node()
+myFile = "file.txt"
+json = "filename.json"
+myNode.body = import("filename.txt")
+myNode.body = import(myFile)
+save(myNode)
+myNode3 = get("filename.json")
+myNode4 = get(json)
