@@ -21,7 +21,10 @@ class Lexer():
         'in': 'IN',
         'if': 'IF',
         'then': 'THEN',
-        'else': 'ELSE'
+        'else': 'ELSE',
+        'and': 'AND',
+        'or': 'OR',
+        'not': 'NOT'
     }
 
     tokens = [
@@ -35,6 +38,12 @@ class Lexer():
         'LBRACE',
         'RBRACE', 
         'EQUALS',
+        'EQUALS_c',
+        'LESS_c',
+        'LESS_EQUALS_c',
+        'GREATER_c',
+        'GREATER_EQUALS_c',
+        'NOT_EQUALS_c',
         'COMMA'
         ] + list(reserved.values())
 
@@ -43,6 +52,12 @@ class Lexer():
 
     # Regular expression rules for simple tokens
     # == 
+    t_NOT_EQUALS_c = r'!='
+    t_LESS_c = r'<'
+    t_LESS_EQUALS_c = r'<='
+    t_GREATER_c = r'>'
+    t_GREATER_EQUALS_c = r'>='
+    t_EQUALS_c = r'=='
     t_EQUALS   = r'='
     t_COMMA  = r','
     t_LPAREN  = r'\('

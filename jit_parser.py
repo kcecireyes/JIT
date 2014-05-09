@@ -133,11 +133,10 @@ class Parser():
                 | LIST
                 | GRAPH'''
         p[0] = p[1]
-
+    
     def p_expression(self, p):
-        '''expression : arithmetic_expr
+        '''expression : operations
                       | STRING_s
-                      | BOOLEAN_s
                       | LIST_s
                       | function_call
                       '''
@@ -146,46 +145,118 @@ class Parser():
         if (type(p[1]) is str) and (p[1].startswith('"')):
             p[0] = AstString(p[1])
 
-
         # TODO: Do we need more here?
         else:
             p[0] = p[1]
+    
+    def p_operations(self, p):
+        '''operations : NOT operations
+                      | s
+                      '''
+        p[0] = AstEmpty()
+    
+    def p_s(self, p):
+        '''s : s OR t
+             | t
+             '''
+        p[0] = AstEmpty()
+    
+    def p_t(self, p):
+        '''t : t AND f
+             | f
+             '''
+        p[0] = AstEmpty()
 
-    def p_arithmetic_expr(self, p):
-        '''arithmetic_expr : arithmetic_expr '+' term
-                           | arithmetic_expr '-' term
-                           | term'''
+    def p_f(self, p):
+        '''f : f EQUALS_c g
+             | f NOT_EQUALS_c g
+             | g
+             '''
+        p[0] = AstEmpty()
 
-        if len(p) == 4:
-            # term operation term
-            p[0] = AstBinOp(p[1], p[2], p[3])
-        else:
-            # term
-            p[0] = p[1]
+    def p_g(self, p):
+        '''g : g LESS_c j
+             | g LESS_EQUALS_c j
+             | g GREATER_c j
+             | g GREATER_EQUALS_c j
+             | j
+             '''
+        p[0] = AstEmpty()
+    
+    def p_j(self, p):
+        '''j : j '+' k
+             | j '-' k
+             | k
+             '''
+        p[0] = AstEmpty()
+        
+    def p_k(self, p):
+        '''k : k '*' l
+             | k '/' l
+             | l
+             '''
+        p[0] = AstEmpty()
+
+    def p_l(self, p):
+        '''l : LPAREN operations RPAREN 
+             | ID
+             | NUM
+             | BOOLEAN_s
+             '''
+        p[0] = AstEmpty()
+    
+#     def p_expression(self, p):
+#         '''expression : arithmetic_expr
+#                       | STRING_s
+#                       | BOOLEAN_s
+#                       | LIST_s
+#                       | function_call
+#                       '''
+# 
+#         # STRING_s
+#         if (type(p[1]) is str) and (p[1].startswith('"')):
+#             p[0] = AstString(p[1])
+# 
+# 
+#         # TODO: Do we need more here?
+#         else:
+#             p[0] = p[1]
+
+#     def p_arithmetic_expr(self, p):
+#         '''arithmetic_expr : arithmetic_expr '+' term
+#                            | arithmetic_expr '-' term
+#                            | term'''
+# 
+#         if len(p) == 4:
+#             # term operation term
+#             p[0] = AstBinOp(p[1], p[2], p[3])
+#         else:
+#             # term
+#             p[0] = p[1]
 
     def p_empty(self, p):
         'empty :'
         p[0] = AstEmpty()
 
-    def p_term(self, p):
-        '''term : term '*' factor
-                | term '/' factor
-                | factor'''
-        if len(p) == 4:
-            p[0] = AstBinOp(p[1], p[2], p[3])
-        else:
-            p[0] = p[1]
-
-    def p_factor(self, p):
-        '''factor : LPAREN arithmetic_expr RPAREN
-                  | ID
-                  | NUM'''
-        if len(p) == 4:
-            p[0] = p[2]
-        elif type(p[1]) is str:
-            p[0] = AstID(p[1])
-        else:
-            p[0] = AstNum(p[1])
+#     def p_term(self, p):
+#         '''term : term '*' factor
+#                 | term '/' factor
+#                 | factor'''
+#         if len(p) == 4:
+#             p[0] = AstBinOp(p[1], p[2], p[3])
+#         else:
+#             p[0] = p[1]
+# 
+#     def p_factor(self, p):
+#         '''factor : LPAREN arithmetic_expr RPAREN
+#                   | ID
+#                   | NUM'''
+#         if len(p) == 4:
+#             p[0] = p[2]
+#         elif type(p[1]) is str:
+#             p[0] = AstID(p[1])
+#         else:
+#             p[0] = AstNum(p[1])
     
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
