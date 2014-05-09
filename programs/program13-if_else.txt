@@ -1,0 +1,13 @@
+//if-else block
+
+if ( 2 + 3 ) then { //comment
+
+	int a //comment
+	a = 4 + 6 //comment
+
+} else { //comment
+
+	int b = 3 //comment
+	say(b) //comment
+
+} //comment
