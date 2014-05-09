@@ -12,6 +12,7 @@ class Parser():
     def p_statement(self, p):
         '''statement : variable_decl
                      | function_call
+                     | function_decl
                      | for_loop
                      | if_block
                      | empty
@@ -76,6 +77,10 @@ class Parser():
         p[1].params = p[3]
         p[0] = p[1]
 
+    def p_func_decl(self, p):
+        '''function_decl : NEWFUN ID LPAREN variable_list RPAREN LBRACE statement_list RBRACE'''
+        p[0] = AstEmpty()
+
     def p_fun(self, p):
         '''fun : SAY
                 | LISTEN
@@ -92,7 +97,6 @@ class Parser():
         '''parameters : empty
                      | parameter COMMA parameters
                      | parameter'''
-
         if not p[1]:
             # No params
             p[0] = []
@@ -103,6 +107,19 @@ class Parser():
             # parameter COMMA parameters
             p[0] = p[1] + p[3]
 
+    def p_variable_list(self, p):
+        '''variable_list : empty
+            | variable_decl COMMA variable_list
+            | variable_decl'''
+        if not p[1]:
+            # No var passed
+            p[0] = []
+        elif len(p) == 2:
+            # one variable_decl
+            p[0] = [p[1]]
+        # elif len(p) == 4:
+            # variable_decl COMMA variable_list
+            # p[0] = p[1] + [p[3]]
 
     def p_parameter(self, p):
         '''parameter : ID
@@ -198,7 +215,7 @@ class Parser():
              | k '/' l
              | l
              '''
-             
+
         p[0] = AstEmpty()
 
     def p_l(self, p):
@@ -261,7 +278,7 @@ class Parser():
 #             p[0] = AstID(p[1])
 #         else:
 #             p[0] = AstNum(p[1])
-    
+
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
         p[0] = AstForLoop(AstID(p[2]), AstID(p[4]), p[6])
@@ -277,7 +294,7 @@ class Parser():
             p[0] = [p[1]]
         else:
             p[0] = p[1] + [p[2]]
-    
+
     def p_if_block(self, p):
         'if_block : IF LPAREN expression RPAREN THEN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'
         p[0] = AstIfBlock(p[3], p[7], p[11])

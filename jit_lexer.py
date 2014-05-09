@@ -24,7 +24,8 @@ class Lexer():
         'else': 'ELSE',
         'and': 'AND',
         'or': 'OR',
-        'not': 'NOT'
+        'not': 'NOT',
+        'newfun': 'NEWFUN'
     }
 
     tokens = [
@@ -109,6 +110,7 @@ class Lexer():
 ''' 
     statement : variable_decl
              | function_call
+             | function_decl
              | for_loop
              | if_block
              | empty
@@ -118,6 +120,22 @@ class Lexer():
              | type ID
 
     function_call : fun LPAREN parameters RPAREN
+
+    function_decl : NEWFUN ID LPAREN variable_list RPAREN LBRACE statement_list RBRACE
+
+    variable_list : empty
+            | variable_decl COMMA variable_list
+            | variable_decl
+
+    statement_list : statement
+            | statement_list statement
+
+    for_loop : FOR ID IN ID LBRACE statement_list RBRACE
+
+    statement_list : statement
+            | statement_list statement
+    
+    if_block : IF ( expression ) THEN { statement_list } ELSE { statement_list }'
 
     fun : SAY
             | LISTEN
@@ -185,10 +203,4 @@ class Lexer():
 
     empty :
 
-    for_loop : FOR ID IN ID LBRACE statement_list RBRACE
-
-    statement_list : statement
-            | statement_list statement
-    
-    if_block : IF ( expression ) THEN { statement_list } ELSE { statement_list }'
         '''
