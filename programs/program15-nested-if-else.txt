@@ -1,0 +1,27 @@
+//nested if-else blocks
+
+if ( 2 + 3 ) then { //comment
+
+	int a //comment
+	a = 4 + 6 //comment
+	if (a) then {
+	   say(a)
+	} else {
+	}
+
+} else { //comment
+       	
+	int b = 3 //comment
+	say(b) //comment
+	if (b - 3) then {
+	   say("Ok, I'll tell you the truth!")
+	   if (b / 2 + 3) then {
+	      say("Ok, here's the thing...")
+	   } else {
+	      say("Talk to ya later!")
+	   }
+	} else {
+	  say("Sorry bro, can't tell")
+	  int p = 4
+	}
+} //comment

@@ -22,16 +22,19 @@ class CodeGenerator:
         code = 'for %s in %s:\n\t%s' % (itr, span, '\n\t'.join(new_body))
         print code
         return code
+
+
+    def indent_block(self, lines):
+        t = []
+        for line in lines:
+            t.append('\n\t'.join(line.strip().split('\n')))
+        if t[0] != "":
+            return '\n\t'.join(t)
+
+        return "pass"
         
     def generate_ifblock(self, ifc, thencls, elsecls):
-        t = []
-        for line in thencls:
-            t.append('\n\t'.join(line.strip().split('\n')))
-        thcl = '\n\t'.join(t)
-        e = []
-        for line in elsecls:
-            e.append('\n\t'.join(line.strip().split('\n')))
-        elcl = '\n\t'.join(e)
-
+        thcl = self.indent_block(thencls)
+        elcl = self.indent_block(elsecls)
         code = 'if %s:\n\t%s\nelse:\n\t%s' %(ifc, thcl, elcl)
         return code
