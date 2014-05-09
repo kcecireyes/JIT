@@ -1,0 +1,11 @@
+// article is user-defined
+for article in myQuery {
+   graph myChunk = pull(start=article, number=200)
+   a = 1
+   // myChunk is a graph, article.keywords is a list
+   for article in myChunk {
+      for keyword in article.keywords {
+         say(keyword)
+      }
+   }
+}

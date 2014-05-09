@@ -32,6 +32,10 @@ class AstVisitor:
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
             code = "push(%s)\n" % params_str
+        elif fun_node.subtype == "pull":
+            visited_params = map(lambda node : node.accept(self), fun_node.params)
+            params_str = ', '.join(visited_params)
+            code = "pull(%s)\n" % params_str
         elif fun_node.subtype == "save":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
