@@ -9,6 +9,7 @@ class Parser():
         '''statement : variable_decl
                      | function_call
                      | for_loop
+                     | if_block
                      | empty
                      '''
         p[0] = p[1]
@@ -163,6 +164,10 @@ class Parser():
             p[0] = [p[1]]
         else:
             p[0] = p[1] + [p[2]]
+    
+    def p_if_block(self, p):
+        'if_block : IF LPAREN expression RPAREN THEN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'
+        p[0] = AstEmpty() #to be changed
         
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)

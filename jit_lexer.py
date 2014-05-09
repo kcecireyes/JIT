@@ -18,7 +18,10 @@ class Lexer():
         'pull': 'PULL',
         'createNode': 'CREATENODE',
         'for': 'FOR',
-        'in': 'IN'
+        'in': 'IN',
+        'if': 'IF',
+        'then': 'THEN',
+        'else': 'ELSE'
     }
 
     tokens = [

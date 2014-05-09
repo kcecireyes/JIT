@@ -2,20 +2,10 @@ class Graf():
     def __init__(self, json=None):
     	self.node_list = []
     	self.number_of_vert = 0
-    
-    def push(self, node_list):
-        self.number_of_vert += node_list.length
-    	self.node_list.extend(node_list)
-    
-    def push_node(self,node):
-        # We might not need this
-        self.number_of_vert += 1
-        self.node_list.append(node)
 
-    def push_collection(self, collection):
-        # We might not need this
-        self.number_of_vert += collection.len
-        self.node_list.extend(collection.node_list)
+    def add(self, node_list):
+        self.number_of_vert += len(node_list)
+    	self.node_list.extend(node_list)
 
     def add_edge(self, node1, node2):
         # needs work, what does it mean for 2 articles to be the same
