@@ -107,3 +107,10 @@ class AstVisitor:
         body = map(lambda n : n.accept(self), for_node.body)
         code = self.code_generator.generate_forloop(itr, span, body)
         return code
+
+    def visit_ifblock(self, if_node):
+        ifc = if_node.if_clause.accept(self).strip()
+        thc = map(lambda n : n.accept(self), if_node.then_clause)
+        elc = map(lambda n : n.accept(self), if_node.else_clause)
+        code = self.code_generator.generate_ifblock(ifc, thc, elc)
+        return code

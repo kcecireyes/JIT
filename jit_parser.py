@@ -167,7 +167,7 @@ class Parser():
     
     def p_if_block(self, p):
         'if_block : IF LPAREN expression RPAREN THEN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'
-        p[0] = AstEmpty() #to be changed
+        p[0] = AstIfBlock(p[3], p[7], p[11])
         
     def p_error(self, p):
         print("Syntax error at '%s'" % p.value)
@@ -177,3 +177,4 @@ class Parser():
         self.tokens = tokens = lexer.tokens
 
         self.parser = yacc.yacc(module=self)
+

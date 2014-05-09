@@ -23,5 +23,15 @@ class CodeGenerator:
         print code
         return code
         
-        
+    def generate_ifblock(self, ifc, thencls, elsecls):
+        t = []
+        for line in thencls:
+            t.append('\n\t'.join(line.strip().split('\n')))
+        thcl = '\n\t'.join(t)
+        e = []
+        for line in elsecls:
+            e.append('\n\t'.join(line.strip().split('\n')))
+        elcl = '\n\t'.join(e)
 
+        code = 'if %s:\n\t%s\nelse:\n\t%s' %(ifc, thcl, elcl)
+        return code

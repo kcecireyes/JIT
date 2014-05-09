@@ -96,6 +96,16 @@ class AstForLoop(AstNode):
     def accept(self, visitor):
         return visitor.visit_forloop(self)
 
+
+class AstIfBlock(AstNode):
+    def __init__(self, if_clause, then_clause, else_clause):
+        self.if_clause = if_clause
+        self.then_clause = then_clause
+        self.else_clause = else_clause
+
+    def accept(self, visitor):
+        return visitor.visit_ifblock(self)
+
 """        
 class AstSay(AstNode):
     def __init__(self):
