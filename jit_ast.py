@@ -13,7 +13,7 @@ class AstBinOp(AstNode):
         self.left = left
         self.right = right
         self.op = op
-        
+
     def __str__(self):
         return str(self.left) + str(self.op) + str(self.right)
 
@@ -46,6 +46,17 @@ class AstString(AstNode):
 
     def accept(self, visitor):
         return visitor.visit_str(self)
+
+class AstList(AstNode):
+    def __init__(self, value):
+        self.type = "list"
+        self.value = value
+
+    def __str__(self):
+        return self.value
+
+    def accept(self, visitor):
+        return visitor.visit_list(self)
 
 class AstID(AstNode):
     def __init__(self, name,type = 'auto'):

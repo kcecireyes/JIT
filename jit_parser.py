@@ -82,7 +82,10 @@ class Parser():
             p[0] = [AstString(p[1])]
         elif len(p) == 4:
             # ID EQUALS expression
-            p[0] = [AstBinOp(AstID(p[1]), p[2], p[3])]
+            if (type(p[3]) is str and p[3].startswith('[')):
+                p[0] = [AstBinOp(AstID(p[1]), p[2], (AstList(p[3])))]
+            else:
+                p[0] = [AstBinOp(AstID(p[1]), p[2], p[3])]
         else:
             # Boolean, list and ID?
             # TODO: Do we need more here?

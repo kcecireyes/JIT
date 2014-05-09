@@ -66,7 +66,7 @@ class AstVisitor:
 
         self.output.write(prtstr)
         """
-        
+
         lhs = binop_node.left.accept(self).strip()
         rhs = binop_node.right.accept(self).strip()
         if binop_node.op == "=":
@@ -77,6 +77,9 @@ class AstVisitor:
 
     def visit_str(self, str_node):
         return str_node.value
+
+    def visit_list(self, list_node):
+        return list_node.value
 
 
     def visit_num(self, str_node):
