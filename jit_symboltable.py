@@ -20,6 +20,10 @@ class SymbolTable:
         j = self.searchRecord(var_name)
         return self.table[j]
 
+    def getRecordType(self, i):
+        record_type = self.table[i]['type']
+        return record_type
+
     def copyRecords(self, to_ST):
         for i in range(0,len(self.table)):
             to_ST.addRecord(self.table[i])

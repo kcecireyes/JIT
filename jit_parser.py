@@ -2,6 +2,7 @@ import ply.yacc as yacc
 from jit_lexer import *
 from jit_ast import *
 from jit_symboltable import *
+
 import re
 
 class Parser():
@@ -21,8 +22,7 @@ class Parser():
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
-        # What does "finish this" mean?
-        # Can you add specific TODOs to the incomplete parts?
+
         if len(p) == 5:
             # type ID EQUALS expression
             p[0] = AstBinOp(AstID(p[2], p[1]), p[3], p[4])
@@ -44,18 +44,19 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking: 
             var_name = p[1]
+            var_type = type(p[3])
             # be able to get the type of a node? 
-            # var_value = p[3].value
             print " $$$$$$$ var name :: " + var_name + " $$$$$$$$$"
-            var_record = {'name': var_name}
+            print " $$$$$$$ var type :: " + var_type + " $$$$$$$$$"
+            var_record = {'name': var_name, 'type': var_type }
             j = Parser.ST.searchRecord(var_name)
             if j == -1:
                 print "Semantic error: Initialization without declaration"
-            # else:
-                #self.ST.updateRecord(j,var_record)
-                #print var_value
-                #Parser.ST.table[j]['value'] = var_value
-            #print self.ST
+            else:
+                if (Parser.ST.getRecordType(j) is var_type):
+                    self.ST.updateRecord(j,var_record)
+                else
+                    print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
             # type ID
             p[0] = AstVarDecl(p[2], p[1])
@@ -144,6 +145,7 @@ class Parser():
         # STRING_s
         if (type(p[1]) is str) and (p[1].startswith('"')):
             p[0] = AstString(p[1])
+
 
         # TODO: Do we need more here?
         else:
