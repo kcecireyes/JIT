@@ -7,3 +7,4 @@ for b in a:
 words = ["Shut", "the", "f**k", "up", "!",]
 for word in words:
 	print '\n'.join([word])
+	

@@ -1,10 +1,13 @@
 import ply.yacc as yacc
 from jit_lexer import *
 from jit_ast import *
+from jit_symboltable import *
 import re
 
 class Parser():
 
+    ST = SymbolTable()
+    
     def p_statement(self, p):
         '''statement : variable_decl
                      | function_call
@@ -18,24 +21,54 @@ class Parser():
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
-
-        # Not perfect, but a start.
-        # TODO: Finish this
-
         # What does "finish this" mean?
         # Can you add specific TODOs to the incomplete parts?
-
         if len(p) == 5:
             # type ID EQUALS expression
             p[0] = AstBinOp(AstID(p[2], p[1]), p[3], p[4])
+            # Semantic Checking: building a new record
+            var_type = p[1]
+            var_name = p[2]
+            print " $$$$$$$ var name :: " + var_name + " $$$$$$$$$"
+            print " $$$$$$$ var type :: " + var_type + " $$$$$$$$$"
+            var_record = {'name': var_name, 'type': var_type }
+            j = Parser.ST.searchRecord(var_name)
+            if j == -1:
+                Parser.ST.addRecord(var_record)
+            else:
+                Parser.ST.updateRecord(j,var_record) # this completely overwrites the previous var
         elif len(p) == 4:
             # ID EQUALS expression
             if isinstance(p[3], str):
                 p[3] = AstString(p[3])
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
+            # Semantic Checking: 
+            var_name = p[1]
+            # be able to get the type of a node? 
+            # var_value = p[3].value
+            print " $$$$$$$ var name :: " + var_name + " $$$$$$$$$"
+            var_record = {'name': var_name}
+            j = Parser.ST.searchRecord(var_name)
+            if j == -1:
+                print "Semantic error: Initialization without declaration"
+            # else:
+                #self.ST.updateRecord(j,var_record)
+                #print var_value
+                #Parser.ST.table[j]['value'] = var_value
+            #print self.ST
         elif len(p) == 3:
             # type ID
             p[0] = AstVarDecl(p[2], p[1])
+            # Semantic Checking:
+            var_type = p[1]
+            var_name = p[2]
+            var_value = 0 # default value
+            var_record = {'name': var_name, 'type': var_type, 'value': var_value}
+            j = Parser.ST.searchRecord(var_name)
+            if j == -1:
+                Parser.ST.addRecord(var_record)
+            else:
+                Parser.ST.updateRecord(j,var_record)
 
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
@@ -82,7 +115,10 @@ class Parser():
             p[0] = [AstString(p[1])]
         elif len(p) == 4:
             # ID EQUALS expression
-            p[0] = [AstBinOp(AstID(p[1]), p[2], p[3])]
+            if (type(p[3]) is str and p[3].startswith('[')):
+                p[0] = [AstBinOp(AstID(p[1]), p[2], (AstList(p[3])))]
+            else:
+                p[0] = [AstBinOp(AstID(p[1]), p[2], p[3])]
         else:
             # Boolean, list and ID?
             # TODO: Do we need more here?
