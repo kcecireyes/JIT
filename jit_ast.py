@@ -59,9 +59,9 @@ class AstList(AstNode):
         return visitor.visit_list(self)
 
 class AstID(AstNode):
-    def __init__(self, name,type = 'auto'):
+    def __init__(self, name, id_type = 'auto'): #type = 'auto'):
         self.name = name
-        self.type = type
+        self.type = id_type
 
     def accept(self, visitor):
         return visitor.visit_id(self)

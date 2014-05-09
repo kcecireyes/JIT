@@ -44,10 +44,10 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking: 
             var_name = p[1]
-            var_type = type(p[3])
+            var_type = type(p[3]) # NEED TYPE FROM AST CLASS
             # be able to get the type of a node? 
-            print " $$$$$$$ var name :: " + var_name + " $$$$$$$$$"
-            print " $$$$$$$ var type :: " + var_type + " $$$$$$$$$"
+            print " $$$$$$$ var name :: " + str(var_name) + " $$$$$$$$$"
+            print " $$$$$$$ var type :: " + str(var_type) + " $$$$$$$$$"
             var_record = {'name': var_name, 'type': var_type }
             j = Parser.ST.searchRecord(var_name)
             if j == -1:
@@ -55,7 +55,7 @@ class Parser():
             else:
                 if (Parser.ST.getRecordType(j) is var_type):
                     self.ST.updateRecord(j,var_record)
-                else
+                else:
                     print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
             # type ID
@@ -181,6 +181,7 @@ class Parser():
              | g GREATER_EQUALS_c j
              | j
              '''
+        
         p[0] = AstEmpty()
     
     def p_j(self, p):
@@ -188,13 +189,16 @@ class Parser():
              | j '-' k
              | k
              '''
+
         p[0] = AstEmpty()
+
         
     def p_k(self, p):
         '''k : k '*' l
              | k '/' l
              | l
              '''
+             
         p[0] = AstEmpty()
 
     def p_l(self, p):
