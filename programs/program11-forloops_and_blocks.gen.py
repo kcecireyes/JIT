@@ -1,5 +1,6 @@
 a = [1, 2, 3,]
 for x in y:
+	pass
 for b in a:
 	c = b + 1
 	print '\n'.join(["hello"])

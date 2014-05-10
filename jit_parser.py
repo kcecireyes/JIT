@@ -121,9 +121,9 @@ class Parser():
         elif len(p) == 2:
             # one variable_decl
             p[0] = [p[1]]
-        # elif len(p) == 4:
+        elif len(p) == 4:
             # variable_decl COMMA variable_list
-            # p[0] = p[1] + [p[3]]
+            p[0] = [p[1]] + p[3]
 
     def p_parameter(self, p):
         '''parameter : ID
@@ -175,13 +175,12 @@ class Parser():
             
     
     def p_operations(self, p):
-        '''operations : NOT operations
-                      | s
+        '''operations : s
                       '''
-        if len(p) == 3:
-            p[0] = AstBinOp(AstEmpty(), p[1], p[2])
-        else:
-            p[0] = p[1]
+        #if len(p) == 3:
+        #    p[0] = AstBinOp(AstEmpty(), p[1], p[2])
+        #else:
+        p[0] = p[1]
             
     
     def p_s(self, p):
@@ -217,11 +216,14 @@ class Parser():
              | g LESS_EQUALS_c j
              | g GREATER_c j
              | g GREATER_EQUALS_c j
+             | NOT g
              | j
              '''
         
         if len(p) == 4:
             p[0] = AstBinOp(p[1], p[2], p[3])
+        elif len(p) == 3:
+            p[0] = AstBinOp(AstEmpty(), p[1], p[2])
         else:
             p[0] = p[1]
 
@@ -256,7 +258,7 @@ class Parser():
              | ID
              | NUM
              | BOOLEAN_s
-             '''
+        '''
         if len(p) == 4:
             p[0] = p[2]
         elif type(p[1]) is str:
