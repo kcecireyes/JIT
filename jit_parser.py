@@ -17,33 +17,33 @@ class Parser():
                      | if_block
                      | empty
                      '''
-        print '**** statement production ****'
-        print 'p[1]: ' + str(p[1])
+        # print '**** statement production ****'
+        # print 'p[1]: ' + str(p[1])
         p[0] = p[1]
 
     def p_variable_decl(self, p):
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
-        print '**** variable production ****'
+        # print '**** variable production ****'
         if len(p) == 5:
-            print 'production id = expression'
-            print 'p[2]  ' + str(p[2])
-            print 'p[4]  ' + str(p[4].ex_type)
+            # print 'production id = expression'
+            # print 'p[2]  ' + str(p[2])
+            # print 'p[4]  ' + str(p[4].ex_type)
             #if p[4].type is "list":
             # type ID EQUALS expression
             p[0] = AstBinOp(AstID(p[2], p[1]), p[3], p[4])
             # Semantic Checking - building a new record
             var_type = str(p[1])
-            print var_type + " this is var_type"
+            # print var_type + " this is var_type"
             var_name = p[2]
             # note the type of the things inside list when you make its record
             if var_type == "list":
-                print "I am in list in var decl"
+                # print "I am in list in var decl"
                 var_record = {'name': var_name, 'type': var_type, 'exp_type': p[4].ex_type }
             # this variable declaration is not for a list
             else:
-                print "noooope"
+                # print "noooope"
                 var_record = {'name': var_name, 'type': var_type }
             j = Parser.ST.searchRecord(var_name)
             if j == -1:
@@ -74,9 +74,9 @@ class Parser():
                 else:
                     print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
-            print 'production type id'
-            print 'p[2]  ' + str(p[1])
-            print 'p[4]  ' + str(p[2])
+            # print 'production type id'
+            # print 'p[2]  ' + str(p[1])
+            # print 'p[4]  ' + str(p[2])
             # type ID
             p[0] = AstVarDecl(p[2], p[1])
             # Semantic Checking:
@@ -146,7 +146,7 @@ class Parser():
                     | BOOLEAN_s
                     | ID EQUALS expression'''
 
-        print '**** parameter production ============ \****'
+        # print '**** parameter production ============ \****'
         if p[1].startswith('"'):
             # STRING_s
             p[0] = [AstString(p[1])]
@@ -178,15 +178,15 @@ class Parser():
                       | LIST_s
                       | function_call
                       '''
-        print '**** expression production ============ \****'
+        # print '**** expression production ****'
         # STRING_s
         if (type(p[1]) is str):
             if (p[1].startswith('"')):
-                print 'string production'
+                # print 'string production'
                 p[0] = AstString(p[1])
             # LIST_s
             elif (p[1].startswith('[')):
-                print 'list production'
+                # print 'list production'
                 p[1] = p[1].replace('[]', '')
                 # Check if the contents of the list are numbers or strings
                 # TODO: 
@@ -195,7 +195,7 @@ class Parser():
                 # if float(str(p[1][1])):
                 try:
                     int(str(p[1][1]))
-                    print 'after inting ', int(str(p[1][1]))
+                    # print 'after inting ', int(str(p[1][1]))
                     p[0] = AstList(p[1], "int")
                 except ValueError:
                     p[0] = AstList(p[1], "string")
@@ -336,15 +336,15 @@ class Parser():
 
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
-        print '**** for loop production ============ \****'
-        print 'span is ' + str(p[4])
+        # print '**** for loop production ****'
+        # print 'span is ' + str(p[4])
         span_index = Parser.ST.searchRecord(str(p[4]))
-        print 'span_index is ', span_index
+        # print 'span_index is ', span_index
         if span_index == -1:
             print "Semantic error: " + str(p[4]) + " has not been declared"
         else:
             span_type = Parser.ST.getRecordType(span_index)
-            print 'span_type is ', span_type
+            # print 'span_type is ', span_type
             # print str(id_type) + "     is the type of " + str(p[4])
             if span_type == 'list':
                 itr_name = p[2]
@@ -365,7 +365,7 @@ class Parser():
         '''statement_list : statement
                           | statement_list statement
                           '''
-        print '**** statement_list production ============ \****'
+        # print '**** statement_list production ============ \****'
         #'statement_list : statement'
         if not p[1]:
             p[0] = []
