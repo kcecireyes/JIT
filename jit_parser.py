@@ -37,7 +37,7 @@ class Parser():
             var_type = p[1]
             var_name = p[2]
             # note the type of the things inside list when you make its record
-            if var_type is "list":
+            if var_type == "list":
                 var_record = {'name': var_name, 'type': var_type, 'exp_type': p[4].ex_type }
             # this variable declaration is not for a list
             else:
@@ -67,7 +67,7 @@ class Parser():
             if j == -1:
                 print "Semantic error: Initialization without declaration"
             else:
-                if (Parser.ST.getRecordType(j) is var_type):
+                if (Parser.ST.getRecordType(j) == var_type):
                     self.ST.updateRecord(j,var_record)
                 else:
                     print "Semantic error: Type mismatch in redeclared variable " + var_name
@@ -320,7 +320,7 @@ class Parser():
                 # print 'l production for strings that are id'
                 # print 'p[1]:  ' + str(p[1])
                 index = Parser.ST.searchRecord(str(p[1]))
-                print 'according to the ST, the index of ' + str(p[1]) + ' is ' + str(index)
+                # print 'according to the ST, the index of ' + str(p[1]) + ' is ' + str(index)
                 id_type = Parser.ST.getRecordType(index)
                 p[0] = AstID(p[1], id_type)
         else:
@@ -337,10 +337,11 @@ class Parser():
         # print 'for loop production ============ \n'
         span_index = Parser.ST.searchRecord(str(p[4]))
         span_type = Parser.ST.getRecordType(span_index)
-        # print str(id_type) + "     is the type of " + str(p[4])
-        if span_type is not "list":
+        # print str(span_type) + "     is the type of " + str(p[4])
+        if span_type != "list":
             print "Semantic error: Can't iterate over type " + span_type
         itr_name = p[2]
+        # print Parser.ST.printST()
         itr_type = Parser.ST.getRecordExpType(span_index)
         itr_record = {'name': itr_name, 'type': itr_type }
         j = Parser.ST.searchRecord(itr_name)

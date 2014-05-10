@@ -2,7 +2,7 @@ say("simple program to test blocks")
 int a = 5
 say(a)
 list b = [1,2,3,]
-for a in b {
+for r in b {
 
 }
 say(x) // error
