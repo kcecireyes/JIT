@@ -1,13 +1,13 @@
 // Article Arithmetic! Here it is! Finally! :D
 
-x = myNode1 ++ myNode2
+x = myNode1 ++ myNode2 //UNION of two nodes
 
-y = myNode1 ^^ myNode2
+x = myNode1 ^^ myNode2 //INTERSECTION of two nodes
 
-z = myNode1 ++ myNode2 over keywords
+x = myNode1 ++ myNode2 over keywords //a UNION of keywords only
 
-z = myNode1 ++ myNode2 over keywords, title
+x = myNode1 ++ myNode2 over keywords, title //a UNION of keywords and title only
 
-z = myNode1 ^^ myNode2 over keywords
+x = myNode1 ^^ myNode2 over keywords //an INTERSECTION of keywords only
 
-z = myNode1 ^^ myNode2 over keywords, date, body, title, publisher, author
+x = myNode1 ^^ myNode2 over date, body, publisher, author //an INTERSECTION of date, body, publisher and author only
