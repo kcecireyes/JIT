@@ -1,0 +1,13 @@
+// Article Arithmetic! Here it is! Finally! :D
+
+x = myNode1 ++ myNode2
+
+y = myNode1 ^^ myNode2
+
+z = myNode1 ++ myNode2 over keywords
+
+z = myNode1 ++ myNode2 over keywords, title
+
+z = myNode1 ^^ myNode2 over keywords
+
+z = myNode1 ^^ myNode2 over keywords, date, body, title, publisher, author
