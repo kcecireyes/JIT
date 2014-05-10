@@ -18,8 +18,10 @@ class CodeGenerator:
         new_body = []
         for line in body:
             new_body.append('\n\t'.join(line.strip().split('\n')))
-                        
-        code = 'for %s in %s:\n\t%s' % (itr, span, '\n\t'.join(new_body))
+        if body[0]:                
+            code = 'for %s in %s:\n\t%s' % (itr, span, '\n\t'.join(new_body))
+        else:
+            code = 'for %s in %s:\n%s' % (itr, span, '\n\t'.join(new_body))
         print code
         return code
 
