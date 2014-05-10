@@ -25,7 +25,14 @@ class Lexer():
         'and': 'AND',
         'or': 'OR',
         'not': 'NOT',
-        'newfun': 'NEWFUN'
+        'newfun': 'NEWFUN',
+        'over': 'OVER',
+        'keywords': 'KEYWORDS',
+        'author': 'AUTHOR',
+        'publisher': 'PUBLISHER',
+        'date': 'DATE',
+        'body': 'BODY',
+        'title': 'TITLE'
     }
 
     tokens = [
@@ -45,7 +52,9 @@ class Lexer():
         'GREATER_c',
         'GREATER_EQUALS_c',
         'NOT_EQUALS_c',
-        'COMMA'
+        'COMMA',
+        'UNION',
+        'INTERSECTION'
         ] + list(reserved.values())
 
     # Literals
@@ -53,6 +62,8 @@ class Lexer():
 
     # Regular expression rules for simple tokens
     # == 
+    t_UNION = r'\+\+'
+    t_INTERSECTION = r'\^\^'
     t_NOT_EQUALS_c = r'!='
     t_LESS_c = r'<'
     t_LESS_EQUALS_c = r'<='

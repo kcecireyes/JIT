@@ -150,6 +150,7 @@ class Parser():
     
     def p_expression(self, p):
         '''expression : operations
+                      | article_arithmetic
                       | STRING_s
                       | LIST_s
                       | function_call
@@ -166,7 +167,34 @@ class Parser():
         else :
             p[0] = p[1]
             
-
+    def p_article_arithmetic(self, p):
+        '''article_arithmetic : ID UNION ID optional_part
+                              | ID INTERSECTION ID optional_part
+                              '''
+        p[0] = AstEmpty()
+    
+    def p_optional_part(self, p):
+        '''optional_part : OVER things_list
+                         | empty
+                         '''
+        p[0] = AstEmpty()
+        
+    def p_things_list(self, p):
+        '''things_list : thing
+                       | thing COMMA things_list
+                       '''
+        p[0] = AstEmpty()
+    
+    def p_thing(self, p):
+        '''thing : KEYWORDS
+                 | BODY
+                 | PUBLISHER
+                 | TITLE
+                 | AUTHOR
+                 | DATE
+                 '''
+        p[0] = AstEmpty()
+    
     def p_operations(self, p):
         '''operations : s
                       '''
