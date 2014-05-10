@@ -12,6 +12,7 @@ class Parser():
     def p_statement(self, p):
         '''statement : variable_decl
                      | function_call
+                     | function_decl
                      | for_loop
                      | if_block
                      | empty
@@ -44,10 +45,14 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking: 
             var_name = p[1]
-            var_type = str(type(p[3]))
+
+            #var_type = str(type(p[3]))
+
+            var_type = type(p[3]) # NEED TYPE FROM AST CLASS
+
             # be able to get the type of a node? 
-            print " $$$$$$$ var name :: " + var_name + " $$$$$$$$$"
-            print " $$$$$$$ var type :: " + var_type + " $$$$$$$$$"
+            print " $$$$$$$ var name :: " + str(var_name) + " $$$$$$$$$"
+            print " $$$$$$$ var type :: " + str(var_type) + " $$$$$$$$$"
             var_record = {'name': var_name, 'type': var_type }
             j = Parser.ST.searchRecord(var_name)
             if j == -1:
@@ -76,6 +81,10 @@ class Parser():
         p[1].params = p[3]
         p[0] = p[1]
 
+    def p_func_decl(self, p):
+        '''function_decl : NEWFUN ID LPAREN variable_list RPAREN LBRACE statement_list RBRACE'''
+        p[0] = AstEmpty()
+
     def p_fun(self, p):
         '''fun : SAY
                 | LISTEN
@@ -92,7 +101,6 @@ class Parser():
         '''parameters : empty
                      | parameter COMMA parameters
                      | parameter'''
-
         if not p[1]:
             # No params
             p[0] = []
@@ -103,6 +111,19 @@ class Parser():
             # parameter COMMA parameters
             p[0] = p[1] + p[3]
 
+    def p_variable_list(self, p):
+        '''variable_list : empty
+            | variable_decl COMMA variable_list
+            | variable_decl'''
+        if not p[1]:
+            # No var passed
+            p[0] = []
+        elif len(p) == 2:
+            # one variable_decl
+            p[0] = [p[1]]
+        # elif len(p) == 4:
+            # variable_decl COMMA variable_list
+            # p[0] = p[1] + [p[3]]
 
     def p_parameter(self, p):
         '''parameter : ID
@@ -157,26 +178,39 @@ class Parser():
         '''operations : NOT operations
                       | s
                       '''
-        p[0] = AstEmpty()
+        if len(p) == 3:
+            p[0] = AstBinOp(AstEmpty(), p[1], p[2])
+        else:
+            p[0] = p[1]
+            
     
     def p_s(self, p):
         '''s : s OR t
              | t
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
     
     def p_t(self, p):
         '''t : t AND f
              | f
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
 
     def p_f(self, p):
         '''f : f EQUALS_c g
              | f NOT_EQUALS_c g
              | g
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
 
     def p_g(self, p):
         '''g : g LESS_c j
@@ -185,21 +219,37 @@ class Parser():
              | g GREATER_EQUALS_c j
              | j
              '''
-        p[0] = AstEmpty()
+        
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
+
     
     def p_j(self, p):
         '''j : j '+' k
              | j '-' k
              | k
              '''
-        p[0] = AstEmpty()
+
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
+
+
         
     def p_k(self, p):
         '''k : k '*' l
              | k '/' l
              | l
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
+
+        
 
     def p_l(self, p):
         '''l : LPAREN operations RPAREN 
@@ -207,7 +257,16 @@ class Parser():
              | NUM
              | BOOLEAN_s
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = p[2]
+        elif type(p[1]) is str:
+            if p[1] in ['true', 'false']:
+                p[0] = AstString(p[1])
+            else:
+                p[0] = AstID(p[1])
+        else:
+            p[0] = AstNum(p[1])
+
     
 #     def p_expression(self, p):
 #         '''expression : arithmetic_expr
@@ -261,7 +320,7 @@ class Parser():
 #             p[0] = AstID(p[1])
 #         else:
 #             p[0] = AstNum(p[1])
-    
+
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
         p[0] = AstForLoop(AstID(p[2]), AstID(p[4]), p[6])
@@ -277,7 +336,7 @@ class Parser():
             p[0] = [p[1]]
         else:
             p[0] = p[1] + [p[2]]
-    
+
     def p_if_block(self, p):
         'if_block : IF LPAREN expression RPAREN THEN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'
         p[0] = AstIfBlock(p[3], p[7], p[11])

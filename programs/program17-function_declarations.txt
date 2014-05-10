@@ -1,0 +1,12 @@
+newfun myfunc (int a){
+    int b = 3
+}
+
+newfun mySecondFunc (){
+	
+}
+
+newfun myThirdFunc(string a = "hello", int b, c = 3){
+	int a = 4 // should overwrite a
+	say("this is a")
+}

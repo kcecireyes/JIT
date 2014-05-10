@@ -1,0 +1,24 @@
+int a = 2 + 3 / 4
+
+a = not true or false and true
+
+c = not 2 + 3 and 4 <= 3 and 5 / 7 > 9 == 8 + true or false
+
+//if-else block
+if ( a == not b ) then { //comment
+
+	int a //comment
+	a = 4 + 6 //comment
+
+} else { //comment
+
+	int b = 3 //comment
+	say(b) //comment
+
+} //comment
+
+if (a >= b and c <= 3 or not b == c) then {
+
+} else {
+
+}

@@ -24,7 +24,8 @@ class Lexer():
         'else': 'ELSE',
         'and': 'AND',
         'or': 'OR',
-        'not': 'NOT'
+        'not': 'NOT',
+        'newfun': 'NEWFUN'
     }
 
     tokens = [
@@ -107,81 +108,99 @@ class Lexer():
 
 ########## Grammar needed for prog1 and prog2 ##########
 ''' 
-statement : function_call
-            variable_declaration
-            for_loop
+    statement : variable_decl
+             | function_call
+             | function_decl
+             | for_loop
+             | if_block
+             | empty
 
-function_call : fun (parameters)
+    variable_decl : type ID EQUALS expression
+             | ID EQUALS expression
+             | type ID
 
-fun : SAY
-    LISTEN
-    IMPORT
-    SAVE
-    GET
-    PUSH
-    PULL
-    SEARCH
+    function_call : fun LPAREN parameters RPAREN
 
-parameters : epsilon
-            parameter, parameters
-            parameter
+    function_decl : NEWFUN ID LPAREN variable_list RPAREN LBRACE statement_list RBRACE
 
-parameter : IDENTIFIER 
-            string_statement
-            IDENTIFIER = Expression
+    variable_list : empty
+            | variable_decl COMMA variable_list
+            | variable_decl
 
-variable_declaration : type IDENTIFIER = Expression 
-                    IDENTIFIER = Expression
-                    type IDENTIFIER
+    statement_list : statement
+            | statement_list statement
 
-type : STRING
-      BOOLEAN
-      INT
-      NODE
-      LIST
-      GRAPH
+    for_loop : FOR ID IN ID LBRACE statement_list RBRACE
 
-S' -> statement
-statement -> variable_decl | function_call
-variable_decl -> type ID EQUALS expression
-                | ID EQUALS expression
-                | type ID
-function_call -> fun LPAREN parameters RPAREN
-fun -> SAY
-    | LISTEN
-    | IMPORT
-    | SAVE
-    | GET
-    | PUSH
-    | PULL
-    | SEARCH
-parameters -> empty
+    statement_list : statement
+            | statement_list statement
+    
+    if_block : IF ( expression ) THEN { statement_list } ELSE { statement_list }'
+
+    fun : SAY
+            | LISTEN
+            | IMPORT
+            | SAVE
+            | GET
+            | PUSH
+            | PULL
+            | CREATENODE
+            | SEARCH
+
+    parameters : empty
             | parameter COMMA parameters
             | parameter
-parameter -> ID
+    
+    parameter : ID
             | STRING_s
-            | ID EQUALS expression
-type -> STRING
-        | BOOLEAN
-        | INT
-        | NODE
-        | LIST
-        | GRAPH
-expression -> arithmetic_expr
-            | function_call
-            | STRING_s
+            | LIST_s
             | BOOLEAN_s
-arithmetic_expr -> arithmetic_expr + term
-                 | arithmetic_expr - term
-                 | term
-term -> term * factor
-        | term / factor
-        | factor
-factor -> LPAREN arithmetic_expr RPAREN
-        | ID
-        | NUM
-empty -> <empty>
+            | ID EQUALS expression
 
+    type : STRING
+            | BOOLEAN
+            | INT
+            | NODE
+            | LIST
+            | GRAPH
 
+    expression : operations
+            | STRING_s
+            | LIST_s
+            | function_call
 
-'''
+    operations : NOT operations
+            | s
+
+    s : s OR t
+            | t
+
+    t : t AND f
+            | f
+
+    f : f EQUALS_c g
+            | f NOT_EQUALS_c g
+            | g
+    
+    g : g LESS_c j
+            | g LESS_EQUALS_c j
+            | g GREATER_c j
+            | g GREATER_EQUALS_c j
+            | j
+
+    j : j '+' k
+            | j '-' k
+            | k
+
+    k : k '*' l
+            | k '/' l
+            | l
+    
+    l : LPAREN operations RPAREN 
+            | ID
+            | NUM
+            | BOOLEAN_s
+
+    empty :
+
+        '''
