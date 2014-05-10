@@ -1,3 +1,8 @@
+#!/usr/bin/python
+import os.path, sys
+sys.path.append("/Users/rkuykendall/Dropbox/Code/JIT")
+import jitlib
+
 a = 0
 b = 0
 b = 5
