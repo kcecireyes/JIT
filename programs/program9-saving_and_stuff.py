@@ -1,7 +1,3 @@
-#!/usr/bin/python
-# Be sure to add jitlib to your path!
-import jitlib
-
 myFile = "file.txt"
 json = "filename.json"
 myNode = Node()

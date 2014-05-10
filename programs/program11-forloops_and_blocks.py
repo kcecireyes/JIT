@@ -1,7 +1,3 @@
-#!/usr/bin/python
-# Be sure to add jitlib to your path!
-import jitlib
-
 a = [4, 2, 3,]
 for x in y:
 for b in a:

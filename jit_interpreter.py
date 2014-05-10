@@ -13,8 +13,14 @@ class Interpreter:
         else:
             self.output = open(output_filename, 'w')
             self.output.write("#!/usr/bin/python\n")
-            self.output.write("# Be sure to add jitlib to your path!\n")
-            self.output.write("import jitlib\n")
+            self.output.write("import os.path, sys\n")
+            self.output.write('sys.path.append("'+os.path.dirname(os.path.realpath(__file__))+'")\n')
+            self.output.write("from jitlib.node import Node\n")
+            self.output.write("\n")
+            self.output.write("\n")
+            self.output.write("\n")
+            self.output.write("\n")
+            self.output.write("\n")
             self.output.write("\n")
 
     def execute_ast(self, ast_node, debug=False):

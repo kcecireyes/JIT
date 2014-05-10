@@ -1,7 +1,3 @@
-#!/usr/bin/python
-# Be sure to add jitlib to your path!
-import jitlib
-
 a = 0
 b = 0
 b = 5

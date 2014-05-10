@@ -73,13 +73,21 @@ class TextJIT(unittest.TestCase):
             print "***************no gen file************************"
             match = False
             return match
-        with open(ref) as ref, open(out) as output:
-            for line1, line2 in zip(ref, output):
-                if line1 != line2:
-                    print line1
-                    print "does not match"
-                    print line2
-                    match = False
+
+        ref_lines = []
+        out_lines = []
+        with open(ref) as ref, open(out) as out:
+            ref_lines = ref.readlines()
+            out_lines = out.readlines()
+            out_lines = out_lines[10:]
+
+        for line1, line2 in zip(ref_lines, out_lines):
+            if line1 != line2:
+                print ">\""+line1+"\"<",
+                print " does not match ",
+                print ">\""+line2+"\"<"
+                match = False
+
         print "\n>> Finished test: " + name
         return match
 

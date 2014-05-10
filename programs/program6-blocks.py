@@ -1,7 +1,3 @@
-#!/usr/bin/python
-# Be sure to add jitlib to your path!
-import jitlib
-
 print '\n'.join(["simple program to test blocks"])
 a = 5
 print '\n'.join([a])
