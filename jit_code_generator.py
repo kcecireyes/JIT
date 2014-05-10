@@ -19,7 +19,7 @@ class CodeGenerator:
         for line in body:
             new_body.append('\n\t'.join(line.strip().split('\n')))
                         
-        code = 'for %s in %s:\n\t%s' % (itr, span, '\n\t'.join(new_body))
+        code = 'for %s in %s:\n\t%s\n' % (itr, span, '\n\t'.join(new_body))
         print code
         return code
 
@@ -36,5 +36,5 @@ class CodeGenerator:
     def generate_ifblock(self, ifc, thencls, elsecls):
         thcl = self.indent_block(thencls)
         elcl = self.indent_block(elsecls)
-        code = 'if %s:\n\t%s\nelse:\n\t%s' %(ifc, thcl, elcl)
+        code = 'if %s:\n\t%s\nelse:\n\t%s\n' %(ifc, thcl, elcl)
         return code
