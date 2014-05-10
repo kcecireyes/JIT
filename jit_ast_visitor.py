@@ -117,3 +117,11 @@ class AstVisitor:
         elc = map(lambda n : n.accept(self), if_node.else_clause)
         code = self.code_generator.generate_ifblock(ifc, thc, elc)
         return code
+
+    def visit_astfundecl(self, fundecl_node):
+        varlist = map(lambda n : n.accept(self).strip(), fundecl_node.varlist)
+        fun_body = map(lambda n : n.accept(self), fundecl_node.stmtlist)
+        code = self.code_generator.generate_fundecl(fundecl_node.name, varlist, fun_body)
+        return code
+        
+        

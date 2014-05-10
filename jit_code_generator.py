@@ -36,3 +36,8 @@ class CodeGenerator:
         elcl = self.indent_block(elsecls)
         code = 'if %s:\n\t%s\nelse:\n\t%s\n' %(ifc, thcl, elcl)
         return code
+
+    def generate_fundecl(self, name, varlist, stmtlist):
+        fun_body = self.indent_block(stmtlist)
+        code = "def %s(%s):\n\t%s\n\n" % (name, ", ".join(varlist), fun_body)
+        return code

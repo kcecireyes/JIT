@@ -83,7 +83,7 @@ class Parser():
 
     def p_func_decl(self, p):
         '''function_decl : NEWFUN ID LPAREN variable_list RPAREN LBRACE statement_list RBRACE'''
-        p[0] = AstEmpty()
+        p[0] = AstFunDecl(p[2], p[4], p[7])
 
     def p_fun(self, p):
         '''fun : SAY

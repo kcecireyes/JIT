@@ -117,6 +117,15 @@ class AstIfBlock(AstNode):
     def accept(self, visitor):
         return visitor.visit_ifblock(self)
 
+
+class AstFunDecl(AstNode):
+    def __init__(self, name, varlist, stmtlist):
+        self.name = name
+        self.varlist = varlist
+        self.stmtlist = stmtlist
+
+    def accept(self, visitor):
+        return visitor.visit_astfundecl(self)
 """        
 class AstSay(AstNode):
     def __init__(self):
