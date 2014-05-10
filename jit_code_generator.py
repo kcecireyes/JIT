@@ -16,8 +16,7 @@ class CodeGenerator:
 
     def generate_forloop(self, itr, span, body):
         new_body = self.indent_block(body)
-                        
-        code = 'for %s in %s:\n\t%s\n' % (itr, span, new_body)
+        code = 'for %s in %s:\n\t%s\n\n' % (itr, span, new_body)
         print code
         return code
 
@@ -34,7 +33,7 @@ class CodeGenerator:
     def generate_ifblock(self, ifc, thencls, elsecls):
         thcl = self.indent_block(thencls)
         elcl = self.indent_block(elsecls)
-        code = 'if %s:\n\t%s\nelse:\n\t%s\n' %(ifc, thcl, elcl)
+        code = 'if %s:\n\t%s\nelse:\n\t%s\n\n' %(ifc, thcl, elcl)
         return code
 
     def generate_fundecl(self, name, varlist, stmtlist):
