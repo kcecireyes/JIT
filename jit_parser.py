@@ -206,19 +206,29 @@ class Parser():
         '''article_arithmetic : ID UNION ID optional_part
                               | ID INTERSECTION ID optional_part
                               '''
-        p[0] = AstEmpty()
+        #p[0] = AstEmpty()
+        p[0] = AstArticleOp(AstID(p[1]), p[2], AstID(p[3]), p[4])
     
     def p_optional_part(self, p):
         '''optional_part : OVER things_list
                          | empty
                          '''
-        p[0] = AstEmpty()
+        if len(p)==3:
+            p[0] = p[2]
+        else:
+            #p[0] = AstEmpty()
+            p[0] = []
         
     def p_things_list(self, p):
         '''things_list : thing
                        | thing COMMA things_list
                        '''
-        p[0] = AstEmpty()
+        if len(p) == 2:
+            # thing
+            p[0] = p[1]
+        else:
+            # thing COMMA things_list
+            p[0] = p[1] + p[3]
     
     def p_thing(self, p):
         '''thing : KEYWORDS
@@ -228,7 +238,7 @@ class Parser():
                  | AUTHOR
                  | DATE
                  '''
-        p[0] = AstEmpty()
+        p[0] = [p[1]]
     
     def p_operations(self, p):
         '''operations : s

@@ -16,7 +16,10 @@ class CodeGenerator:
             return lhs[:-9]+".set_keywords("+rhs+")\n"            
         else:
             return '%s %s %s\n' %(lhs, op, rhs)
-
+    
+    def generate_articleOp(self, lhs, op, rhs):
+        return '%s %s %s\n' %(lhs, op, rhs)
+    
     def generate_forloop(self, itr, span, body):
         new_body = self.indent_block(body)
         code = 'for %s in %s:\n\t%s\n\n' % (itr, span, new_body)

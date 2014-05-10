@@ -7,6 +7,21 @@ class AstEmpty(AstNode):
     def accept(self, visitor):
         return ""
 
+class AstArticleOp(AstNode):
+    def __init__(self,left,op,right,list_of_things):
+        self.type = "articleop"
+        self.left = left
+        self.right = right
+        self.op = op
+        self.rtype = "node"
+        self.list_of_things = list_of_things
+
+    def __str__(self):
+        return str(self.left) + str(self.op) + str(self.right)
+
+    def accept(self, visitor):
+        return visitor.visit_articleop(self)
+
 class AstBinOp(AstNode):
     def __init__(self,left,op,right, result_type = 'auto'):
         self.type = "binop"

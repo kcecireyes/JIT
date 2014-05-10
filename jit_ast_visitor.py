@@ -78,6 +78,15 @@ class AstVisitor:
         code = self.code_generator.generate_binaryOp(lhs, binop_node.op, rhs)
         return code
 
+    def visit_articleop(self, articleop_node):
+        if not articleop_node: return
+        
+        lhs = articleop_node.left.accept(self).strip()
+        rhs = articleop_node.right.accept(self).strip()
+        #if articleop_node.op == "=":
+        #    self.env[-1][lhs] = rhs
+        code = self.code_generator.generate_articleOp(lhs, articleop_node.op, rhs)
+        return code
 
     def visit_str(self, str_node):
         return str_node.value
