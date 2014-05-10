@@ -28,6 +28,10 @@ class SymbolTable:
         record_exp_type = self.table[i]['exp_type']
         return record_exp_type
 
+    def printST(self):
+        for record in (self.table):
+            print record
+
     def copyRecords(self, to_ST):
         for i in range(0,len(self.table)):
             to_ST.addRecord(self.table[i])

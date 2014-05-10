@@ -128,7 +128,7 @@ class AstFunDecl(AstNode):
 
     def accept(self, visitor):
         return visitor.visit_astfundecl(self)
-"""        
+"""
 class AstSay(AstNode):
     def __init__(self):
         self.type = "say"
@@ -136,4 +136,3 @@ class AstSay(AstNode):
     def __str__(self):
         return self.type
 """
- 
