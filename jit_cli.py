@@ -13,7 +13,7 @@ def main():
     # This code allows us to run any program file using the CLI.
     option_parser = OptionParser()
     option_parser.add_option("-f", "--file", dest="filename", help="JIT program filename", type="string")
-    option_parser.add_option("--silent", action="store_false", dest="debug", default=True)
+    option_parser.add_option("--debug", action="store_true", dest="debug", default=False)
     (options, args) = option_parser.parse_args()
 
     if (options.filename):
