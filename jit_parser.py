@@ -30,8 +30,6 @@ class Parser():
             # Semantic Checking: building a new record
             var_type = p[1]
             var_name = p[2]
-            print " $$$$$$$ var name :: " + var_name + " $$$$$$$$$"
-            print " $$$$$$$ var type :: " + var_type + " $$$$$$$$$"
             var_record = {'name': var_name, 'type': var_type }
             j = Parser.ST.searchRecord(var_name)
             if j == -1:
@@ -45,12 +43,7 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking: 
             var_name = p[1]
-
-            #var_type = str(type(p[3]))
-
-            var_type = type(p[3]) # NEED TYPE FROM AST CLASS
-
-            # be able to get the type of a node? 
+            var_type = p[3].type # NEED TYPE FROM AST CLASS
             print " $$$$$$$ var name :: " + str(var_name) + " $$$$$$$$$"
             print " $$$$$$$ var type :: " + str(var_type) + " $$$$$$$$$"
             var_record = {'name': var_name, 'type': var_type }
@@ -121,9 +114,9 @@ class Parser():
         elif len(p) == 2:
             # one variable_decl
             p[0] = [p[1]]
-        # elif len(p) == 4:
+        elif len(p) == 4:
             # variable_decl COMMA variable_list
-            # p[0] = p[1] + [p[3]]
+            p[0] = p[1] + p[3]
 
     def p_parameter(self, p):
         '''parameter : ID
@@ -173,7 +166,7 @@ class Parser():
         else :
             p[0] = p[1]
             
-    
+
     def p_operations(self, p):
         '''operations : NOT operations
                       | s
@@ -182,8 +175,7 @@ class Parser():
             p[0] = AstBinOp(AstEmpty(), p[1], p[2])
         else:
             p[0] = p[1]
-            
-    
+
     def p_s(self, p):
         '''s : s OR t
              | t
@@ -219,37 +211,34 @@ class Parser():
              | g GREATER_EQUALS_c j
              | j
              '''
-        
+        # print "im in less and greater production, 1 and 3 " + str(p[1]) + " " + str(p[3])
         if len(p) == 4:
             p[0] = AstBinOp(p[1], p[2], p[3])
         else:
             p[0] = p[1]
 
-    
     def p_j(self, p):
         '''j : j '+' k
              | j '-' k
              | k
              '''
-
+        # print "im in + and - production, 1 and 3 " + str(p[1]) + " " + str(p[3])
         if len(p) == 4:
             p[0] = AstBinOp(p[1], p[2], p[3])
         else:
             p[0] = p[1]
 
-
-        
     def p_k(self, p):
         '''k : k '*' l
              | k '/' l
              | l
              '''
         if len(p) == 4:
+            print "im in * and / production, 1 and 3 " + str(p[1]) + " " + str(p[3])
             p[0] = AstBinOp(p[1], p[2], p[3])
+            # pass in another arg to binop for the type of each node
         else:
             p[0] = p[1]
-
-        
 
     def p_l(self, p):
         '''l : LPAREN operations RPAREN 
@@ -263,63 +252,15 @@ class Parser():
             if p[1] in ['true', 'false']:
                 p[0] = AstString(p[1])
             else:
-                p[0] = AstID(p[1])
+                # get type from ST and make 2nd arg to AstID
+                id_type = Parser.ST.getRecordType(Parser.ST.searchRecord(p[1]))
+                p[0] = AstID(p[1], id_type)
         else:
-            p[0] = AstNum(p[1])
-
-    
-#     def p_expression(self, p):
-#         '''expression : arithmetic_expr
-#                       | STRING_s
-#                       | BOOLEAN_s
-#                       | LIST_s
-#                       | function_call
-#                       '''
-# 
-#         # STRING_s
-#         if (type(p[1]) is str) and (p[1].startswith('"')):
-#             p[0] = AstString(p[1])
-# 
-# 
-#         # TODO: Do we need more here?
-#         else:
-#             p[0] = p[1]
-
-#     def p_arithmetic_expr(self, p):
-#         '''arithmetic_expr : arithmetic_expr '+' term
-#                            | arithmetic_expr '-' term
-#                            | term'''
-# 
-#         if len(p) == 4:
-#             # term operation term
-#             p[0] = AstBinOp(p[1], p[2], p[3])
-#         else:
-#             # term
-#             p[0] = p[1]
+            p[0] = AstNum(p[1], 'int')
 
     def p_empty(self, p):
         'empty :'
         p[0] = AstEmpty()
-
-#     def p_term(self, p):
-#         '''term : term '*' factor
-#                 | term '/' factor
-#                 | factor'''
-#         if len(p) == 4:
-#             p[0] = AstBinOp(p[1], p[2], p[3])
-#         else:
-#             p[0] = p[1]
-# 
-#     def p_factor(self, p):
-#         '''factor : LPAREN arithmetic_expr RPAREN
-#                   | ID
-#                   | NUM'''
-#         if len(p) == 4:
-#             p[0] = p[2]
-#         elif type(p[1]) is str:
-#             p[0] = AstID(p[1])
-#         else:
-#             p[0] = AstNum(p[1])
 
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
