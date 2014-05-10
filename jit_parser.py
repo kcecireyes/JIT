@@ -313,7 +313,10 @@ class Parser():
         p[0] = AstIfBlock(p[3], p[7], p[11])
         
     def p_error(self, p):
-        print("Syntax error at '%s'" % p.value)
+        print "Syntax error at '%s'" % p.value
+        print "in line '%d'" % p.lineno
+        print "at position '%d'" % p.lexpos
+        # Just stop compiling right here I guess.
 
     def __init__(self):
         lexer = Lexer()
