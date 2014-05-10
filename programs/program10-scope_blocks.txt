@@ -1,11 +1,12 @@
 // this is a program to test scoping
 // Scoping should check: init w/o declaration, type check of operands, allow overwriting if same var declared
 
+list l = [1,2,3,]
 int a = 3
 say("this is a")
 say(a)
 int b = 1
-{
+for y in l{
 	int a = 4 // should overwrite a
 	say("this is a")
 	say(a)

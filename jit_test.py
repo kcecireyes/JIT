@@ -23,6 +23,11 @@ class TextJIT(unittest.TestCase):
         self.program10 = "programs/program10-scope_blocks"
         self.program11 = "programs/program11-forloops_and_blocks"
         self.program12 = "programs/program12-search"
+        self.program13 = "programs/program13-if_else"
+        self.program14 = "programs/program14-nested_forloops"
+        self.program15 = "programs/program15-nested-if-else"
+        self.program16 = "programs/program16-operations"
+        self.program17 = "programs/program17-function_declarations"
 
     def test_comments_should_be_parsed_out(self):
         self.assertTrue(self.compare(self.program0))
@@ -40,25 +45,40 @@ class TextJIT(unittest.TestCase):
         self.assertTrue(self.compare(self.program4))
 
     def test_should_assign_variables(self):
-        self.assertTrue(self.compare(self.program5))
+        self.assertTrue(self.compare(self.program5))  
 
     def test_should_allow_blocks(self):
-        self.assertTrue(self.compare(self.program6))
+        self.assertTrue(self.compare(self.program6))  
 
     def test_pushing_and_pulling(self):
         self.assertTrue(self.compare(self.program7))
 
     def test_should_save_and_import(self):
-        self.assertTrue(self.compare(self.program9))
+        self.assertTrue(self.compare(self.program9))  
 
     def test_should_scope_and_block(self):
-        self.assertTrue(self.compare(self.program10))
+        self.assertTrue(self.compare(self.program10)) 
 
     def test_should_forloops_and_blocks(self):
         self.assertTrue(self.compare(self.program11))
 
     def test_should_test_search_func(self):
-        self.assertTrue(self.compare(self.program12))
+        self.assertTrue(self.compare(self.program12))   
+
+    def test_if_and_else(self):
+        self.assertTrue(self.compare(self.program13)) 
+
+    def test_nesting(self):
+        self.assertTrue(self.compare(self.program14)) 
+
+    def test_nested_if_else(self):
+        self.assertTrue(self.compare(self.program15)) 
+
+    def test_operations(self):
+        self.assertTrue(self.compare(self.program16)) 
+
+    def test_function_declarations(self):
+        self.assertTrue(self.compare(self.program17)) 
 
     def compare(self, program):
         match = True
