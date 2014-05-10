@@ -2,7 +2,7 @@
 # Be sure to add jitlib to your path!
 import jitlib
 
-a = [1, 2, 3,]
+a = [4, 2, 3,]
 for x in y:
 for b in a:
 	c = b + 1
@@ -11,4 +11,3 @@ for b in a:
 words = ["Shut", "the", "f**k", "up", "!",]
 for word in words:
 	print '\n'.join([word])
-	
