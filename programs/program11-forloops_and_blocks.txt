@@ -9,11 +9,12 @@ for b in a { //comment
     int d //comment
 } //comment
 
+list y = [1,2,3,]
 //empty for
 for x in y{
 }
 
-words = ["Shut", "the", "f**k", "up", "!",] //comment
+list words = ["Shut", "the", "f**k", "up", "!",] //comment
 
 //single-statement for
 for word in words {
