@@ -27,12 +27,12 @@ class Lexer():
         'not': 'NOT',
         'newfun': 'NEWFUN',
         'over': 'OVER',
-        'keywords': 'KEYWORDS',
-        'author': 'AUTHOR',
-        'publisher': 'PUBLISHER',
-        'date': 'DATE',
-        'body': 'BODY',
-        'title': 'TITLE'
+        'Keywords': 'KEYWORDS',
+        'Author': 'AUTHOR',
+        'Publisher': 'PUBLISHER',
+        'Date': 'DATE',
+        'Body': 'BODY',
+        'Title': 'TITLE'
     }
 
     tokens = [
