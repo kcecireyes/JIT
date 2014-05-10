@@ -31,7 +31,7 @@ def main():
                 if options.debug:
                     print "=======%s" %line
 
-                interpreter.execute_txt(line.strip(), options.debug)
+                interpreter.execute_txt(line.strip(), debug=options.debug)
                 overflow = ""
             else:
                 overflow = line
@@ -39,12 +39,22 @@ def main():
     else:
         interpreter = Interpreter()
         while True:
-            line = raw_input("JIT> ")
+            try:
+                line = raw_input("JIT> ")
+            except KeyboardInterrupt:
+                # Execute, don't crash
+                print ""
+                exit()
 
             while line.count('{') != line.count('}'):
                 line = line + raw_input("... ")
 
-            interpreter.execute_txt(line)
+            try:
+                interpreter.execute_txt(line, debug=options.debug)
+            except NameError:
+                # Already prints error
+                pass
+
 
     if options.debug:
         print '''

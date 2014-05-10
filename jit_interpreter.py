@@ -3,15 +3,22 @@ from pprint import pprint
 from jit_ast_visitor import *
 
 class Interpreter:
-    def __init__(self, output_filename="temp.py"):
+    def __init__(self, output_filename=None):
         self.visitor = AstVisitor()
-        self.output = open(output_filename, 'w')
+
+        if output_filename != None:
+            self.output = open(output_filename, 'w')
+        else:
+            self.output = None
 
     def execute_ast(self, ast_node, debug=False):
         code = ast_node.accept(self.visitor)
         if debug:
             print "code = " + code
-        self.output.write(code)
+
+        if self.output != None:
+            self.output.write(code)
+
         exec code in globals()
 
         # if hasattr(ast_node, 'right'):
@@ -26,7 +33,7 @@ class Interpreter:
         #     elif ast_node.subtype == "listen":
         #         raw_input("User input: ")
 
-    def execute_txt(self, code, debug=True):
+    def execute_txt(self, code, debug=False):
         parser = Parser()
         ast = parser.parser.parse(code)
         if debug:
