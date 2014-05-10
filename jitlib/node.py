@@ -68,7 +68,7 @@ class Node(Base):
         return self
 
     def add_adjacent(self, node):
-        '''Do not use this method. Use add_adjacencies instead.'''
+        '''Do not use this method. Use add_adjacencies(node) instead.'''
         self.add_adjacencies(node)
 
     def adjacencies(self):

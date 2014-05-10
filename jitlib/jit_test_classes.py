@@ -1,10 +1,11 @@
 import unittest
 from node import *
 from graf import *
+from database import Base, engine
 
 class TextJIT(unittest.TestCase):
     def setUp(self):
-    	pass
+    	Base.metadata.create_all(engine)
 
     def test_for_the_sake_of_testing(self):
         s = "blah"
@@ -64,29 +65,55 @@ class TextJIT(unittest.TestCase):
     def test_graf_should_add_nodes(self):
         graf = Graf()
         node = Node()
-        graf.add([node])
-        self.assertEqual(graf.number_of_vert, 1)
+        graf.add(node)
+        self.assertEqual(len(graf.nodes), 1)
 
     def test_graf_should_get_node(self):
         graf = Graf()
         node = Node()
-        graf.add([node])
+        graf.add(node)
         node.title = "title"
         self.assertIs(node, graf.get_node_by_title("title"))
 
     def test_graf_method_contains(self):
         graf = Graf()
         node = Node()
-        graf.add([node])
+        graf.add(node)
         self.assertTrue(graf.contains(node))
 
     def test_graf_add_edge(self):
         graf = Graf()
         node = Node()
         node2 = Node()
-        graf.add([node, node2])
+        graf.add(node, node2)
         graf.add_edge(node, node2)
         self.assertEqual(graf.get_node(node).adjacencies()[0], node2)
+
+    def test_graf_pull(self):
+        node = Node()
+        node1 = Node()
+        node2 = Node()
+        node3 = Node()
+        node4 = Node()
+
+        node1.add_adjacencies(node2,node3)
+        node3.add_adjacencies(node4)
+
+        graf1 = Graf()
+        graf2 = Graf()
+        graf3 = Graf()
+
+        graf1.add(node1, node2, node3, node4)
+        graf1.push()
+
+        graf2 = pull(node1, 3)
+        graf3 = pull(node1, 4)
+
+        self.assertEqual(len(graf2.nodes), 3)
+        self.assertEqual(len(graf3.nodes), 4)
+
+        self.assertTrue(node4 not in graf2.nodes)
+        self.assertTrue(node4 in graf3.nodes)
 
 if __name__ == '__main__':
     unittest.main()
