@@ -44,7 +44,7 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking: 
             var_name = p[1]
-            var_type = type(p[3])
+            var_type = str(type(p[3]))
             # be able to get the type of a node? 
             print " $$$$$$$ var name :: " + var_name + " $$$$$$$$$"
             print " $$$$$$$ var type :: " + var_type + " $$$$$$$$$"
@@ -55,7 +55,7 @@ class Parser():
             else:
                 if (Parser.ST.getRecordType(j) is var_type):
                     self.ST.updateRecord(j,var_record)
-                else
+                else:
                     print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
             # type ID
@@ -142,12 +142,16 @@ class Parser():
                       '''
 
         # STRING_s
-        if (type(p[1]) is str) and (p[1].startswith('"')):
-            p[0] = AstString(p[1])
+        if (type(p[1]) is str):
+            if (p[1].startswith('"')):
+                p[0] = AstString(p[1])
+            elif (p[1].startswith('[')):
+                p[0] = AstList(p[1])
 
         # TODO: Do we need more here?
-        else:
+        else :
             p[0] = p[1]
+            
     
     def p_operations(self, p):
         '''operations : NOT operations
