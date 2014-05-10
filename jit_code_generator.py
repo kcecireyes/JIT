@@ -15,11 +15,9 @@ class CodeGenerator:
         return '%s %s %s\n' %(lhs, op, rhs)
 
     def generate_forloop(self, itr, span, body):
-        new_body = []
-        for line in body:
-            new_body.append('\n\t'.join(line.strip().split('\n')))
+        new_body = self.indent_block(body)
                         
-        code = 'for %s in %s:\n\t%s\n' % (itr, span, '\n\t'.join(new_body))
+        code = 'for %s in %s:\n\t%s\n' % (itr, span, new_body)
         print code
         return code
 
