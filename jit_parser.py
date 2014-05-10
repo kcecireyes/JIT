@@ -8,7 +8,7 @@ import re
 class Parser():
 
     ST = SymbolTable()
-    
+
     def p_statement(self, p):
         '''statement : variable_decl
                      | function_call
@@ -17,13 +17,15 @@ class Parser():
                      | if_block
                      | empty
                      '''
+        print 'statement production ============ '
+        print 'p[1]: ' + str(p[1])
         p[0] = p[1]
 
     def p_variable_decl(self, p):
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
-
+        print 'variable production ============'
         if len(p) == 5:
             # type ID EQUALS expression
             p[0] = AstBinOp(AstID(p[2], p[1]), p[3], p[4])
@@ -125,6 +127,7 @@ class Parser():
                     | BOOLEAN_s
                     | ID EQUALS expression'''
 
+        print 'parameter production ============'
         if p[1].startswith('"'):
             # STRING_s
             p[0] = [AstString(p[1])]
@@ -155,7 +158,7 @@ class Parser():
                       | LIST_s
                       | function_call
                       '''
-
+        print 'expression production ============'
         # STRING_s
         if (type(p[1]) is str):
             if (p[1].startswith('"')):
@@ -276,6 +279,7 @@ class Parser():
              | NUM
              | BOOLEAN_s
         '''
+        print 'l production ============'
         if len(p) == 4:
             p[0] = p[2]
         elif type(p[1]) is str:
@@ -283,7 +287,11 @@ class Parser():
                 p[0] = AstString(p[1])
             else:
                 # get type from ST and make 2nd arg to AstID
-                id_type = Parser.ST.getRecordType(Parser.ST.searchRecord(p[1]))
+                print 'l production for strings that are id ============'
+                print 'p[1]:  ' + str(p[1])
+                index = Parser.ST.searchRecord(str(p[1]))
+                print 'according to the ST, the index of ' + str(p[1]) + 'is ' + str(index)
+                id_type = Parser.ST.getRecordType(index)
                 p[0] = AstID(p[1], id_type)
         else:
             p[0] = AstNum(p[1], 'int')
@@ -294,12 +302,14 @@ class Parser():
 
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
+        print 'for loop production ============'
         p[0] = AstForLoop(AstID(p[2]), AstID(p[4]), p[6])
         
     def p_statement_list(self, p):
         '''statement_list : statement
                           | statement_list statement
                           '''
+        print 'statement_list production ============'
         #'statement_list : statement'
         if not p[1]:
             p[0] = []

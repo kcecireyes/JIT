@@ -1,4 +1,4 @@
-a = [1, 2, 3,] //comment
+list a = [1, 2, 3,] // throws error for lack of init with type without type "list"
 
 //empty for
 for x in y{

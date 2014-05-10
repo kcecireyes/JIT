@@ -140,9 +140,6 @@ class Lexer():
             | variable_decl COMMA variable_list
             | variable_decl
 
-    statement_list : statement
-            | statement_list statement
-
     for_loop : FOR ID IN ID LBRACE statement_list RBRACE
 
     statement_list : statement
