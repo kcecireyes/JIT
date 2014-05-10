@@ -1,25 +1,32 @@
 from jit_parser import *
 from pprint import pprint
 from jit_ast_visitor import *
+import os.path
 
 class Interpreter:
     def __init__(self, output_filename=None):
         self.visitor = AstVisitor()
 
-        if output_filename != None:
-            self.output = open(output_filename, 'w')
-        else:
+        if output_filename == None:
             self.output = None
+            exec "import jitlib" in globals()
+        else:
+            self.output = open(output_filename, 'w')
+            self.output.write("#!/usr/bin/python\n")
+            self.output.write("import os.path, sys\n")
+            self.output.write('sys.path.append("'+os.path.dirname(os.path.realpath(__file__))+'")\n')
+            self.output.write("import jitlib\n")
+            self.output.write("\n")
 
     def execute_ast(self, ast_node, debug=False):
         code = ast_node.accept(self.visitor)
         if debug:
             print "code = " + code
 
-        if self.output != None:
+        if self.output == None:
+            exec code in globals()
+        else:
             self.output.write(code)
-
-        exec code in globals()
 
         # if hasattr(ast_node, 'right'):
         #     ast_node.right = self.execute_ast(ast_node.right)

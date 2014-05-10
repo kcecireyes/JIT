@@ -1,3 +1,8 @@
+#!/usr/bin/python
+import os.path, sys
+sys.path.append("/Users/rkuykendall/Dropbox/Code/JIT")
+import jitlib
+
 a = [1, 2, 3,]
 for x in y:
 for b in a:

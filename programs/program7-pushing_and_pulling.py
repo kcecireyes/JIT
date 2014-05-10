@@ -1,3 +1,8 @@
+#!/usr/bin/python
+import os.path, sys
+sys.path.append("/Users/rkuykendall/Dropbox/Code/JIT")
+import jitlib
+
 print '\n'.join(["Beginning push program."])
 myNode = Node()
 myNode2 = Node()
