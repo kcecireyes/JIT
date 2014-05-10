@@ -112,7 +112,9 @@ class Lexer():
     # Error handling rule
     def t_error(self, t):
         print "Illegal character '%s'" % t.value[0]
-        t.lexer.skip(1)
+        print "in line '%d'" % t.lexer.lineno
+        print "at position '%d'" % t.lexer.lexpos
+        t.lexer.skip(1) # Should we really skip? No I guess. Just stop compiling right here.
     
     def __init__(self):
         lex.lex(module=self)
