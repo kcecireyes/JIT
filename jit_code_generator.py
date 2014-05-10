@@ -12,7 +12,10 @@ class CodeGenerator:
         return 'print %s\n' % string
 
     def generate_binaryOp(self, lhs, op, rhs):
-        return '%s %s %s\n' %(lhs, op, rhs)
+        if lhs[-9:] == ".keywords":
+            return lhs[:-9]+".set_keywords("+rhs+")\n"            
+        else:
+            return '%s %s %s\n' %(lhs, op, rhs)
 
     def generate_forloop(self, itr, span, body):
         new_body = self.indent_block(body)
@@ -29,7 +32,7 @@ class CodeGenerator:
             return '\n\t'.join(t)
 
         return "pass"
-        
+
     def generate_ifblock(self, ifc, thencls, elsecls):
         thcl = self.indent_block(thencls)
         elcl = self.indent_block(elsecls)
