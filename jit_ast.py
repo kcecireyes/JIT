@@ -8,11 +8,12 @@ class AstEmpty(AstNode):
         return ""
 
 class AstBinOp(AstNode):
-    def __init__(self,left,op,right):
+    def __init__(self,left,op,right, result_type = 'auto'):
         self.type = "binop"
         self.left = left
         self.right = right
         self.op = op
+        self.rtype = str(result_type)
 
     def __str__(self):
         return str(self.left) + str(self.op) + str(self.right)
@@ -61,7 +62,7 @@ class AstList(AstNode):
 class AstID(AstNode):
     def __init__(self, name, id_type = 'auto'): #type = 'auto'):
         self.name = name
-        self.type = id_type
+        self.type = str(id_type)
 
     def accept(self, visitor):
         return visitor.visit_id(self)
@@ -70,8 +71,8 @@ class AstID(AstNode):
         return self.name
     
 class AstNum(AstNode):
-    def __init__(self,value):
-        self.type = "number"
+    def __init__(self,value, num_type = 'auto'):
+        self.type = num_type
         self.value = value
 
     def __str__(self):

@@ -1,0 +1,11 @@
+int a = 2 // this is fine
+string b = "hello" // this is fine, too
+a = 4 // this is just dandy
+b = 4 // whoa, hold up there
+c = 3 // you were doing so well, what are you doing!!!
+
+string d = "hi"
+a = a + d // jesus, this is all wrong
+a = a * d // this is no better
+
+a = a + 3 // good job (should output 7)
