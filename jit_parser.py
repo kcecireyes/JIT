@@ -45,7 +45,11 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking: 
             var_name = p[1]
+
+            #var_type = str(type(p[3]))
+
             var_type = type(p[3]) # NEED TYPE FROM AST CLASS
+
             # be able to get the type of a node? 
             print " $$$$$$$ var name :: " + str(var_name) + " $$$$$$$$$"
             print " $$$$$$$ var type :: " + str(var_type) + " $$$$$$$$$"
@@ -159,37 +163,54 @@ class Parser():
                       '''
 
         # STRING_s
-        if (type(p[1]) is str) and (p[1].startswith('"')):
-            p[0] = AstString(p[1])
+        if (type(p[1]) is str):
+            if (p[1].startswith('"')):
+                p[0] = AstString(p[1])
+            elif (p[1].startswith('[')):
+                p[0] = AstList(p[1])
 
         # TODO: Do we need more here?
-        else:
+        else :
             p[0] = p[1]
+            
     
     def p_operations(self, p):
         '''operations : NOT operations
                       | s
                       '''
-        p[0] = AstEmpty()
+        if len(p) == 3:
+            p[0] = AstBinOp(AstEmpty(), p[1], p[2])
+        else:
+            p[0] = p[1]
+            
     
     def p_s(self, p):
         '''s : s OR t
              | t
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
     
     def p_t(self, p):
         '''t : t AND f
              | f
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
 
     def p_f(self, p):
         '''f : f EQUALS_c g
              | f NOT_EQUALS_c g
              | g
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
 
     def p_g(self, p):
         '''g : g LESS_c j
@@ -199,7 +220,11 @@ class Parser():
              | j
              '''
         
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
+
     
     def p_j(self, p):
         '''j : j '+' k
@@ -207,7 +232,11 @@ class Parser():
              | k
              '''
 
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
+
 
         
     def p_k(self, p):
@@ -215,8 +244,12 @@ class Parser():
              | k '/' l
              | l
              '''
+        if len(p) == 4:
+            p[0] = AstBinOp(p[1], p[2], p[3])
+        else:
+            p[0] = p[1]
 
-        p[0] = AstEmpty()
+        
 
     def p_l(self, p):
         '''l : LPAREN operations RPAREN 
@@ -224,7 +257,16 @@ class Parser():
              | NUM
              | BOOLEAN_s
              '''
-        p[0] = AstEmpty()
+        if len(p) == 4:
+            p[0] = p[2]
+        elif type(p[1]) is str:
+            if p[1] in ['true', 'false']:
+                p[0] = AstString(p[1])
+            else:
+                p[0] = AstID(p[1])
+        else:
+            p[0] = AstNum(p[1])
+
     
 #     def p_expression(self, p):
 #         '''expression : arithmetic_expr

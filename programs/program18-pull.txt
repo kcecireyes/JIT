@@ -1,0 +1,12 @@
+//create a node
+node myNode = createNode()
+
+//work with it
+myNode.title = "The Never-Ending Controversy Over All-Girls Education"
+myNode.keywords = ["soccer", "world cup", "brazil 2014",]
+
+//pull (10 relevant articles from the graph)
+pull(myNode, 10)
+
+//pull would push and auto-connect myNode into the DB, find its community of 10 nodes, delete myNode from DB and return the community
+
