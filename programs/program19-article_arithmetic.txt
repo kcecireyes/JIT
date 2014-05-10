@@ -4,10 +4,10 @@ x = myNode1 ++ myNode2 //UNION of two nodes
 
 x = myNode1 ^^ myNode2 //INTERSECTION of two nodes
 
-x = myNode1 ++ myNode2 over Keywords //a UNION of keywords only
+x = myNode1 ++ myNode2 over KEYWORDS //a UNION of keywords only
 
-x = myNode1 ++ myNode2 over Keywords, title //a UNION of keywords and title only
+x = myNode1 ++ myNode2 over KEYWORDS, TITLE //a UNION of keywords and title only
 
-x = myNode1 ^^ myNode2 over Keywords //an INTERSECTION of keywords only
+x = myNode1 ^^ myNode2 over KEYWORDS //an INTERSECTION of keywords only
 
-x = myNode1 ^^ myNode2 over Date, Body, Publisher, Author //an INTERSECTION of date, body, publisher and author only
+x = myNode1 ^^ myNode2 over DATE, BODY, PUBLISHER, AUTHOR //an INTERSECTION of date, body, publisher and author only
