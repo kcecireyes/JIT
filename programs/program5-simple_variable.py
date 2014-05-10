@@ -1,6 +1,5 @@
 #!/usr/bin/python
-import os.path, sys
-sys.path.append("/Users/rkuykendall/Dropbox/Code/JIT")
+# Be sure to add jitlib to your path!
 import jitlib
 
 print '\n'.join(["Beginning simple node program."])
