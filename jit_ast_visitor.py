@@ -13,7 +13,7 @@ class AstVisitor:
 
     def exit_scope(self):
         self.env.pop()
-        
+
 
     def visit_fun(self, fun_node):
         if fun_node.subtype == "say":
@@ -27,7 +27,7 @@ class AstVisitor:
             #self.output.write("Node()")
             code = "Node()"
         elif fun_node.subtype == "listen":
-            code = "Listen()"
+            code = "raw_input()"
         elif fun_node.subtype == "push":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
@@ -77,7 +77,7 @@ class AstVisitor:
             self.env[-1][lhs] = rhs
         code = self.code_generator.generate_binaryOp(lhs, binop_node.op, rhs)
         return code
-        
+
 
     def visit_str(self, str_node):
         return str_node.value
@@ -123,5 +123,3 @@ class AstVisitor:
         fun_body = map(lambda n : n.accept(self), fundecl_node.stmtlist)
         code = self.code_generator.generate_fundecl(fundecl_node.name, varlist, fun_body)
         return code
-        
-        

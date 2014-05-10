@@ -81,9 +81,6 @@ class Node(Base):
         all_nodes.extend([x.higher_node for x in self.lower_edges])
         return all_nodes
 
-    # keywords = property(set_keywords)
-    # body = property(set_body)
-
 class Keyword(Base):
     __tablename__ = 'keyword'
 
