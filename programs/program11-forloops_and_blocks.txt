@@ -1,8 +1,4 @@
-list a = [1, 2, 3,] // throws error for lack of init with type without type "list"
-
-//empty for
-for x in y{
-}
+list a = [4, 2, 3,] // throws error for not initializing w/ type "list"
 
 //multi-statement for
 for b in a { //comment
@@ -12,6 +8,10 @@ for b in a { //comment
 
     int d //comment
 } //comment
+
+//empty for
+for x in y{
+}
 
 words = ["Shut", "the", "f**k", "up", "!",] //comment
 

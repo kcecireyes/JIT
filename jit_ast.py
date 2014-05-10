@@ -49,9 +49,10 @@ class AstString(AstNode):
         return visitor.visit_str(self)
 
 class AstList(AstNode):
-    def __init__(self, value):
+    def __init__(self, value, expression_type = 'auto'):
         self.type = "list"
         self.value = value
+        self.ex_type  = expression_type
 
     def __str__(self):
         return self.value
