@@ -24,14 +24,14 @@ def main():
             data = file.readlines()
 
         overflow = ""
-        for line in data:
+        for i, line in enumerate(data):
             line = overflow + line
 
             if line.count('{') == line.count('}'):
                 if options.debug:
                     print "=======%s" %line
 
-                interpreter.execute_txt(line.strip(), debug=options.debug)
+                interpreter.execute_txt(line.strip(), line=i, debug=options.debug)
                 overflow = ""
             else:
                 overflow = line

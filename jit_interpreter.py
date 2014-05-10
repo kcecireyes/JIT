@@ -39,7 +39,7 @@ class Interpreter:
         #     elif ast_node.subtype == "listen":
         #         raw_input("User input: ")
 
-    def execute_txt(self, code, debug=False):
+    def execute_txt(self, code, line=0, debug=False):
         parser = Parser()
         ast = parser.parser.parse(code)
         if debug:
