@@ -19,6 +19,7 @@ class Node(Base):
     date = Column(DateTime)
     publisher = Column(String)
     body = Column(String)
+    # Adjacencies
     keywords = relationship("Keyword",
                             secondary=node_keywords_table,
                             backref="nodes")
@@ -29,6 +30,10 @@ class Node(Base):
         self.author = author
         self.publisher = publisher
         self.body = body
+
+    def push():
+        # TODO: white this
+        pass
 
     def set_keywords(self, value):
         if type(value) is list:
