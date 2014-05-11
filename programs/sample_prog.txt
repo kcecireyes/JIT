@@ -1,0 +1,50 @@
+// Create nodes to work with
+node myNode = createNode()
+node.body = import("test_body.txt")
+node.title = "When is a Patent Claim so outrageous that Attorney's fees must be awarded"
+node.keywords = ["tech", "patents", "ArsTechnica", computers", "ridiculousness",]
+node.publisher = "ArsTechnica"
+node.author = "Joe Mullin"
+
+node2 myNode = createNode()
+node2.body = import("test_body2.txt")
+node2.title = "Amazon's Latest Patent is Sillier than the Peanut Butter Sandwich Patent"
+node2.keywords = ["Amazon", "patents", "peanut butter", "ArsTechnica", "tech", "Computers", "Internet",]
+node2.publisher = "ArsTechnica"
+node2.author = "Joe Silver"
+
+newNode = createNode()
+
+# Create new node to combine first two nodes
+
+newNode = node ^^ node2 over KEYWORDS
+newNode.title = node ++ node2 over TITLE
+newNode.publisher = node ^^ node2 over PUBLISHER
+newNode.author = node ^^ node2 over AUTHOR
+
+
+// Print newly combined keywords
+// Expected keywords: "tech", "patents", "ArsTechnica", "computers"
+for x in newNode.keywords {
+	say(x)
+}
+
+
+newNode.title = node ++ node2 over TITLE
+
+// Expected title: "When is a Patent Claim so outrageous that Attorney's fees must be awarded, Amazon's Latest Patent is Sillier than the Peanut Butter Sandwich Patent"
+say(newNode.title)
+
+// Expected publisher: "ArsTechnica"
+say(newNode.publisher)
+
+// Expected Author: ""
+say(newNode.author)
+
+// User types up new body
+newNode.body = Listen()
+
+
+
+
+
