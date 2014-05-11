@@ -56,22 +56,22 @@ class Parser():
             if isinstance(p[3], str):
                 p[3] = AstString(p[3])
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
-            # Semantic Checking: 
+            # Semantic Checking:
             var_name = p[1]
             var_type = p[3].type # NEED TYPE FROM AST CLASS
             # print " $$$$$$$ var name :: " + str(var_name) + " $$$$$$$$$"
             # print " $$$$$$$ var type :: " + str(var_type) + " $$$$$$$$$"
             var_record = {'name': var_name, 'type': var_type }
             j = Parser.ST.searchRecord(var_name)
-            
+
             if j == -1:
-                print "Semantic error: Initialization without declaration"
+                print "Semantic error: Initialization without declaration of " + var_name
             else:
                 if (Parser.ST.getRecordType(j) == var_type):
                     self.ST.updateRecord(j,var_record)
                 else:
                     print "Semantic error: Type mismatch in redeclared variable " + var_name
-            
+
         elif len(p) == 3:
             # print 'production type id'
             # print 'p[2]  ' + str(p[1])
@@ -168,7 +168,7 @@ class Parser():
                 | LIST
                 | GRAPH'''
         p[0] = p[1]
-    
+
     def p_expression(self, p):
         '''expression : operations
                       | article_arithmetic
@@ -187,13 +187,13 @@ class Parser():
                 # print 'list production'
                 p[1] = p[1].replace('[]', '')
                 # Check if the contents of the list are numbers or strings
-                # TODO: 
+                # TODO:
                 # This is just a placeholder: ideally, we'd be able to index the list
                 # and get each component's type
                 # if float(str(p[1][1])):
                 try:
                     int(str(p[1][1]))
-                    print 'after inting ', int(str(p[1][1]))
+                    print 'First element of list is int ', int(str(p[1][1]))
                     p[0] = AstList(p[1], "int")
                 except ValueError:
                     p[0] = AstList(p[1], "string")
@@ -201,14 +201,14 @@ class Parser():
         # TODO: Do we need more here?
         else :
             p[0] = p[1]
-            
+
     def p_article_arithmetic(self, p):
         '''article_arithmetic : ID UNION ID optional_part
                               | ID INTERSECTION ID optional_part
                               '''
         #p[0] = AstEmpty()
         p[0] = AstArticleOp(AstID(p[1]), p[2], AstID(p[3]), p[4])
-    
+
     def p_optional_part(self, p):
         '''optional_part : OVER things_list
                          | empty
@@ -218,7 +218,7 @@ class Parser():
         else:
             #p[0] = AstEmpty()
             p[0] = []
-        
+
     def p_things_list(self, p):
         '''things_list : thing
                        | thing COMMA things_list
@@ -229,7 +229,7 @@ class Parser():
         else:
             # thing COMMA things_list
             p[0] = p[1] + p[3]
-    
+
     def p_thing(self, p):
         '''thing : KEYWORDS
                  | BODY
@@ -239,12 +239,12 @@ class Parser():
                  | DATE
                  '''
         p[0] = [p[1]]
-    
+
     def p_operations(self, p):
         '''operations : s
                       '''
         p[0] = p[1]
-            
+
     def p_s(self, p):
         '''s : s OR t
              | t
@@ -253,7 +253,7 @@ class Parser():
             p[0] = AstBinOp(p[1], p[2], p[3])
         else:
             p[0] = p[1]
-    
+
     def p_t(self, p):
         '''t : t AND f
              | f
@@ -313,7 +313,7 @@ class Parser():
             p[0] = p[1]
 
     def p_l(self, p):
-        '''l : LPAREN operations RPAREN 
+        '''l : LPAREN operations RPAREN
              | ID
              | NUM
              | BOOLEAN_s
@@ -361,7 +361,7 @@ class Parser():
         else:
             print "Semantic error: " + itr_name + " has already been declared. Initialize a new variable"
         p[0] = AstForLoop(AstID(p[2]), AstID(p[4], span_type), p[6])
-        
+
     def p_statement_list(self, p):
         '''statement_list : statement
                           | statement_list statement
@@ -378,7 +378,7 @@ class Parser():
     def p_if_block(self, p):
         'if_block : IF LPAREN expression RPAREN THEN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'
         p[0] = AstIfBlock(p[3], p[7], p[11])
-        
+
     def p_error(self, p):
         print "Syntax error at '%s'" % p.value
         print "in line '%d'" % p.lineno
@@ -390,4 +390,3 @@ class Parser():
         self.tokens = tokens = lexer.tokens
 
         self.parser = yacc.yacc(module=self)
-
