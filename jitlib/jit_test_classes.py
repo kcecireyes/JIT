@@ -137,9 +137,9 @@ class TextJIT(unittest.TestCase):
 
         graf2 = search(keywords="test")
 
-        self.assertEqual(node1 in graf.nodes)
-        self.assertEqual(node2 in graf.nodes)
-        self.assertEqual(node3 not in graf.nodes)
+        self.assertTrue(node1 in graf.nodes)
+        self.assertTrue(node2 in graf.nodes)
+        self.assertTrue(node3 not in graf.nodes)
 
 
 if __name__ == '__main__':
