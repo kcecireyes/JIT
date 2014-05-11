@@ -15,7 +15,7 @@ class CodeGenerator:
         if lhs[-9:] == ".keywords":
             return lhs[:-9]+".set_keywords("+rhs+")\n"
         else:
-            return '%s %s %s\n' %(lhs, op, rhs)
+            return ('%s %s %s\n' %(lhs, op, rhs)).lstrip()
 
     def generate_articleOp(self, lhs, op, rhs, assign_to, list_of_things):
         if op == "++":
@@ -44,6 +44,9 @@ class CodeGenerator:
                     lines.append("%s.%s = list(set(%s.%s.split(' ')) & set(%s.%s.split(' ')))" % (assign_to, thing, lhs, thing, rhs, thing))
                 elif thing in ["publisher", "author","body"]:
                     lines.append("%s.%s = %s.%s if %s.%s == %s.%s else ''" % (assign_to, thing, lhs, thing, lhs, thing, rhs, thing))
+                elif thing == "date":
+                    lines.append("%s.%s = list(set(%s.%s.split('/')) & set(%s.%s.split('/')))" % (assign_to, thing, lhs, thing, rhs, thing))
+                    
 
         return '\n'.join(lines)
 
