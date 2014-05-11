@@ -115,5 +115,32 @@ class TextJIT(unittest.TestCase):
         self.assertTrue(node4 not in graf2.nodes)
         self.assertTrue(node4 in graf3.nodes)
 
+    def test_graf_search(self):
+        node = Node()
+        node1 = Node()
+        node2 = Node()
+        node3 = Node()
+        node4 = Node()
+        graf = Graf()
+
+        node1.author = "node1 author"
+        node1.add_keywords(["node1", "a node", "test"])
+        node2.author = "node1 author"
+        node2.add_keywords(["node3", "test"])
+        node3.author = "node3 author"
+        node3.publisher = "node3 publisher"
+        node4.author = "node4 author"
+        node4.publisher = "node publisher"
+
+        graf.add(node1, node2, node3, node4)
+        graf.push
+
+        graf2 = search(keywords="test")
+
+        self.assertEqual(node1 in graf.nodes)
+        self.assertEqual(node2 in graf.nodes)
+        self.assertEqual(node3 not in graf.nodes)
+
+
 if __name__ == '__main__':
     unittest.main()
