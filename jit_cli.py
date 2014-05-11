@@ -43,7 +43,15 @@ def main():
                 line = raw_input("JIT> ")
             except KeyboardInterrupt:
                 # Execute, don't crash
-                print ""
+                # This is the Small Slant font from
+                # http://patorjk.com/software/taag/
+                # for the text 'G O O D B Y E !'
+                print '''
+      _____  ____    ____    ___    ___  __  __  ____  __
+     / ___/ / __ \  / __ \  / _ \  / _ ) \ \/ / / __/ / /
+    / (_ / / /_/ / / /_/ / / // / / _  |  \  / / _/  /_/
+    \___/  \____/  \____/ /____/ /____/   /_/ /___/ (_)
+                '''
                 exit()
 
             while line.count('{') != line.count('}'):
@@ -54,6 +62,8 @@ def main():
             except NameError:
                 # Already prints error
                 pass
+            except AttributeError:
+                print "There was a problem parsing that line (AttributeError)."
 
 
     if options.debug:

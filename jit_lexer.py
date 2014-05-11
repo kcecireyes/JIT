@@ -44,7 +44,7 @@ class Lexer():
         'LPAREN',
         'RPAREN',
         'LBRACE',
-        'RBRACE', 
+        'RBRACE',
         'EQUALS',
         'EQUALS_c',
         'LESS_c',
@@ -61,7 +61,7 @@ class Lexer():
     literals = ['+','-','*','/']
 
     # Regular expression rules for simple tokens
-    # == 
+    # ==
     t_UNION = r'\+\+'
     t_INTERSECTION = r'\^\^'
     t_NOT_EQUALS_c = r'!='
@@ -111,16 +111,16 @@ class Lexer():
 
     # Error handling rule
     def t_error(self, t):
-        print "Illegal character '%s'" % t.value[0]
-        print "in line '%d'" % t.lexer.lineno
+        print "Illegal character '%s'" % t.value[0],
+        print "in line '%d'" % t.lexer.lineno,
         print "at position '%d'" % t.lexer.lexpos
         t.lexer.skip(1) # Should we really skip? No I guess. Just stop compiling right here.
-    
+
     def __init__(self):
         lex.lex(module=self)
 
 ########## Grammar needed for prog1 and prog2 ##########
-''' 
+'''
     statement : variable_decl
              | function_call
              | function_decl
@@ -144,7 +144,7 @@ class Lexer():
 
     statement_list : statement
             | statement_list statement
-    
+
     if_block : IF ( expression ) THEN { statement_list } ELSE { statement_list }'
 
     fun : SAY
@@ -160,7 +160,7 @@ class Lexer():
     parameters : empty
             | parameter COMMA parameters
             | parameter
-    
+
     parameter : ID
             | STRING_s
             | LIST_s
@@ -191,7 +191,7 @@ class Lexer():
     f : f EQUALS_c g
             | f NOT_EQUALS_c g
             | g
-    
+
     g : g LESS_c j
             | g LESS_EQUALS_c j
             | g GREATER_c j
@@ -205,8 +205,8 @@ class Lexer():
     k : k '*' l
             | k '/' l
             | l
-    
-    l : LPAREN operations RPAREN 
+
+    l : LPAREN operations RPAREN
             | ID
             | NUM
             | BOOLEAN_s
