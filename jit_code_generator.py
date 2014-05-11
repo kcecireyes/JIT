@@ -18,23 +18,26 @@ class CodeGenerator:
             return '%s %s %s\n' %(lhs, op, rhs)
 
     def generate_articleOp(self, lhs, op, rhs, assign_to, list_of_things):
+        #return '%s %s %s\n' %(lhs, op, rhs)
         if op == "++":
-            pass
+            if len(list_of_things) == 0:
+                code = '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs) 
+                return code
+            else:
+                code = ''
+                for i in list_of_things:
+                    attribute = i.lower()
+                    if attribute == "keywords":
+                        code = code + '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs) 
+                    else:
+                        code = code + "%s.%s = %s.%s + ', ' + %s.%s\n" % (assign_to,attribute,lhs,attribute,rhs,attribute)
+                return code      
         else:
-            lines = []
-            for thing in list_of_things:
-                if thing in ["KEYWORDS", "BODY"]:
-                    lines.append("%s.%s = set(%s.%s) & set(%s.%s)" % (assign_to, thing, lhs, thing, rhs, thing))
-                elif thing == "title":
-                    pass
-                elif thing in ["PUBLISHER", "AUTHOR"]:
-                    lines.append("%s.%s = %s.%s if %s.%s == %s.%s else ''" % (assign_to, thing, lhs, thing, lhs, thing, rhs, thing))
-                else:
-                    
-                    
-                                 
-                
-        return '%s %s %s\n' %(lhs, op, rhs)
+            if len(list_of_things) == 0:
+                pass
+            else:
+                pass
+        
 
     def generate_forloop(self, itr, span, body):
         new_body = self.indent_block(body)
