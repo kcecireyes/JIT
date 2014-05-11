@@ -71,9 +71,12 @@ class AstVisitor:
         self.output.write(prtstr)
         """
 
-        lhs = binop_node.left.accept(self).strip()
+
         if (rhs.type == "articleop"):
-            "%s." % lhs
+            lhs  = ""
+        else:
+            lhs = binop_node.left.accept(self).strip()
+            
         rhs = binop_node.right.accept(self).strip()
         if binop_node.op == "=":
             self.env[-1][lhs] = rhs
@@ -87,6 +90,7 @@ class AstVisitor:
         rhs = articleop_node.right.accept(self).strip()
         #if articleop_node.op == "=":
         #    self.env[-1][lhs] = rhs
+        
         code = self.code_generator.generate_articleOp(lhs, articleop_node.op, rhs, articleop_node.assign_to, articleop_node.list_of_things)
         
         return code
