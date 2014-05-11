@@ -1,6 +1,7 @@
 list a = [4, 2, 3,] // throws error for not initializing w/ type "list"
 
 //multi-statement for
+node myNode = createNode()
 for b in a { //comment
     c = b + 1 //comment
     //comment

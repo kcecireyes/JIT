@@ -400,11 +400,17 @@ class Parser():
                     #check if the attribute is a list
                     attribute_name = p[4][dot_index+1:len(p[4])]
                     if attribute_name == "keywords":
-                        pass
+                        p[0] = AstForLoop(AstID(p[2]), AstID(p[4]), p[6])
                     else:
                         print "Semantic error: %s is not an iterable " % p[4]
         else:
             span_index = Parser.ST.searchRecord(str(p[4]))
+            print "span_index"
+            print span_index
+            if span_index < 0:
+                print "Semantic error: Undeclared variable " + str(p[4])
+                return
+                
             span_type = Parser.ST.getRecordType(span_index)
             # print str(span_type) + "     is the type of " + str(p[4])
             if span_type != "list":
@@ -416,9 +422,10 @@ class Parser():
             j = Parser.ST.searchRecord(itr_name)
             if j == -1:
                 Parser.ST.addRecord(itr_record)
-            # force the iterator to be a new declaration
+                # force the iterator to be a new declaration
             else:
                 print "Semantic error: " + itr_name + " has already been declared. Initialize a new variable"
+                return
             p[0] = AstForLoop(AstID(p[2]), AstID(p[4], span_type), p[6])
 
     def p_statement_list(self, p):
