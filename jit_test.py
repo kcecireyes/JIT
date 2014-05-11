@@ -28,6 +28,7 @@ class TextJIT(unittest.TestCase):
         self.program15 = "programs/program15-nested-if-else"
         self.program16 = "programs/program16-operations"
         self.program17 = "programs/program17-function_declarations"
+        self.program19 = "programs/program19-article_arithmetic"
         self.the_last_program = "programs/test_program_to_end_all_programs"
 
     def test_comments_should_be_parsed_out(self):
@@ -83,6 +84,9 @@ class TextJIT(unittest.TestCase):
 
     def test_the_universe(self):
         self.assertTrue(self.compare(self.the_last_program)) 
+
+    def test_arithemtic(self):
+        self.assertTrue(self.compare(self.program19)) 
 
     def compare(self, program):
         match = True
