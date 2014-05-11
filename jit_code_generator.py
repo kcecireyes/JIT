@@ -27,7 +27,9 @@ class CodeGenerator:
                 for i in list_of_things:
                     attribute = i.lower()
                     if attribute == "keywords":
-                        code = code + '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs) 
+                        code = code + '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs)
+                    elif attribute == "body":
+                        code = code + '%s.body = ", ".join(list(set(extract_tags(%s.body)) | set(extract_tags(%s.body))))\n' % (assign_to,lhs,rhs)
                     else:
                         code = code + "%s.%s = %s.%s + ', ' + %s.%s\n" % (assign_to,attribute,lhs,attribute,rhs,attribute)
                 return code      
@@ -38,11 +40,13 @@ class CodeGenerator:
                 
             for thing in list_of_things:
                 thing = thing.lower()
-                if thing in ["keywords", "body"]:
+                if thing == "body":
+                    lines.append('%s.body = ", ".join(list(set(extract_tags(%s.body)) & set(extract_tags(%s.body))))\n' % (assign_to,lhs,rhs))
+                elif thing == "keywords":
                     lines.append("%s.%s = list(set(%s.%s) & set(%s.%s))" % (assign_to, thing, lhs, thing, rhs, thing))
                 elif thing == "title":
                     lines.append("%s.%s = list(set(%s.%s.split(' ')) & set(%s.%s.split(' ')))" % (assign_to, thing, lhs, thing, rhs, thing))
-                elif thing in ["publisher", "author","body"]:
+                elif thing in ["publisher", "author"]:
                     lines.append("%s.%s = %s.%s if %s.%s == %s.%s else ''" % (assign_to, thing, lhs, thing, lhs, thing, rhs, thing))
                 elif thing == "date":
                     lines.append("%s.%s = list(set(%s.%s.split('/')) & set(%s.%s.split('/')))" % (assign_to, thing, lhs, thing, rhs, thing))
