@@ -58,19 +58,6 @@ class AstVisitor:
         return code
 
     def visit_binop(self, binop_node):
-        if not binop_node: return
-        """
-        if(binop_node.right.type == "string"):
-            prtstr = str(binop_node.left) + " " + str(binop_node.op) + " " + str(binop_node.right) + "\n"
-        elif(binop_node.right.type == "function"):
-            prtstr = str(binop_node.left) + " " + str(binop_node.op) + " " + "\n"
-            self.visit_fun(binop_node.right)
-        else:
-            prtstr = "ERROR visit_binop\n"
-
-        self.output.write(prtstr)
-        """
-
         op = binop_node.op
         if (binop_node.right.type == "articleop"):
             lhs  = op = ""

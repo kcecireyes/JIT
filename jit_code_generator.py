@@ -18,21 +18,35 @@ class CodeGenerator:
             return '%s %s %s\n' %(lhs, op, rhs)
 
     def generate_articleOp(self, lhs, op, rhs, assign_to, list_of_things):
-        lines = []
         if op == "++":
-            pass
+            if len(list_of_things) == 0:
+                code = '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs) 
+                return code
+            else:
+                code = ''
+                for i in list_of_things:
+                    attribute = i.lower()
+                    if attribute == "keywords":
+                        code = code + '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs) 
+                    else:
+                        code = code + "%s.%s = %s.%s + ', ' + %s.%s\n" % (assign_to,attribute,lhs,attribute,rhs,attribute)
+                return code      
         else:
+            lines = []
+            if not list_of_things:
+                list_of_things.append("KEYWORDS")
+                
             for thing in list_of_things:
                 thing = thing.lower()
                 if thing in ["keywords", "body"]:
                     lines.append("%s.%s = list(set(%s.%s) & set(%s.%s))" % (assign_to, thing, lhs, thing, rhs, thing))
                 elif thing == "title":
                     lines.append("%s.%s = list(set(%s.%s.split(' ')) & set(%s.%s.split(' ')))" % (assign_to, thing, lhs, thing, rhs, thing))
-                elif thing in ["publisher", "author"]:
+                elif thing in ["publisher", "author","body"]:
                     lines.append("%s.%s = %s.%s if %s.%s == %s.%s else ''" % (assign_to, thing, lhs, thing, lhs, thing, rhs, thing))
-                elif thing == "body":
-                    lines.append("%s.%s = list(set(%s.%s.split(' ')) & set(%s.%s.split(' ')))" % (assign_to, thing, lhs, thing, rhs, thing))
+
         return '\n'.join(lines)
+
 
     def generate_forloop(self, itr, span, body):
         new_body = self.indent_block(body)
