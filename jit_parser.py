@@ -386,22 +386,37 @@ class Parser():
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
         # print 'for loop production ============ \n'
-        span_index = Parser.ST.searchRecord(str(p[4]))
-        span_type = Parser.ST.getRecordType(span_index)
-        # print str(span_type) + "     is the type of " + str(p[4])
-        if span_type != "list":
-            print "Semantic error: Can't iterate over type " + span_type
-        itr_name = p[2]
-        # print print Parser.ST.printST()
-        itr_type = Parser.ST.getRecordExpType(span_index)
-        itr_record = {'name': itr_name, 'type': itr_type }
-        j = Parser.ST.searchRecord(itr_name)
-        if j == -1:
-            Parser.ST.addRecord(itr_record)
-        # force the iterator to be a new declaration
+        var_name = p[4]
+        if '.' in var_name:
+                dot_index = var_name.find('.')
+                var_name = var_name[0:dot_index]
+                j = Parser.ST.searchRecord(var_name)
+                if j == -1:
+                    print "Semantic error: Use of object %s without declaration" % var_name
+                else:
+                    #check if the attribute is a list
+                    attribute_name = p[4][dot_index+1:len(p[4])]
+                    if attribute_name == "keywords":
+                        pass
+                    else:
+                        print "Semantic error: %s is not an iterable " % p[4]
         else:
-            print "Semantic error: " + itr_name + " has already been declared. Initialize a new variable"
-        p[0] = AstForLoop(AstID(p[2]), AstID(p[4], span_type), p[6])
+            span_index = Parser.ST.searchRecord(str(p[4]))
+            span_type = Parser.ST.getRecordType(span_index)
+            # print str(span_type) + "     is the type of " + str(p[4])
+            if span_type != "list":
+                print "Semantic error: Can't iterate over type " + span_type
+            itr_name = p[2]
+            # print print Parser.ST.printST()
+            itr_type = Parser.ST.getRecordExpType(span_index)
+            itr_record = {'name': itr_name, 'type': itr_type }
+            j = Parser.ST.searchRecord(itr_name)
+            if j == -1:
+                Parser.ST.addRecord(itr_record)
+            # force the iterator to be a new declaration
+            else:
+                print "Semantic error: " + itr_name + " has already been declared. Initialize a new variable"
+            p[0] = AstForLoop(AstID(p[2]), AstID(p[4], span_type), p[6])
 
     def p_statement_list(self, p):
         '''statement_list : statement
