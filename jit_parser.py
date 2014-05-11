@@ -362,7 +362,10 @@ class Parser():
                 print 'p[1]:  ' + str(p[1])
                 index = Parser.ST.searchRecord(str(p[1]))
                 print 'according to the ST, the index of ' + str(p[1]) + ' is ' + str(index)
-                id_type = Parser.ST.getRecordType(index)
+                if index >= 0:
+                    id_type = Parser.ST.getRecordType(index)
+                else:
+                    id_type = 'void'
                 p[0] = AstID(p[1], id_type)
         else:
             print 'l production for nums'
