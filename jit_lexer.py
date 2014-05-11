@@ -145,7 +145,7 @@ class Lexer():
     statement_list : statement
             | statement_list statement
 
-    if_block : IF ( expression ) THEN { statement_list } ELSE { statement_list }'
+    if_block : IF LPAREN expression RPAREN THEN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE
 
     fun : SAY
             | LISTEN
@@ -175,12 +175,28 @@ class Lexer():
             | GRAPH
 
     expression : operations
+            | article_arithmetic
             | STRING_s
             | LIST_s
             | function_call
 
-    operations : NOT operations
-            | s
+    article_arithmetic : ID UNION ID optional_part
+                       | ID INTERSECTION ID optional_part
+    
+    optional_part : OVER things_list
+                  | empty
+                  
+    things_list : thing
+                | thing COMMA things_list
+                
+    thing : KEYWORDS
+                 | BODY
+                 | PUBLISHER
+                 | TITLE
+                 | AUTHOR
+                 | DATE
+                 
+    operations : s
 
     s : s OR t
             | t
@@ -202,9 +218,13 @@ class Lexer():
             | j '-' k
             | k
 
-    k : k '*' l
-            | k '/' l
-            | l
+    k : k '*' m
+             | k '/' m
+             | m
+             
+    m : NOT l
+      | l
+      
 
     l : LPAREN operations RPAREN
             | ID
