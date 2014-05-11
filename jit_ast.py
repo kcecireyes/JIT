@@ -101,7 +101,6 @@ class AstNum(AstNode):
     def accept(self, visitor):
         return visitor.visit_num(self)
 
-
 class AstExpr(AstNode):
     def __init__(self, value):
         self.value = value
@@ -109,7 +108,6 @@ class AstExpr(AstNode):
     def accept(self, visitor):
         pass
 
-        
 class AstVarDecl(AstNode):
     def __init__(self, name, t):
         self.name = name
@@ -117,7 +115,6 @@ class AstVarDecl(AstNode):
 
     def accept(self, visitor):
         return visitor.visit_vardecl(self)
-
 
 class AstForLoop(AstNode):
     def __init__(self, itr, span, body):
@@ -128,7 +125,6 @@ class AstForLoop(AstNode):
     def accept(self, visitor):
         return visitor.visit_forloop(self)
 
-
 class AstIfBlock(AstNode):
     def __init__(self, if_clause, then_clause, else_clause):
         self.if_clause = if_clause
@@ -137,7 +133,6 @@ class AstIfBlock(AstNode):
 
     def accept(self, visitor):
         return visitor.visit_ifblock(self)
-
 
 class AstFunDecl(AstNode):
     def __init__(self, name, varlist, stmtlist):

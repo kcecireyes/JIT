@@ -2,7 +2,7 @@ class SymbolTable:
     #Common base class for all STs
 
     def __init__(self):
-        self.table = [] #an empty list of dictionaries
+        self.table = [] # an empty list of dictionaries
 
     def addRecord(self,record):
         self.table.append(record)

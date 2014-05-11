@@ -1,5 +1,7 @@
 //nested if-else blocks
 
+node myArticle = createNode()
+
 if ( 2 + 3 ) then { //comment
 
 	int a //comment
@@ -25,3 +27,7 @@ if ( 2 + 3 ) then { //comment
 	  int p = 4
 	}
 } //comment
+
+newfun myfunc (int a){
+    int b = 3
+}

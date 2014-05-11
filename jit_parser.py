@@ -7,7 +7,8 @@ import re
 
 class Parser():
 
-    ST = SymbolTable()
+    main_ST = SymbolTable()
+    ST_stack = [main_ST] # keeps track of stacks for ST
 
     def p_statement(self, p):
         '''statement : variable_decl
@@ -25,6 +26,7 @@ class Parser():
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
+        currentST = Parser.ST_stack[-1] # get the element at the top of the stack
         print 'variable production ============'
         if len(p) == 5:
             print 'production type id = expression'
@@ -44,12 +46,13 @@ class Parser():
             # this variable declaration is not for a list
             else:
                 var_record = {'name': var_name, 'type': var_type }
-            j = Parser.ST.searchRecord(var_name)
+            j = currentST.searchRecord(var_name)
             if j == -1:
-                Parser.ST.addRecord(var_record)
-            # this completely overwrites the previous var
-            else:
-                Parser.ST.updateRecord(j,var_record)
+                # if it's not in the current ST, search the whole stack
+                k = search_and_update_stack(var_record)
+                if k == -1:
+                    # if it's not in the whole stack, add to current
+                    currentST.addRecord(var_record)
         elif len(p) == 4:
             print 'production id = expression'
             print 'p[2]  ' + str(p[1])
@@ -61,26 +64,25 @@ class Parser():
             # Semantic Checking:
             var_name = p[1]
             var_type = p[3].type # NEED TYPE FROM AST CLASS
-            # print " $$$$$$$ var name :: " + str(var_name) + " $$$$$$$$$"
-            # print " $$$$$$$ var type :: " + str(var_type) + " $$$$$$$$$"
             if '.' in var_name:
                 dot_index = var_name.find('.')
                 var_name = var_name[0:dot_index]
                 #pass
-                j = Parser.ST.searchRecord(var_name)
+                j = currentST.searchRecord(var_name)
                 if j == -1:
                     print "Semantic error: Use of object %s without declaration" % var_name
                 else:
                     pass
             else:
                 var_record = {'name': var_name, 'type': var_type }
-                j = Parser.ST.searchRecord(var_name)
-    
+                j = currentST.searchRecord(var_name)
+                # if it's not in the current ST
                 if j == -1:
                     print "Semantic error: Initialization without declaration of " + var_name
                 else:
-                    if (Parser.ST.getRecordType(j) == var_type):
-                        self.ST.updateRecord(j,var_record)
+                    if (currentST.getRecordType(j) == var_type):
+                        self.currentST.updateRecord(j,var_record)
+                        search_and_update_stack(var_record) # also update the rest of the STs
                     else:
                         print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
@@ -94,11 +96,13 @@ class Parser():
             var_name = p[2]
             var_value = 0 # default value
             var_record = {'name': var_name, 'type': var_type, 'value': var_value}
-            j = Parser.ST.searchRecord(var_name)
+            j = currentST.searchRecord(var_name)
             if j == -1:
-                Parser.ST.addRecord(var_record)
+                currentST.addRecord(var_record)
             else:
-                Parser.ST.updateRecord(j,var_record)
+                currentST.updateRecord(j,var_record)
+                search_and_update_stack(var_record)
+
 
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
@@ -108,7 +112,14 @@ class Parser():
 
     def p_func_decl(self, p):
         '''function_decl : NEWFUN ID LPAREN variable_list RPAREN LBRACE statement_list RBRACE'''
+        # create a new ST and push it onto the stack
+        block_ST = SymbolTable()
+        # notice that we don't copy over records as we did in if and for blocks
+        Parser.ST_stack.append(block_ST)
         p[0] = AstFunDecl(p[2], p[4], p[7])
+        # pop the block_ST!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        popped = Parser.ST_stack.pop()
+        print popped.printST()
 
     def p_fun(self, p):
         '''fun : SAY
@@ -388,12 +399,17 @@ class Parser():
 
     def p_for_loop(self, p):
         'for_loop : FOR ID IN ID LBRACE statement_list RBRACE'
-        # print 'for loop production ============ \n'
+        # print 'for loop production ============'
+        block_ST = SymbolTable()
+        # copy over whatever is in the stack of STs to the new one
+        for element in Parser.ST_stack:
+            element.copyRecords(block_ST)
+        Parser.ST_stack.append(block_ST)
         var_name = p[4]
         if '.' in var_name:
                 dot_index = var_name.find('.')
                 var_name = var_name[0:dot_index]
-                j = Parser.ST.searchRecord(var_name)
+                j = block_ST.searchRecord(var_name)
                 if j == -1:
                     print "Semantic error: Use of object %s without declaration" % var_name
                 else:
@@ -404,22 +420,25 @@ class Parser():
                     else:
                         print "Semantic error: %s is not an iterable " % p[4]
         else:
-            span_index = Parser.ST.searchRecord(str(p[4]))
-            span_type = Parser.ST.getRecordType(span_index)
+            span_index = block_ST.searchRecord(str(p[4]))
+            span_type = block_ST.getRecordType(span_index)
             # print str(span_type) + "     is the type of " + str(p[4])
             if span_type != "list":
                 print "Semantic error: Can't iterate over type " + span_type
             itr_name = p[2]
-            # print print Parser.ST.printST()
-            itr_type = Parser.ST.getRecordExpType(span_index)
+            # print print block_ST.printST()
+            itr_type = block_ST.getRecordExpType(span_index)
             itr_record = {'name': itr_name, 'type': itr_type }
-            j = Parser.ST.searchRecord(itr_name)
+            j = block_ST.searchRecord(itr_name)
             if j == -1:
-                Parser.ST.addRecord(itr_record)
+                block_ST.addRecord(itr_record)
             # force the iterator to be a new declaration
             else:
                 print "Semantic error: " + itr_name + " has already been declared. Initialize a new variable"
             p[0] = AstForLoop(AstID(p[2]), AstID(p[4], span_type), p[6])
+            # pop the block_ST!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            popped = Parser.ST_stack.pop()
+            print popped.printST()
 
     def p_statement_list(self, p):
         '''statement_list : statement
@@ -429,14 +448,25 @@ class Parser():
         #'statement_list : statement'
         if not p[1]:
             p[0] = []
+        # statement
         elif len(p) == 2:
             p[0] = [p[1]]
+        # statement_list statement
         else:
             p[0] = p[1] + [p[2]]
 
     def p_if_block(self, p):
         'if_block : IF LPAREN expression RPAREN THEN LBRACE statement_list RBRACE ELSE LBRACE statement_list RBRACE'
+        # create a new ST for this if block add it to the stack
+        block_ST = SymbolTable()
+        # copy over whatever is in the stack of STs to the new one
+        for element in Parser.ST_stack:
+            element.copyRecords(block_ST)
+        Parser.ST_stack.append(block_ST)
         p[0] = AstIfBlock(p[3], p[7], p[11])
+        # pop the block_ST!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        popped = Parser.ST_stack.pop()
+        print popped.printST()
 
     def p_error(self, p):
         print "Syntax error at '%s'" % p.value
@@ -449,3 +479,12 @@ class Parser():
         self.tokens = tokens = lexer.tokens
 
         self.parser = yacc.yacc(module=self)
+
+    def search_and_update_stack(record):
+        stack = Parser.ST_stack
+        for element in stack:
+            index = element.searchRecord(record['name'])
+            if index != -1:
+                element.updateRecord(index, record)
+                return 1
+        return -1
