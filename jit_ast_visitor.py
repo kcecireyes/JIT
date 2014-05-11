@@ -72,7 +72,7 @@ class AstVisitor:
         """
 
 
-        if (rhs.type == "articleop"):
+        if ( binop_node.right.type== "articleop"):
             lhs  = ""
         else:
             lhs = binop_node.left.accept(self).strip()
@@ -80,7 +80,10 @@ class AstVisitor:
         rhs = binop_node.right.accept(self).strip()
         if binop_node.op == "=":
             self.env[-1][lhs] = rhs
-        code = self.code_generator.generate_binaryOp(lhs, binop_node.op, rhs)
+        if ( binop_node.right.type== "articleop"):
+            code = self.code_generator.generate_binaryOp(lhs, "", rhs)
+        else:
+            code = self.code_generator.generate_binaryOp(lhs, binop_node.op, rhs)
         return code
 
     def visit_articleop(self, articleop_node):
