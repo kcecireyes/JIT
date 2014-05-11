@@ -28,7 +28,8 @@ class AstBinOp(AstNode):
         self.type = "binop"
         self.left = left
         self.right = right
-        self.right.assign_to = left.name
+        if op == '=':
+            self.right.assign_to = left.name
         self.op = op
         self.rtype = str(result_type)
 
@@ -146,11 +147,3 @@ class AstFunDecl(AstNode):
 
     def accept(self, visitor):
         return visitor.visit_astfundecl(self)
-"""
-class AstSay(AstNode):
-    def __init__(self):
-        self.type = "say"
-
-    def __str__(self):
-        return self.type
-"""

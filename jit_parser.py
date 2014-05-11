@@ -111,11 +111,13 @@ class Parser():
                 | CREATENODE
                 | SEARCH'''
         print 'fun production ========='
-        if p[1] == ('say' or 'import'):
+        if p[1] in ['say', 'import']:
             p[0] = AstFun(p[1], "string")
-        elif p[1] == ('pull' or 'search'):
+            p[0].ex_type = 'void'
+        elif p[1] in ['pull', 'search']:
             p[0] = AstFun(p[1], "list")
-        elif p[1] == ('get' or 'createnode'):
+            p[0].ex_type = 'list'
+        elif p[1] in ['get', 'createnode']:
             p[0] = AstFun(p[1], "node")
 
     def p_parameters(self, p):
@@ -297,7 +299,6 @@ class Parser():
              | g LESS_EQUALS_c j
              | g GREATER_c j
              | g GREATER_EQUALS_c j
-             | NOT g
              | j
              '''
         # print "im in less and greater production, 1 and 3 " + str(p[1]) + " " + str(p[3])
@@ -320,9 +321,9 @@ class Parser():
             p[0] = p[1]
 
     def p_k(self, p):
-        '''k : k '*' l
-             | k '/' l
-             | l
+        '''k : k '*' m
+             | k '/' m
+             | m
              '''
         if len(p) == 4:
             # print "im in * and / production, 1 and 3 " + str(p[1]) + " " + str(p[3])
@@ -331,6 +332,14 @@ class Parser():
         else:
             p[0] = p[1]
 
+    def p_m(self, p):
+        '''m : NOT l
+               | l'''
+        if len(p) == 3:
+            p[0] = AstBinOp(AstEmpty(), p[1], p[2])
+        else:
+            p[0] = p[1]
+            
     def p_l(self, p):
         '''l : LPAREN operations RPAREN
              | ID
