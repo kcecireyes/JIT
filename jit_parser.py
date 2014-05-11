@@ -111,14 +111,17 @@ class Parser():
                 | CREATENODE
                 | SEARCH'''
         print 'fun production ========='
-        if p[1] in ['say', 'import']:
+        print 'p[1] ====' + p[1]
+        if p[1] in ['say', 'import', 'listen']:
             p[0] = AstFun(p[1], "string")
             p[0].ex_type = 'void'
         elif p[1] in ['pull', 'search']:
             p[0] = AstFun(p[1], "list")
             p[0].ex_type = 'list'
-        elif p[1] in ['get', 'createnode']:
+        elif p[1] in ['get', 'createNode']:
             p[0] = AstFun(p[1], "node")
+        else:
+            p[0] = AstFun(p[1])
 
     def p_parameters(self, p):
         '''parameters : empty
