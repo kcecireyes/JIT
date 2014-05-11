@@ -39,9 +39,10 @@ class AstBinOp(AstNode):
         return visitor.visit_binop(self)
 
 class AstFun(AstNode):
-    def __init__(self,subtype):
+    def __init__(self,subtype, returntype = 'auto'):
         self.type = "function"
         self.subtype = subtype
+        self.returntype = returntype
         self.params = []
         # self.child
 

@@ -17,18 +17,20 @@ class Parser():
                      | if_block
                      | empty
                      '''
-        # print 'statement production ============'
-        # print 'p[1]: ' + str(p[1])
+        print 'statement production ============'
+        print 'p[1]: ' + str(p[1])
         p[0] = p[1]
 
     def p_variable_decl(self, p):
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
-        # print 'variable production ============'
+        print 'variable production ============'
         if len(p) == 5:
-            # print 'production id = expression'
-            # print 'p[2]  ' + str(p[2])
+            print 'production type id = expression'
+            print 'here comes the ST'
+            print Parser.ST.printST()
+            print 'p[2]  ' + str(p[2])
             # print 'p[4]  ' + str(p[4].ex_type)
             #if p[4].type is "list":
             # type ID EQUALS expression
@@ -49,9 +51,9 @@ class Parser():
             else:
                 Parser.ST.updateRecord(j,var_record)
         elif len(p) == 4:
-            # print 'production id = expression'
-            # print 'p[2]  ' + str(p[1])
-            # print 'p[4]  ' + str(p[3])
+            print 'production id = expression'
+            print 'p[2]  ' + str(p[1])
+            print 'p[4]  ' + str(p[3])
             # ID EQUALS expression
             if isinstance(p[3], str):
                 p[3] = AstString(p[3])
@@ -71,11 +73,10 @@ class Parser():
                     self.ST.updateRecord(j,var_record)
                 else:
                     print "Semantic error: Type mismatch in redeclared variable " + var_name
-
         elif len(p) == 3:
-            # print 'production type id'
-            # print 'p[2]  ' + str(p[1])
-            # print 'p[4]  ' + str(p[2])
+            print 'production type id'
+            print 'p[2]  ' + str(p[1])
+            print 'p[4]  ' + str(p[2])
             # type ID
             p[0] = AstVarDecl(p[2], p[1])
             # Semantic Checking:
@@ -91,6 +92,7 @@ class Parser():
 
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
+        print 'p[1] is ', str(p[1])
         p[1].params = p[3]
         p[0] = p[1]
 
@@ -108,7 +110,13 @@ class Parser():
                 | PULL
                 | CREATENODE
                 | SEARCH'''
-        p[0] = AstFun(p[1])
+        print 'fun production ========='
+        if p[1] == ('say' or 'import'):
+            p[0] = AstFun(p[1], "string")
+        elif p[1] == ('pull' or 'search'):
+            p[0] = AstFun(p[1], "list")
+        elif p[1] == ('get' or 'createnode'):
+            p[0] = AstFun(p[1], "node")
 
     def p_parameters(self, p):
         '''parameters : empty
@@ -145,14 +153,26 @@ class Parser():
                     | BOOLEAN_s
                     | ID EQUALS expression'''
 
-        # print 'parameter production ============ \n'
+        print 'parameter production ============ \n'
         if p[1].startswith('"'):
             # STRING_s
             p[0] = [AstString(p[1])]
         elif len(p) == 4:
             # ID EQUALS expression
             if (type(p[3]) is str and p[3].startswith('[')):
-                p[0] = [AstBinOp(AstID(p[1]), p[2], (AstList(p[3])))]
+                print 'list parameter'
+                p[3] = p[3].replace('[]', '')
+                # Check if the contents of the list are numbers or strings
+                # TODO:
+                # This is just a placeholder: ideally, we'd be able to index the list
+                # and get each component's type
+                # if float(str(p[1][1])):
+                try:
+                    int(str(p[3][1]))
+                    print 'First element of list is int ', int(str(p[3][1]))
+                    p[0] = [AstBinOp(AstID(p[1]), p[2], (AstList(p[3], "int")))]
+                except ValueError:
+                    p[0] = [AstBinOp(AstID(p[1]), p[2], (AstList(p[3], "string")))]
             else:
                 p[0] = [AstBinOp(AstID(p[1]), p[2], p[3])]
         else:
@@ -176,15 +196,15 @@ class Parser():
                       | LIST_s
                       | function_call
                       '''
-        # print 'expression production ============ \n'
+        print 'expression production ============ \n'
         # STRING_s
         if (type(p[1]) is str):
             if (p[1].startswith('"')):
-                # print 'string production'
+                print 'string production'
                 p[0] = AstString(p[1])
             # LIST_s
             elif (p[1].startswith('[')):
-                # print 'list production'
+                print 'list production'
                 p[1] = p[1].replace('[]', '')
                 # Check if the contents of the list are numbers or strings
                 # TODO:
@@ -197,7 +217,6 @@ class Parser():
                     p[0] = AstList(p[1], "int")
                 except ValueError:
                     p[0] = AstList(p[1], "string")
-
         # TODO: Do we need more here?
         else :
             p[0] = p[1]
@@ -318,24 +337,24 @@ class Parser():
              | NUM
              | BOOLEAN_s
         '''
-        # print 'l production ============ \n'
+        print 'l production ============ \n'
         if len(p) == 4:
-            # print 'l prodution for ( operations )'
+            print 'l prodution for ( operations )'
             p[0] = p[2]
         elif type(p[1]) is str:
             if p[1] in ['true', 'false']:
                 p[0] = AstString(p[1])
             else:
                 # get type from ST and make 2nd arg to AstID
-                # print 'l production for strings that are id'
-                # print 'p[1]:  ' + str(p[1])
+                print 'l production for strings that are id'
+                print 'p[1]:  ' + str(p[1])
                 index = Parser.ST.searchRecord(str(p[1]))
-                # print 'according to the ST, the index of ' + str(p[1]) + ' is ' + str(index)
+                print 'according to the ST, the index of ' + str(p[1]) + ' is ' + str(index)
                 id_type = Parser.ST.getRecordType(index)
                 p[0] = AstID(p[1], id_type)
         else:
-            # print 'l production for nums'
-            # print 'p[1]:  ' + str(p[1])
+            print 'l production for nums'
+            print 'p[1]:  ' + str(p[1])
             p[0] = AstNum(p[1], 'int')
 
     def p_empty(self, p):
@@ -351,7 +370,7 @@ class Parser():
         if span_type != "list":
             print "Semantic error: Can't iterate over type " + span_type
         itr_name = p[2]
-        # print Parser.ST.printST()
+        # print print Parser.ST.printST()
         itr_type = Parser.ST.getRecordExpType(span_index)
         itr_record = {'name': itr_name, 'type': itr_type }
         j = Parser.ST.searchRecord(itr_name)
