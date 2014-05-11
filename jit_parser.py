@@ -63,16 +63,26 @@ class Parser():
             var_type = p[3].type # NEED TYPE FROM AST CLASS
             # print " $$$$$$$ var name :: " + str(var_name) + " $$$$$$$$$"
             # print " $$$$$$$ var type :: " + str(var_type) + " $$$$$$$$$"
-            var_record = {'name': var_name, 'type': var_type }
-            j = Parser.ST.searchRecord(var_name)
-
-            if j == -1:
-                print "Semantic error: Initialization without declaration of " + var_name
-            else:
-                if (Parser.ST.getRecordType(j) == var_type):
-                    self.ST.updateRecord(j,var_record)
+            if '.' in var_name:
+                dot_index = var_name.find('.')
+                var_name = var_name[0:dot_index]
+                #pass
+                j = Parser.ST.searchRecord(var_name)
+                if j == -1:
+                    print "Semantic error: Use of object %s without declaration" % var_name
                 else:
-                    print "Semantic error: Type mismatch in redeclared variable " + var_name
+                    pass
+            else:
+                var_record = {'name': var_name, 'type': var_type }
+                j = Parser.ST.searchRecord(var_name)
+    
+                if j == -1:
+                    print "Semantic error: Initialization without declaration of " + var_name
+                else:
+                    if (Parser.ST.getRecordType(j) == var_type):
+                        self.ST.updateRecord(j,var_record)
+                    else:
+                        print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
             print 'production type id'
             print 'p[2]  ' + str(p[1])
