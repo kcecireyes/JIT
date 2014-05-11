@@ -1,6 +1,7 @@
 from database import session
 
 def search(number=None, keywords=[], author=None, publisher=None):
+    from node import Node, Keyword
     query = session.query(Node)
 
     if author != None:
@@ -16,20 +17,23 @@ def search(number=None, keywords=[], author=None, publisher=None):
     if len(keywords) > 0:
         keyword_nodes = []
         for keyword in keywords:
-            keyword_nodes.extend(keyword.nodes)
+            keyword_obj = Keyword(keyword)
+            keyword_nodes.extend(keyword_obj.nodes)
 
         keyword_nodes = set(keyword_nodes)
         query = set(query)
-        final = query.intersect(keyword_nodes)
+        final = query.intersection(keyword_nodes)
     else:
         final = query
 
     # Add all nodes, but not more than the number if specified.
     graf = Graf()
     if number != None:
-        graf.add_nodes(final[:number])
+        for node in final[:number]:
+            graf.add(node)
     else:
-        graf.add_nodes(final)
+        for node in final:
+            graf.add(node)
 
     return graf
 

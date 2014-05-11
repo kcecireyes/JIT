@@ -32,7 +32,8 @@ class Node(Base):
         self.body = body
 
     def push():
-        # TODO: white this
+        session.add(self)
+        session.commit()
         pass
 
     def set_keywords(self, value):
@@ -87,13 +88,18 @@ class Keyword(Base):
     id = Column(Integer, primary_key=True)
     value = Column(String)
 
-    def __new__(self, val):
-        query = session.query(Keyword).filter_by(value = val)
-        if query != None:
-            self = query
+    def __new__(cls, *args, **kwargs):
+        if len(args) > 0:
+            query = session.query(Keyword).filter_by(value = args[0]).first()
+            if query != None:
+                return query
+            else:
+                return Base.__new__(cls, *args, **kwargs)
 
     def __init__(self, val):
+        query = session.query(Keyword).filter_by(value = val).first()
         self.value = val
+        session.add(self)
 
 class Edge(Base):
     __tablename__ = 'edge'

@@ -135,11 +135,11 @@ class TextJIT(unittest.TestCase):
         graf.add(node1, node2, node3, node4)
         graf.push
 
-        graf2 = search(keywords="test")
+        graf2 = search(keywords=["test"])
 
-        self.assertTrue(node1 in graf.nodes)
-        self.assertTrue(node2 in graf.nodes)
-        self.assertTrue(node3 not in graf.nodes)
+        self.assertTrue(node1 in graf2.nodes)
+        self.assertTrue(node2 in graf2.nodes)
+        self.assertTrue(node3 not in graf2.nodes)
 
 
 if __name__ == '__main__':
