@@ -43,6 +43,9 @@ def main():
                 line = raw_input("JIT> ")
             except KeyboardInterrupt:
                 # Execute, don't crash
+                # This is the Small Slant font from
+                # http://patorjk.com/software/taag/
+                # for the text 'G O O D B Y E !'
                 print '''
       _____  ____    ____    ___    ___  __  __  ____  __
      / ___/ / __ \  / __ \  / _ \  / _ ) \ \/ / / __/ / /
