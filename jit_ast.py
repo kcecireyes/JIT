@@ -15,6 +15,7 @@ class AstArticleOp(AstNode):
         self.op = op
         self.rtype = "node"
         self.list_of_things = list_of_things
+        self.assign_to = ""
 
     def __str__(self):
         return str(self.left) + str(self.op) + str(self.right)
@@ -27,6 +28,7 @@ class AstBinOp(AstNode):
         self.type = "binop"
         self.left = left
         self.right = right
+        self.right.assign_to = left.name
         self.op = op
         self.rtype = str(result_type)
 
