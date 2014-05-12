@@ -36,7 +36,5 @@ class SymbolTable:
         for i in range(0,len(self.table)):
             to_ST.addRecord(self.table[i])
             # TODO: error handling (what if the table to copy from has no records, etc)   
-        print "old \n" + str(self.table)
-        print "new\n" + str(to_ST.table)
         return 1 # all records copied
 

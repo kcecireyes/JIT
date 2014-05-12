@@ -1,4 +1,6 @@
 // article is user-defined
+list myQuery = ["a","b","c",]
+
 for article in myQuery {
    graph myChunk = pull(start=article, number=200)
    a = 1

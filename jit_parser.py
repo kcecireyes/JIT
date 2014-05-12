@@ -7,8 +7,17 @@ import re
 
 class Parser():
 
-    main_ST = SymbolTable()
-    ST_stack = [main_ST] # keeps track of stacks for ST
+    main_ST = SymbolTable() # initialized ST for main program
+    ST_stack = [main_ST] # keeps track of future STs made
+
+    def search_and_update_stack(self, record):
+        stack = self.ST_stack
+        for element in stack:
+            index = element.searchRecord(record['name'])
+            if index != -1:
+                element.updateRecord(index, record)
+                return 1
+        return -1
 
     def p_statement(self, p):
         '''statement : variable_decl
@@ -26,12 +35,12 @@ class Parser():
         '''variable_decl : type ID EQUALS expression
                          | ID EQUALS expression
                          | type ID'''
-        currentST = Parser.ST_stack[-1] # get the element at the top of the stack
+        currentST = Parser.ST_stack[-1] # get the element at the top of the stack (or the last el in the list)
         print 'variable production ============'
         if len(p) == 5:
             print 'production type id = expression'
             print 'here comes the ST'
-            print Parser.ST.printST()
+            print currentST.printST()
             print 'p[2]  ' + str(p[2])
             # print 'p[4]  ' + str(p[4].ex_type)
             #if p[4].type is "list":
@@ -49,7 +58,7 @@ class Parser():
             j = currentST.searchRecord(var_name)
             if j == -1:
                 # if it's not in the current ST, search the whole stack
-                k = search_and_update_stack(var_record)
+                k = self.search_and_update_stack(var_record)
                 if k == -1:
                     # if it's not in the whole stack, add to current
                     currentST.addRecord(var_record)
@@ -82,7 +91,7 @@ class Parser():
                 else:
                     if (currentST.getRecordType(j) == var_type):
                         self.currentST.updateRecord(j,var_record)
-                        search_and_update_stack(var_record) # also update the rest of the STs
+                        self.search_and_update_stack(Parser,var_record) # also update the rest of the STs
                     else:
                         print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
@@ -101,8 +110,7 @@ class Parser():
                 currentST.addRecord(var_record)
             else:
                 currentST.updateRecord(j,var_record)
-                search_and_update_stack(var_record)
-
+                self.search_and_update_stack(var_record)
 
     def p_function_call(self, p):
         '''function_call : fun LPAREN parameters RPAREN'''
@@ -381,10 +389,10 @@ class Parser():
                 # get type from ST and make 2nd arg to AstID
                 print 'l production for strings that are id'
                 print 'p[1]:  ' + str(p[1])
-                index = Parser.ST.searchRecord(str(p[1]))
+                index = Parser.ST_stack[-1].searchRecord(str(p[1]))
                 print 'according to the ST, the index of ' + str(p[1]) + ' is ' + str(index)
                 if index >= 0:
-                    id_type = Parser.ST.getRecordType(index)
+                    id_type = Parser.ST_stack[-1].getRecordType(index)
                 else:
                     id_type = 'void'
                 p[0] = AstID(p[1], id_type)
@@ -418,7 +426,7 @@ class Parser():
                     if attribute_name == "keywords":
                         p[0] = AstForLoop(AstID(p[2]), AstID(p[4]), p[6])
                     else:
-                        print "Semantic error: %s is not an iterable " % p[4]
+                        print "Semantic error: Can't iterate over type %s " % p[4]
         else:
             span_index = block_ST.searchRecord(str(p[4]))
             print "span_index"
@@ -429,12 +437,13 @@ class Parser():
                 
             span_type = block_ST.getRecordType(span_index)
             # print str(span_type) + "     is the type of " + str(p[4])
-            if span_type != "list":
+            if span_type not in ['list', 'graph']:
                 print "Semantic error: Can't iterate over type " + span_type
             itr_name = p[2]
             # print print block_ST.printST()
-            itr_type = block_ST.getRecordExpType(span_index)
-            itr_record = {'name': itr_name, 'type': itr_type }
+            # don't try to get the type of the iterator
+            # itr_type = block_ST.getRecordExpType(span_index)
+            itr_record = {'name': itr_name } #'type': itr_type
             j = block_ST.searchRecord(itr_name)
             if j == -1:
                 block_ST.addRecord(itr_record)
@@ -486,12 +495,3 @@ class Parser():
         self.tokens = tokens = lexer.tokens
 
         self.parser = yacc.yacc(module=self)
-
-    def search_and_update_stack(record):
-        stack = Parser.ST_stack
-        for element in stack:
-            index = element.searchRecord(record['name'])
-            if index != -1:
-                element.updateRecord(index, record)
-                return 1
-        return -1
