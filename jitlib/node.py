@@ -2,11 +2,18 @@ from sqlalchemy import MetaData, Table, Column, Integer, ForeignKey, DateTime, S
 from sqlalchemy.orm import mapper, relationship
 from database import Base, session
 import datetime
+import json
 
 node_keywords_table = Table('node_keywords', Base.metadata,
     Column('node_id', Integer, ForeignKey('node.id')),
     Column('keyword_id', Integer, ForeignKey('keyword.id'))
 )
+
+def node_get(filename):
+    with open(filename, 'r') as f:
+        v = json.loads(f.read())
+        return Node(title = v['title'], author = v['author'],
+                    publisher = v['publisher'], body = v['body'])
 
 class Node(Base):
     __tablename__ = 'node'
@@ -81,6 +88,12 @@ class Node(Base):
         all_nodes = [x.lower_node for x in self.higher_edges]
         all_nodes.extend([x.higher_node for x in self.lower_edges])
         return all_nodes
+
+    def save(self, filename):
+        with open(filename, 'w') as f:
+            f.write(json.dumps({"title": self.title, "author": self.author,
+                                "publisher": self.publisher, "body": self.body},
+                                sort_keys=True))
 
 class Keyword(Base):
     __tablename__ = 'keyword'

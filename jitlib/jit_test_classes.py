@@ -52,6 +52,19 @@ class TextJIT(unittest.TestCase):
         node.add_body("test_body.txt", "f")
         self.assertEqual(node.body, "I am a large body." )
 
+    def test_nodes_json(self):
+        node = Node()
+        node.add_body("I am a small body.")
+        node.title = "i am a title"
+        node.author = "Raul Matias"
+        node.publisher = "I am the publisher"
+        node.save('test-article.json')
+        node2 = node_get('test-article.json')
+        self.assertEqual(node.body, node2.body)
+        self.assertEqual(node.title, node2.title)
+        self.assertEqual(node.author, node2.author)
+        self.assertEqual(node.publisher, node2.publisher)
+
     def test_nodes_should_add_adjacent(self):
         node1 = Node()
         node2 = Node()
