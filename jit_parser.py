@@ -90,8 +90,8 @@ class Parser():
                     print "Semantic error: Initialization without declaration of " + var_name
                 else:
                     if (currentST.getRecordType(j) == var_type):
-                        self.currentST.updateRecord(j,var_record)
-                        self.search_and_update_stack(Parser,var_record) # also update the rest of the STs
+                        currentST.updateRecord(j,var_record)
+                        self.search_and_update_stack(var_record) # also update the rest of the STs
                     else:
                         print "Semantic error: Type mismatch in redeclared variable " + var_name
         elif len(p) == 3:
