@@ -11,7 +11,7 @@ newfun myfunc (node nodeA, node nodeB) {
 node node1 = get("")
 node node2 = get("")
 
-//myfunc(node1, node2)
+myfunc(node1, node2)
 
 node myNode2 = createNode()
 
