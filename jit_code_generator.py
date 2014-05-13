@@ -64,9 +64,11 @@ class CodeGenerator:
 
     def indent_block(self, lines):
         t = []
+        print "^^^^^^"
+        print lines
         for line in lines:
             t.append('\n\t'.join(line.strip().split('\n')))
-        if t[0] != "":
+        if t and t[0] != "":
             return '\n\t'.join(t)
 
         return "pass"
