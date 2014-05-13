@@ -1,0 +1,17 @@
+node node1 = createNode()
+node1.title = "Title 1"
+node1.keywords = ["world war", "normandy", "germany",]
+node1.publisher = "JIT"
+node1.body = "America invaded France. Alfred Aho wasn't there."
+
+node node2 = createNode()
+node2.title = "Title 2"
+node2.keywords = ["world war", "normandy", "germany", "france",]
+node2.publisher = "JIT"
+node2.body = "France invaded America. Alfred Aho wasn't there."
+
+node myNode = createNode()
+
+myNode = node1 ++ node2 over BODY, KEYWORDS
+
+say(myNode.body)
