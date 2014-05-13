@@ -9,7 +9,7 @@ myNode.title = ""
 myNode.author = ""
 myNode.publisher = ""
 myNode.date = ""
-myNode.keywords = []
+myNode.keywords = ["","",]
 
 //Import the article text into the node
 myNode.body = import("")
