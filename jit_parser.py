@@ -8,7 +8,7 @@ import re
 def log(*msg):
     with open("parser.log", "a") as logfile:
         for m in msg:
-            logfile.write(m)
+            logfile.write(str(m))
 
 class Parser():
 
