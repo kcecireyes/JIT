@@ -52,8 +52,10 @@ class AstVisitor:
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
             code = "search(%s)\n" % params_str
-        else:
-            code = "ERROR visit_fun\n"
+        elif fun_node.returntype == "fun":
+            visited_params = map(lambda node : node.accept(self), fun_node.params)
+            params_str = ', '.join(visited_params)
+            code = "%s(%s)\n" % (fun_node.returntype, ', '.join(visited_params))
 
         return code
 
@@ -63,8 +65,12 @@ class AstVisitor:
             lhs  = op = ""
         else:
             lhs = binop_node.left.accept(self).strip()
-            
+
         rhs = binop_node.right.accept(self).strip()
+        ls = lhs.split('.')
+        if ls and ls[-1] == "body" and rhs.startswith("import("):
+            return "%s.add_body(%s)\n" % (ls[0], rhs[7:-1])
+            
         if binop_node.op == "=":
             self.env[-1][lhs] = rhs
         
