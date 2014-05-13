@@ -17,7 +17,7 @@ node newNode = createNode()
 
 // Create new node to combine first two nodes
 
-newNode = myNode ^^ myNode2 over KEYWORDS
+newNode = myNode ^^ myNode2 over KEYWORDS, BODY
 //newNode.title = node ++ node2 over TITLE
 //newNode.publisher = node ^^ node2 over PUBLISHER
 //newNode.author = node ^^ node2 over AUTHOR

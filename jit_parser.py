@@ -415,6 +415,8 @@ class Parser():
         for element in Parser.ST_stack:
             element.copyRecords(block_ST)
         Parser.ST_stack.append(block_ST)
+        itr_name = p[2]
+        block_ST.addRecord({'name': itr_name, 'type': 'itr'})
         var_name = p[4]
         if '.' in var_name:
                 dot_index = var_name.find('.')
