@@ -8,8 +8,7 @@ node myNode = createNode()
 myNode.title = ""
 myNode.author = ""
 myNode.publisher = ""
-myNode.date = ""
-myNode.keywords = ["","",]
+myNode.keywords = ["keyword1","keyword2",]
 
 //Import the article text into the node
 myNode.body = import("")

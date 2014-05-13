@@ -31,15 +31,15 @@ class AstVisitor:
         elif fun_node.subtype == "push":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
-            code = "push(%s)\n" % params_str
+            code = "%s.push()\n" % params_str
         elif fun_node.subtype == "pull":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
-            code = "pull(%s)\n" % params_str
+            code = "pull(%s)\n" % params_str.replace('\n', '').replace('start', 'node')
         elif fun_node.subtype == "save":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
-            code = "save(%s)\n" % params_str
+            code = "%s.save()\n" % params_str
         elif fun_node.subtype == "get":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
@@ -70,7 +70,7 @@ class AstVisitor:
         ls = lhs.split('.')
         if ls and ls[-1] == "body" and rhs.startswith("import("):
             return "%s.add_body(%s)\n" % (ls[0], rhs[7:-1])
-            
+
         if binop_node.op == "=":
             self.env[-1][lhs] = rhs
 

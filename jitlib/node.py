@@ -41,7 +41,7 @@ class Node(Base):
         self.publisher = publisher
         self.body = body
 
-    def push():
+    def push(self):
         session.add(self)
         session.commit()
         pass
@@ -62,6 +62,9 @@ class Node(Base):
     		body = value
 
     def add_keywords(self, value):
+        if len(value) < 1:
+            return
+
         if type(value) is list:
             for v in value:
                 self.keywords.append(Keyword(v))
@@ -92,7 +95,13 @@ class Node(Base):
         all_nodes.extend([x.higher_node for x in self.lower_edges])
         return all_nodes
 
-    def save(self, filename):
+    def save(self, filename=""):
+        if filename == "":
+            if self.id != None:
+                filename = str(self.id) + ".node"
+            else:
+                filename = "no_id.node"
+
         with open(filename, 'w') as f:
             f.write(json.dumps({"title": self.title, "author": self.author,
                                 "publisher": self.publisher, "body": self.body},
@@ -113,7 +122,6 @@ class Keyword(Base):
                 return Base.__new__(cls, *args, **kwargs)
 
     def __init__(self, val):
-        query = session.query(Keyword).filter_by(value = val).first()
         self.value = val
         session.add(self)
 

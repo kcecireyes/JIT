@@ -53,7 +53,7 @@ def pull(node=None, number=0):
             if len(graf.nodes) < number:
                 graf.add(node)
 
-        if len(graf.nodes) < number:
+        if len(graf.nodes) > 0 and len(graf.nodes) < number:
             # Get all children
             children = []
             for node in ring:

@@ -17,7 +17,7 @@ class Interpreter:
             self.output.write('sys.path.append("'+os.path.dirname(os.path.realpath(__file__))+'")\n')
             self.output.write("from jitlib.node import Node, node_get\n")
             self.output.write("from jitlib.jit_nlp import *\n")
-            self.output.write("\n")
+            self.output.write("from jitlib.graf import search, pull\n")
             self.output.write("\n")
             self.output.write("\n")
             self.output.write("\n")
