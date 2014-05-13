@@ -37,6 +37,13 @@ def main():
                 overflow = line
 
     else:
+        code_locals = {}
+        from jitlib.node import Node, Keyword, node_get
+        from jitlib.jit_nlp import extract_entity_names, extract_tags
+        from jitlib.graf import search, pull
+        from jitlib.database import engine, Base
+        Base.metadata.create_all(engine)
+
         interpreter = Interpreter()
         while True:
             try:
@@ -58,7 +65,8 @@ def main():
                 line = line + raw_input("... ")
 
             try:
-                interpreter.execute_txt(line, debug=options.debug)
+                code = interpreter.execute_txt(line, debug=options.debug)
+                exec code
             except NameError:
                 # Already prints error
                 pass
