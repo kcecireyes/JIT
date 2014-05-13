@@ -17,7 +17,10 @@ class AstVisitor:
 
     def visit_fun(self, fun_node):
         if fun_node.subtype == "say":
-            sentences = (param.accept(self) for param in fun_node.params)
+            sentences = [param.accept(self) for param in fun_node.params]
+            if len(sentences) == 1:
+                return "print %s\n" % sentences[0]
+                
             lst = self.code_generator.generate_list(sentences)
             prtstr = "'\\n'.join(%s)" % lst
             code = self.code_generator.generate_print(prtstr)
@@ -52,10 +55,10 @@ class AstVisitor:
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
             code = "search(%s)\n" % params_str
-        elif fun_node.returntype == "fun":
+        else:
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
-            code = "%s(%s)\n" % (fun_node.returntype, ', '.join(visited_params))
+            code = "%s(%s)\n" % (fun_node.subtype, ', '.join(visited_params))
 
         return code
 
