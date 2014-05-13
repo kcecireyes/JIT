@@ -43,7 +43,7 @@ class AstVisitor:
         elif fun_node.subtype == "get":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
-            code = "get(%s)\n" % params_str
+            code = "node_get(%s)\n" % params_str
         elif fun_node.subtype == "import":
             visited_params = map(lambda node : node.accept(self), fun_node.params)
             params_str = ', '.join(visited_params)
@@ -63,24 +63,24 @@ class AstVisitor:
             lhs  = op = ""
         else:
             lhs = binop_node.left.accept(self).strip()
-            
+
         rhs = binop_node.right.accept(self).strip()
         if binop_node.op == "=":
             self.env[-1][lhs] = rhs
-        
+
         code = self.code_generator.generate_binaryOp(lhs, op, rhs)
         return code
 
     def visit_articleop(self, articleop_node):
         if not articleop_node: return
-        
+
         lhs = articleop_node.left.accept(self).strip()
         rhs = articleop_node.right.accept(self).strip()
         #if articleop_node.op == "=":
         #    self.env[-1][lhs] = rhs
-        
+
         code = self.code_generator.generate_articleOp(lhs, articleop_node.op, rhs, articleop_node.assign_to, articleop_node.list_of_things)
-        
+
         return code
 
     def visit_str(self, str_node):

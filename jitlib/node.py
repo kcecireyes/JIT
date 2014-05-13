@@ -10,10 +10,13 @@ node_keywords_table = Table('node_keywords', Base.metadata,
 )
 
 def node_get(filename):
-    with open(filename, 'r') as f:
-        v = json.loads(f.read())
-        return Node(title = v['title'], author = v['author'],
-                    publisher = v['publisher'], body = v['body'])
+    try:
+        with open(filename, 'r') as f:
+            v = json.loads(f.read())
+            return Node(title = v['title'], author = v['author'],
+                        publisher = v['publisher'], body = v['body'])
+    except IOError:
+        return Node()
 
 class Node(Base):
     __tablename__ = 'node'
@@ -21,17 +24,17 @@ class Node(Base):
     id = Column(Integer, primary_key=True)
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
-    title = Column(String)
-    author = Column(String)
+    title = Column(String(255))
+    author = Column(String(255))
     date = Column(DateTime)
-    publisher = Column(String)
-    body = Column(String)
+    publisher = Column(String(255))
+    body = Column(String(255))
     # Adjacencies
     keywords = relationship("Keyword",
                             secondary=node_keywords_table,
                             backref="nodes")
 
-    def __init__(self, title=None, author=None, publisher=None, body=None):
+    def __init__(self, title="", author="", publisher="", body=""):
         # title, author, date, publisher, body, publisher, keywords
         self.title = title
         self.author = author
@@ -99,7 +102,7 @@ class Keyword(Base):
     __tablename__ = 'keyword'
 
     id = Column(Integer, primary_key=True)
-    value = Column(String)
+    value = Column(String(255))
 
     def __new__(cls, *args, **kwargs):
         if len(args) > 0:
