@@ -6,9 +6,14 @@ from jit_symboltable import *
 import re
 
 def log(*msg):
+    print_to_console = False
+
     with open("parser.log", "a") as logfile:
         for m in msg:
-            logfile.write(str(m))
+            if print_to_console:
+                print m
+            else:
+                logfile.write(str(m))
 
 class Parser():
 

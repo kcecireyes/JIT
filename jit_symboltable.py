@@ -29,12 +29,13 @@ class SymbolTable:
         return record_exp_type
 
     def printST(self):
+        ret = ""
         for record in (self.table):
-            print record
+            ret = ret + str(record) + '\n'
+        return ret
 
     def copyRecords(self, to_ST):
         for i in range(0,len(self.table)):
             to_ST.addRecord(self.table[i])
-            # TODO: error handling (what if the table to copy from has no records, etc)   
+            # TODO: error handling (what if the table to copy from has no records, etc)
         return 1 # all records copied
-
