@@ -20,7 +20,7 @@ class CodeGenerator:
     def generate_articleOp(self, lhs, op, rhs, assign_to, list_of_things):
         if op == "++":
             if len(list_of_things) == 0:
-                code = '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs) 
+                code = '%s.keywords = list(set(%s.keywords) | set(%s.keywords))\n' % (assign_to,lhs,rhs)
                 return code
             else:
                 code = ''
@@ -32,12 +32,12 @@ class CodeGenerator:
                         code = code + '%s.body = ", ".join(list(set(extract_tags(%s.body)) | set(extract_tags(%s.body))))\n' % (assign_to,lhs,rhs)
                     else:
                         code = code + "%s.%s = %s.%s + ', ' + %s.%s\n" % (assign_to,attribute,lhs,attribute,rhs,attribute)
-                return code      
+                return code
         else:
             lines = []
             if not list_of_things:
                 list_of_things.append("KEYWORDS")
-                
+
             for thing in list_of_things:
                 thing = thing.lower()
                 if thing == "body":
@@ -50,7 +50,7 @@ class CodeGenerator:
                     lines.append("%s.%s = %s.%s if %s.%s == %s.%s else ''" % (assign_to, thing, lhs, thing, lhs, thing, rhs, thing))
                 elif thing == "date":
                     lines.append("%s.%s = list(set(%s.%s.split('/')) & set(%s.%s.split('/')))" % (assign_to, thing, lhs, thing, rhs, thing))
-                    
+
 
         return '\n'.join(lines)
 
@@ -64,8 +64,8 @@ class CodeGenerator:
 
     def indent_block(self, lines):
         t = []
-        print "^^^^^^"
-        print lines
+        # print "^^^^^^"
+        # print lines
         for line in lines:
             t.append('\n\t'.join(line.strip().split('\n')))
         if t and t[0] != "":
