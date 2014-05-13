@@ -3,7 +3,7 @@
 //User-defined function
 newfun myfunc (node nodeA, node nodeB) {
 	node myNode = createNode()
-	myNode = nodeA ++ nodeB OVER KEYWORDS, BODY
+	myNode = nodeA ++ nodeB over KEYWORDS, BODY
 	say(myNode.keywords)
 	say(myNode.body)
 }
@@ -11,8 +11,8 @@ newfun myfunc (node nodeA, node nodeB) {
 node node1 = get("")
 node node2 = get("")
 
-myfunc(node1, node2)
+//myfunc(node1, node2)
 
 node myNode2 = createNode()
 
-myNode2 = node1 ^^ node2 OVER BODY, AUTHOR, KEYWORDS
+myNode2 = node1 ^^ node2 over BODY, AUTHOR, KEYWORDS
