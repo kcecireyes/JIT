@@ -72,7 +72,13 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking:
             var_name = p[1]
-            var_type = p[3].type # NEED TYPE FROM AST CLASS
+            if (currentST.getRecordType(currentST.searchRecord(var_name)) == "node"):
+                # print "oh hai im in this if"
+                var_type = p[3].rtype
+                # print var_type + "   :: this is the var type now"
+            else:
+                var_type = p[3].type # NEED TYPE FROM AST CLASS
+            # print var_type + "   :this is the var type now!!! without the IF!!!"
             if '.' in var_name:
                 dot_index = var_name.find('.')
                 var_name = var_name[0:dot_index]
