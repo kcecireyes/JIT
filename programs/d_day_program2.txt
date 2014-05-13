@@ -1,0 +1,18 @@
+//Sample Program 2 - Article Arithmetic
+
+//User-defined function
+newfun myfunc (node nodeA, node nodeB) {
+	node myNode = createNode()
+	myNode = nodeA ++ nodeB OVER KEYWORDS, BODY
+	say(myNode.keywords)
+	say(myNode.body)
+}
+
+node node1 = get("")
+node node2 = get("")
+
+myfunc(node1, node2)
+
+node myNode2 = createNode()
+
+myNode2 = node1 ^^ node2 OVER BODY, AUTHOR, KEYWORDS

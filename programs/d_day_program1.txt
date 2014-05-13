@@ -1,0 +1,27 @@
+//Sample Program 1 - Working with a node
+
+//Create an empty node
+
+node myNode = createNode()
+
+//Fill in the article details
+myNode.title = ""
+myNode.author = ""
+myNode.publisher = ""
+myNode.date = ""
+myNode.keywords = []
+
+//Import the article text into the node
+myNode.body = import("")
+
+//Push the node to the database
+push(myNode)
+
+//Pull related articles from the database
+graph myChunk = pull(start = myNode, number = 5)
+
+//See these nodes
+for article in myChunk {
+	say(article.title)
+	save(article)
+}

@@ -138,7 +138,9 @@ class Parser():
                 | PUSH
                 | PULL
                 | CREATENODE
-                | SEARCH'''
+                | SEARCH
+                | ID
+                '''
         print 'fun production ========='
         print 'p[1] ====' + p[1]
         if p[1] in ['say', 'import', 'listen']:
