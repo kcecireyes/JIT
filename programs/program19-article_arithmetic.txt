@@ -1,5 +1,7 @@
 // Article Arithmetic! Here it is! Finally! :D
 
+node x = createNode()
+
 x = myNode1 ++ myNode2 //UNION of two nodes
 
 x = myNode1 ^^ myNode2 //INTERSECTION of two nodes

@@ -72,13 +72,6 @@ class Parser():
             p[0] = AstBinOp(AstID(p[1]), p[2], p[3])
             # Semantic Checking:
             var_name = p[1]
-            if (currentST.getRecordType(currentST.searchRecord(var_name)) == "node"):
-                # print "oh hai im in this if"
-                var_type = p[3].rtype
-                # print var_type + "   :: this is the var type now"
-            else:
-                var_type = p[3].type # NEED TYPE FROM AST CLASS
-            # print var_type + "   :this is the var type now!!! without the IF!!!"
             if '.' in var_name:
                 dot_index = var_name.find('.')
                 var_name = var_name[0:dot_index]
@@ -89,6 +82,14 @@ class Parser():
                 else:
                     pass
             else:
+                print "var name:  " + var_name
+                if (currentST.getRecordType(currentST.searchRecord(var_name)) == "node" and p[3].rtype == "articleop"):
+                    print "oh hai im in this if"
+                    var_type = p[3].rtype
+                    print var_type + "   :: this is the var type now"
+                else:
+                    var_type = p[3].type # NEED TYPE FROM AST CLASS
+                print "the type after the if else is   " + var_type
                 var_record = {'name': var_name, 'type': var_type }
                 j = currentST.searchRecord(var_name)
                 # if it's not in the current ST
@@ -455,12 +456,13 @@ class Parser():
             # itr_type = block_ST.getRecordExpType(span_index)
             itr_record = {'name': itr_name } #'type': itr_type
             j = block_ST.searchRecord(itr_name)
+            print block_ST.printST()
             if j == -1:
                 block_ST.addRecord(itr_record)
             # force the iterator to be a new declaration
-            else:
-                print "Semantic error: " + itr_name + " has already been declared. Initialize a new variable"
-                return
+            # else:
+            #     print "Semantic error: " + itr_name + " has already been declared. Initialize a new variable"
+            #     return
             p[0] = AstForLoop(AstID(p[2]), AstID(p[4], span_type), p[6])
             # pop the block_ST!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             popped = Parser.ST_stack.pop()
