@@ -57,7 +57,7 @@ class CodeGenerator:
 
     def generate_forloop(self, itr, span, body):
         new_body = self.indent_block(body)
-        code = 'for %s in %s.nodes:\n\t%s\n\n' % (itr, span, new_body)
+        code = 'for %s in %s:\n\t%s\n\n' % (itr, span, new_body)
         # print code
         return code
 

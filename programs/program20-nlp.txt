@@ -1,17 +1,34 @@
+//Article Arithmetic
+
 node node1 = createNode()
 node1.title = "Title 1"
-node1.keywords = ["world war", "normandy", "germany",]
+node1.keywords = ["world war", "normandy", "germany", "america", "france",]
 node1.publisher = "JIT"
-node1.body = "America invaded France. Alfred Aho wasn't there."
+node1.body = "America invaded France and Germany was there."
 
 node node2 = createNode()
 node2.title = "Title 2"
-node2.keywords = ["world war", "normandy", "germany", "france",]
+node2.keywords = ["germany", "england", "france", "invasion", "america",]
 node2.publisher = "JIT"
-node2.body = "France invaded America. Alfred Aho wasn't there."
+node2.body = "France did not invade America and Germany and England weren't there."
 
 node myNode = createNode()
 
-myNode = node1 ++ node2 over BODY, KEYWORDS
+myNode = node1 ^^ node2 over BODY, KEYWORDS
 
 say(myNode.body)
+
+for i in myNode.keywords {
+say(i)
+}
+
+node myNode2 = createNode()
+
+myNode2 = node1 ++ node2 over BODY, KEYWORDS
+
+say("node 2")
+say(myNode2.body)
+
+for j in myNode2.keywords {
+say(j)
+}

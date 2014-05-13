@@ -125,6 +125,9 @@ class Keyword(Base):
         self.value = val
         session.add(self)
 
+    def __str__(self):
+        return self.value
+
 class Edge(Base):
     __tablename__ = 'edge'
 
